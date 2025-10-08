@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Invitation à un entretien vidéo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+            margin: 0;
+        }
+        .container {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: 0 auto;
+            box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.15);
+        }
+        h2 {
+            color: #333333;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 15px;
+            color: #555555;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        .btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 24px;
+            background-color: #007BFF;
+            color: #ffffff !important;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .footer {
+            margin-top: 30px;
+            font-size: 13px;
+            color: #888888;
+            text-align: center;
+            border-top: 1px solid #e0e0e0;
+            padding-top: 10px;
+        }
+        @media (max-width: 600px) {
+            .container {
+                max-width: 100%;
+                padding: 15px;
+            }
+            .btn {
+                width: 100%;
+                box-sizing: border-box;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2 th:text="'Bonjour ' + ${name}  "></h2>
+    <p>
+        Vous avez choisi de participer à un <b>entretien vidéo</b> avec une durée de
+        <b>90 secondes</b> pour répondre à chaque question.
+    </p>
+    <p>
+        Veuillez cliquer sur le bouton ci-dessous pour commencer l'enregistrement de votre vidéo :
+    </p>
+    <a th:href="@{${interviewUrl} ?: 'http://localhost:4200/preinterview'}" class="btn"> Commencer l'entretien</a>
+    <p style="margin-top: 20px;">
+        <b>Deadline :</b> Veuillez soumettre votre vidéo dans un maximum de 3 jours
+    </p>
+    <div class="footer">
+        Cordialement,<br>
+        <b>L'équipe RH SIGA</b><br>
+        <a href="mailto:contact@siga.com.tn">contact@siga.com.tn</a> | (+216) 71 960 281
+    </div>
+</div>
+</body>
+</html>

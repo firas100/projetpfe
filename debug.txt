@@ -1,0 +1,123 @@
+                                                                                  
+                                                                                  
+                                                                                  
+                                                                                  
+    FARJALLAH          ANIS                                                       
+                                                                                  
+    DéveloppeurFullStack                                                          
+                                                                                  
+     anisfarjallah0705@gmail.com                                                  
+    (cid:211) (+216)28494898                                                      
+     BenArous,Tunisie                                                             
+                                                                                  
+                                                                                  
+    INTRODUCTION                                    FORMATION                     
+                                                                                  
+    Passionnédedéveloppementetdeprogrammationcompétitive,jesuis Cycle préparatoire aux études
+    unétudianten3èmeannéecycleingénieureninformatiqueàESPRITet d’ingénieurs       
+    enrechercheactived’unstagepourmonProjetdeFind’Études(PFE).                    
+    Monobjectifestdedéveloppermescompétencestechniquesetmes InstitutPréparatoireauxÉtudesd’Ingénieurs,Nabeul
+                                                    (IPEIN)                       
+    bonnespratiques,d’élargirmesconnaissancesetdereleverdesdéfis                  
+                                                    (cid:17) Septembre2019–Juin2021
+    stimulantsdansledomainedudéveloppementlogiciel.                               
+    EXPÉRIENCESPROFESSIONNELLES                     Cycle ingénieur en Informatique,
+                                                    spécialité Génie Logiciel     
+    Développeur FullStack (Stage d’ingénieur)                                     
+                                                    ESPRIT                        
+    Sagemcom                                        (cid:17) Septembre2021–Présent
+    (cid:17) Juillet2024–Septembre2024  Ezzahra,Tunisie                           
+    • Conceptionetdéveloppementd’uneapplicationwebpouroptimiserlagestiondes       
+     ligneslumineusesdansunenvironnementindustriel.                               
+    • Contributionàl’améliorationdel’efficacitéénergétiqueetdelaflexibilitédecontrôle COMPÉTENCESTECHNIQUES
+     grâceàuneinterfaceutilisateuradaptée.                                        
+    • Collaborationavecleséquipestechniquespourgarantirdesperformancesfiableset   
+     adaptéesauxstandardsindustriels.               UI/UX                         
+    • Participationàlamiseenœuvredesolutionspermettantderépondreauxbesoins        
+                                                    Java/Spring,Hibernate,RestAPI,maven
+     spécifiquesdeszonesdel’atelier.                                              
+    • Environnementtechnique:SpringBoot,Angular,MySQL,RESTfulAPIs,CSS/HTML. AngularJS/TS
+                                                    PHP/Symfony HTML CSS JavaScript
+    Développeur FullStack (Stage d’été)             SQL/PLSQL                     
+                                                    Postman                       
+    EasyTek                                                                       
+    (cid:17) Août2023–Septembre2023  Menzah8,Tunisie Ubuntu                       
+    • Conceptionetdéveloppementd’uneapplicationwebdestinéeàaméliorerlagestion Devops,Docker GIT/GITLab,
+     desstocksetàautomatiserlesprocessus.                                         
+                                                    MVC UML                       
+    • Participationàl’analysedesbesoinsetàladéfinitiondesfonctionnalitésclésde    
+     l’application.                                                               
+    • Développementd’uneinterfaceintuitivepermettantunegestionsimplifiéedesarticles
+                                                    CERTIFICATIONS                
+     etdesinventaires.                                                            
+    • Tools:SpringBoot,Angular,Postman,RESTfulAPIs,Python,Pycharm,VisualStudio,   
+                                                    Prise de parole en public     
+     starUML.                                                                     
+                                                    Novembre2019                  
+                                                                                  
+    PROJETSACADÉMIQUES                              Cisco Certified Network Associate
+                                                    (CCNA)                        
+    • SmartEsprit(C/Glade):Développementd’uneplateformeDesktoppoursimplifierla    
+     gestiondesopérationsdansunrestaurant,incluantlagestiondesréservations, Janvier2023
+     commandes,stocks,fournisseurs,ettâchesménagères.                             
+    • ReineFatale(JavaFX/Symfony6/CodeNameOne/MySQL):Conceptiond’une              
+     plateformeDesktop/Web/MobilepourunsiteE-commerce,intégrantdesAPIetdes        
+     interfacesmodernes,présentéeauprestigieux"BaldesProjetsEsprit".              
+    • Forumdesstages(SpringBoot/Angular/MySQL):Créationd’uneplateformeweb         
+                                                    COMPÉTENCESLINGUISTIQUES      
+     facilitantlarencontreentreétudiantsetentreprises,pourrépondreauxdéfisliésà   
+     l’insertionprofessionnelledesjeunesdiplômés.                                 
+                                                    Arabe               ○○○○○     
+                                                    Français            ○○○○○     
+                                                    Anglais             ○○○○○     
+                                                    VIEASSOCIATIVE                
+                                                    LionsClubTunisEsprit          
+                                                    CroissantRougeTunisien        
+                                                    FORMATION                     
+                                                    Cycle préparatoire aux études 
+                                                    d’ingénieurs                  
+                                                    InstitutPréparatoireauxÉtudesd’Ingénieurs,Nabeul
+                                                    (IPEIN)                       
+                                                    (cid:17) Septembre2019–Juin2021
+                                                    Cycle ingénieur en Informatique,
+                                                    spécialité Génie Logiciel     
+                                                    ESPRIT                        
+                                                    (cid:17) Septembre2021–Présent
+                                                                                  
+                                                    COMPÉTENCESTECHNIQUES         
+                                                                                  
+                                                                                  
+                                                    UI/UX                         
+                                                    Java/Spring,Hibernate,RestAPI,maven
+                                                    AngularJS/TS                  
+                                                    PHP/Symfony HTML CSS JavaScript
+                                                    SQL/PLSQL                     
+                                                                                  
+                                                    Postman                       
+                                                    Ubuntu                        
+                                                    Devops,Docker GIT/GITLab,     
+                                                    MVC UML                       
+                                                                                  
+                                                                                  
+                                                    CERTIFICATIONS                
+                                                    Prise de parole en public     
+                                                                                  
+                                                    Novembre2019                  
+                                                                                  
+                                                    Cisco Certified Network Associate
+                                                    (CCNA)                        
+                                                    Janvier2023                   
+                                                                                  
+                                                                                  
+                                                                                  
+                                                    COMPÉTENCESLINGUISTIQUES      
+                                                                                  
+                                                    Arabe               ○○○○○     
+                                                    Français            ○○○○○     
+                                                    Anglais             ○○○○○     
+                                                                                  
+                                                    VIEASSOCIATIVE                
+                                                                                  
+                                                                                  
+                                                    LionsClubTunisEsprit          
+                                                    CroissantRougeTunisien        
