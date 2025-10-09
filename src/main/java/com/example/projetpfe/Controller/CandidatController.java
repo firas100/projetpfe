@@ -134,6 +134,9 @@ public class CandidatController {
             throw new RuntimeException("Erreur lors de l'ajout du candidat : " + e.getMessage());
         }
     }
-
+    @GetMapping("/all")
+    public List<Cv> getAllCandidats() {
+        return cvService.getallcvLatex();
+    }
 
 }
