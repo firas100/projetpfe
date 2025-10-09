@@ -135,8 +135,5 @@ public class CandidatController {
         }
     }
 
-    @GetMapping("/all")
-    public List<Cv> getAllCandidats() {
-        return cvService.getallcvLatex();
-    }
+
 }
