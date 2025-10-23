@@ -1,0 +1,27 @@
+<div class="container mt-4">
+  <h2>Liste des Managers</h2>
+
+  <div *ngIf="loading" class="alert alert-info">Chargement des utilisateurs...</div>
+  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+  <table class="table table-bordered table-hover" *ngIf="!loading && users.length">
+    <thead class="thead-dark">
+      <tr>
+        <th>Prénom</th>
+        <th>Nom</th>
+        <th>Email</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users">
+        <td>{{ user.firstName }}</td>
+        <td>{{ user.lastName }}</td>
+        <td>{{ user.email }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="!loading && users.length === 0" class="alert alert-warning">
+    Aucun manager trouvé.
+  </div>
+</div>

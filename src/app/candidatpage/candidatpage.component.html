@@ -1,0 +1,296 @@
+<!-- candidatpage.component.html -->
+
+<!-- BARRE DE NAVIGATION -->
+<nav class="navbar">
+  <div class="navbar-left">
+    <button class="hamburger" (click)="toggleSidebar()" aria-label="Basculer le menu latéral">
+      <span></span><span></span><span></span>
+    </button>
+    <span class="brand">SIGA <small class="brand-sub">Admin</small></span>
+  </div>
+  <form class="search-wrapper" (submit)="$event.preventDefault(); applyFilter()">
+    <div class="search-field">
+      <input
+        type="search"
+        class="search"
+        placeholder="Rechercher : nom, prénom, email..."
+        [(ngModel)]="searchTerm"
+        name="search"
+        aria-label="Recherche de candidats"
+      />
+      <button type="button" class="btn btn-search" (click)="applyFilter()" title="Rechercher">
+        <i class="fas fa-search"></i>
+      </button>
+    </div>
+  </form>
+  <div class="navbar-right">
+    <div class="user">
+      <div class="user-info">
+        <div class="user-emoji">👋</div>
+        <div class="user-text">
+          <div class="user-hi">Bienvenue</div>
+          <div class="user-name">{{ username }}</div>
+        </div>
+        <button class="btn-logout" title="Déconnexion" (click)="onLogout()">
+          <i class="fas fa-sign-out-alt"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+<!-- MENU LATÉRAL -->
+<aside class="sidebar" [class.collapsed]="sidebarCollapsed">
+  <div class="sidebar-top">
+    <div class="brand">
+      <i class="fas fa-rocket"></i>
+      <span>SIGA</span>
+    </div>
+    <button class="collapse-btn" (click)="toggleSidebar()">
+      <i class="fas" [ngClass]="sidebarCollapsed ? 'fa-angle-right' : 'fa-angle-left'"></i>
+    </button>
+  </div>
+  <nav class="nav-links">
+    <a routerLink="/AllOffre" >
+      <i class="fas fa-tachometer-alt"></i>
+      <span class="link-text">Tableau de bord</span>
+    </a>
+    <a routerLink="/candidature">
+      <i class="fas fa-file-alt"></i>
+      <span class="link-text">Ajouter une candidature</span>
+    </a>
+  </nav>
+  <div class="sidebar-bottom">
+    <div class="user-profile">
+      <div class="user-info"></div>
+    </div>
+    <small class="version">v1.0 • SIGA</small>
+  </div>
+</aside>
+<!-- CONTENU PRINCIPAL -->
+<main class="content" [class.expanded]="sidebarCollapsed">
+  <section class="upload-section">
+    <!-- Section des informations de l'offre avec style appliqué -->
+   <!-- Section des informations de l'offre avec affichage conditionnel -->
+<div class="offer-details" *ngIf="idOffre !== null; else noOffreSelected">
+  <h3 class="offer-title">Détails de l'Offre</h3>
+  <div class="offer-grid">
+    <div class="form-group full-width">
+      <label for="titreOffre">Titre de l'Offre</label>
+      <input
+        id="titreOffre"
+        class="form-input offer-input"
+        [value]="offreTitre"
+        readonly />
+    </div>
+    <div class="form-group full-width">
+      <label for="descriptionOffre">Description</label>
+      <textarea
+        id="descriptionOffre"
+        class="form-input offer-textarea"
+        [value]="descriptionJob"
+        readonly
+        rows="5"></textarea>
+    </div>
+    <div class="form-group full-width">
+      <label for="competencesTechniques">Compétences Techniques</label>
+      <textarea
+        id="competencesTechniques"
+        class="form-input offer-textarea"
+        [value]="competencesTechniques"
+        readonly
+        rows="5"></textarea>
+    </div>
+    <div class="form-group full-width">
+      <label for="profilRecherche">Profil Recherché</label>
+      <textarea
+        id="profilRecherche"
+        class="form-input offer-textarea"
+        [value]="profilRecherche"
+        readonly
+        rows="5"></textarea>
+    </div>
+    <div class="form-group full-width">
+      <label for="nbreDePoste">Nombre de Postes</label>
+      <input
+        id="nbreDePoste"
+        class="form-input offer-input"
+        [value]="nbreDePoste"
+        readonly />
+    </div>
+  </div>
+</div>
+
+<!-- Template affiché quand aucune offre n’est sélectionnée -->
+<ng-template #noOffreSelected>
+  <div class="no-offre-message">
+    <p>Aucune offre sélectionnée pour le moment.</p>
+    <p>Veuillez retourner à la liste des offres pour choisir celle à laquelle vous souhaitez postuler.</p>
+    <button class="collapse-btn" (click)="AllOffre()">
+      <i class="fas fa-arrow-left"></i> Retour à la liste des offres
+    </button>
+  </div>
+</ng-template>
+
+     
+    <div class="upload-container">
+      <header class="upload-header">
+        <h2>Téléverser votre CV</h2>
+        <p>Glissez-déposez votre fichier PDF ou cliquez pour le parcourir. Nous extrairons automatiquement vos informations.</p>
+      </header>
+      <!-- Téléversement du CV -->
+      <div
+        class="upload-area"
+        (dragover)="onDragOver($event)"
+        (dragleave)="onDragLeave($event)"
+        (drop)="onDrop($event)"
+      >
+        <label for="file-upload">
+          <i class="fas fa-cloud-upload-alt upload-icon"></i>
+          <span>Glissez et déposez ici ou <span class="upload-link">cliquez pour téléverser</span></span>
+          <small class="upload-note">Fichiers PDF uniquement, jusqu’à 10 Mo</small>
+        </label>
+        <input id="file-upload" type="file" accept=".pdf" (change)="onFileSelected($event)" />
+      </div>
+      <!-- Fichier sélectionné -->
+      <div *ngIf="selectedFile" class="selected-files">
+        <div class="file-item">
+          <i class="fas fa-file-pdf file-icon"></i>
+          <span class="file-name">{{ selectedFile.name }}</span>
+          <span class="file-size">{{ getFileSize(selectedFile.size) }}</span>
+          <button class="remove-btn" (click)="removeFile()">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </div>
+      <!-- Chargement -->
+      <div *ngIf="isLoading" class="message loading">
+        <i class="fas fa-spinner fa-spin"></i> Traitement de votre CV...
+      </div>
+      <!-- Message -->
+      <div
+        *ngIf="message"
+        class="message"
+        [ngClass]="{'success': !message.includes('Erreur'), 'error': message.includes('Erreur')}"
+      >
+        {{ message }}
+      </div>
+      <!-- Formulaire -->
+      <div class="form-container" *ngIf="isFormVisible">
+        <header class="form-header">
+          <h3>Vérifiez et complétez votre profil</h3>
+          <p>Nous avons extrait ces informations de votre CV. Modifiez-les si nécessaire, puis soumettez.</p>
+        </header>
+        <form #candidatForm="ngForm" (ngSubmit)="onSubmit(candidatForm)">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="nom">Nom <span class="required">*</span></label>
+              <input
+                id="nom"
+                [(ngModel)]="candidatData.nom"
+                name="nom"
+                required
+                #nom="ngModel"
+                class="form-input"
+                placeholder="Entrez votre nom"
+                [ngClass]="{'is-valid': nom.valid && nom.touched, 'is-invalid': nom.invalid && nom.touched}"
+              />
+              <div *ngIf="nom.invalid && nom.touched" class="error-text">
+                Le nom est obligatoire.
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="prenom">Prénom <span class="required">*</span></label>
+              <input
+                id="prenom"
+                [(ngModel)]="candidatData.prenom"
+                name="prenom"
+                required
+                #prenom="ngModel"
+                class="form-input"
+                placeholder="Entrez votre prénom"
+                [ngClass]="{'is-valid': prenom.valid && prenom.touched, 'is-invalid': prenom.invalid && prenom.touched}"
+              />
+              <div *ngIf="prenom.invalid && prenom.touched" class="error-text">
+                Le prénom est obligatoire.
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="email">Email <span class="required">*</span></label>
+              <input
+                id="email"
+                [(ngModel)]="candidatData.email"
+                name="email"
+                type="email"
+                required
+                #email="ngModel"
+                class="form-input"
+                placeholder="Entrez votre adresse e-mail"
+                [ngClass]="{'is-valid': email.valid && email.touched, 'is-invalid': email.invalid && email.touched}"
+              />
+              <div *ngIf="email.invalid && email.touched" class="error-text">
+                Veuillez entrer une adresse e-mail valide.
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="tel">Téléphone <span class="required">*</span></label>
+              <input
+                id="tel"
+                [(ngModel)]="candidatData.tel"
+                name="tel"
+                type="text"
+                required
+                #tel="ngModel"
+                class="form-input"
+                placeholder="Entrez votre numéro de téléphone"
+                [ngClass]="{'is-valid': tel.valid && tel.touched, 'is-invalid': tel.invalid && tel.touched}"
+              />
+              <div *ngIf="tel.invalid && tel.touched" class="error-text">
+                Le numéro de téléphone est obligatoire.
+              </div>
+            </div>
+          </div>
+          <div class="form-group full-width">
+            <label for="adresse">Adresse <span class="required">*</span></label>
+            <input
+              id="adresse"
+              [(ngModel)]="candidatData.adresse"
+              name="adresse"
+              required
+              #adresse="ngModel"
+              class="form-input"
+              placeholder="Entrez votre adresse"
+              [ngClass]="{'is-valid': adresse.valid && adresse.touched, 'is-invalid': adresse.invalid && adresse.touched}"
+            />
+            <div *ngIf="adresse.invalid && adresse.touched" class="error-text">
+              L’adresse est obligatoire.
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary" [disabled]="!candidatForm.valid">
+            Soumettre la candidature
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+<!-- PIED DE PAGE -->
+<footer class="footer">
+  <div class="footer-left">
+    <div class="brand-info">
+      <strong>SIGA</strong>
+      <span>• 13 Rue Ibn Nafis, Les Berges du Lac 3, Tunis</span>
+    </div>
+    <div class="footer-links">
+      <a href="mailto:contact&#64;siga.com.tn"><i class="fas fa-envelope"></i> contact&#64;siga.com.tn</a>
+      <span>•</span>
+      <a href="tel:+21671960281"><i class="fas fa-phone"></i> (+216) 71 960 281</a>
+    </div>
+  </div>
+  <div class="footer-right">
+    <span>v1.0</span>
+    <a href="#">Confidentialité</a>
+    <a href="#">Conditions</a>
+  </div>
+</footer>

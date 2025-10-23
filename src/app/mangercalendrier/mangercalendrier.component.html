@@ -1,0 +1,141 @@
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="navbar-left">
+    <button class="hamburger" (click)="toggleSidebar()" aria-label="Toggle sidebar">
+      <span></span><span></span><span></span>
+    </button>
+    <span class="brand">SIGA <small class="brand-sub">Admin</small></span>
+  </div>
+
+  <form class="search-wrapper" (submit)="$event.preventDefault()">
+    <div class="search-field">
+      <input
+        class="search"
+        type="search"
+        [(ngModel)]="searchTerm"
+        name="search"
+        placeholder="Recherche: nom, prénom, email..."
+      />
+      <button class="btn btn-search" type="button" (click)="applyFilter()">
+        <i class="fas fa-search"></i>
+      </button>
+    </div>
+  </form>
+
+  <div class="navbar-right">
+    <div class="notif">
+      <button class="icon-btn" title="Notifications" (click)="toggleNotifications()">
+        <i class="fas fa-bell"></i>
+        <span class="badge" *ngIf="unreadCount > 0">{{ unreadCount }}</span>
+      </button>
+      <!-- Notifications dropdown -->
+      <div class="notifications-dropdown" *ngIf="showNotifications">
+        <div class="notification-list">
+          <div *ngFor="let notification of notifications" class="notification-item" [ngClass]="{'unread': !notification.read}" (click)="viewNotification(notification)">
+            <p>{{ notification.message }}</p>
+            <small>{{ notification.createdAt | date:'short' }}</small>
+          </div>
+          <div *ngIf="notifications.length === 0" class="no-notifications">
+            Aucune notification
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="user">
+      <div class="user-info">
+        <div class="user-emoji">👋</div>
+        <div class="user-text">
+          <div class="user-hi">Bienvenue</div>
+          <div class="user-name">{{ username }}</div>
+        </div>
+      </div>
+      <button class="btn-logout" title="Déconnexion" (click)="onLogout()">
+      <i class="fas fa-sign-out-alt"></i>
+    </button>   
+     </div>
+  </div>
+</nav>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" [class.collapsed]="sidebarCollapsed">
+  <div class="sidebar-top">
+    <div class="brand">
+      <i class="fas fa-rocket"></i>
+      <span>SIGA</span>
+    </div>
+    <button class="collapse-btn" (click)="toggleSidebar()">
+      <i class="fas" [ngClass]="sidebarCollapsed ? 'fa-angle-right' : 'fa-angle-left'"></i>
+    </button>
+  </div>
+
+  <nav class="nav-links">
+    <a routerLink="/getall" routerLinkActive="active"><i class="fas fa-tachometer-alt"></i><span class="link-text">Dashboard</span></a>
+    <a routerLink="/recommendation" routerLinkActive="active"><i class="fas fa-file-alt"></i><span class="link-text">Analyse CV</span></a>
+    <a routerLink="/getCandidats" routerLinkActive="active"><i class="fas fa-users"></i><span class="link-text">Candidats</span></a>
+    <a routerLink="/Calendrier" routerLinkActive="active"><i class="fas fa-calendar-alt"></i><span class="link-text">Calendrier</span></a>
+  </nav>
+
+  <div class="sidebar-bottom">
+    <div class="user-profile">
+      <div class="avatar">👋</div>
+      <div class="user-info">
+        <span class="name">Admin</span>
+        <small class="role">Super Admin</small>
+      </div>
+    </div>
+    <small class="version">v1.0 • SIGA</small>
+  </div>
+</aside>
+<div class="container mt-4">
+  <h2>Calendrier des entretiens</h2>
+<full-calendar class="fc" [options]="calendarOptions"></full-calendar>
+
+  <!-- Modal pour détails candidat -->
+  <div class="modal" tabindex="-1" [ngClass]="{'show d-block': showModal}">
+    <div class="modal-dialog">
+      <div class="modal-content p-3">
+        <div class="modal-header">
+          <h5 class="modal-title">Détails du candidat</h5>
+          <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body" *ngIf="selectedEntretien">
+          <p><strong>Nom :</strong> {{ selectedEntretien.candidat.nom }}</p>
+          <p><strong>Prénom :</strong> {{ selectedEntretien.candidat.prenom }}</p>
+          <p><strong>Email :</strong> {{ selectedEntretien.candidat.email }}</p>
+          <p><strong>Date entretien :</strong> {{ selectedEntretien.dateEntretien }}</p>
+          <p><strong>Statut :</strong> {{ selectedEntretien.status }}</p>
+         <button *ngIf="selectedEntretien && selectedEntretien.candidat?.cvPath" 
+        class="btn btn-primary" 
+        (click)="openCv()">
+  Voir CV
+</button>
+     <label for="commentaire">Commentaire :</label>
+  <textarea id="commentaire" [(ngModel)]="selectedEntretien.commentaire" 
+            class="form-control" rows="3"
+            placeholder="Ajouter un commentaire sur le candidat..."></textarea>
+
+          <!-- Changement de statut -->
+          <label for="statusSelect">Changer le statut :</label>
+          <select id="statusSelect" [(ngModel)]="selectedEntretien.status" class="form-control">
+            <option value="CONFIRME">CONFIRME</option>
+            <option value="REFUSE">REFUSE</option>
+          </select>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-success" (click)="updateStatus()">Enregistrer</button>
+          <button class="btn btn-secondary" (click)="closeModal()">Fermer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<footer class="footer"> <div class="footer-left">
+   <div class="brand-info"> <strong>SIGA</strong> 
+    <span>• 13 Rue Ibn Nafis, Les berges du lac 3, Tunis</span>
+   </div> <div class="footer-links"> <a href="mailto:contact&#64;siga.com.tn" title="Contact via email">
+     <i class="fas fa-envelope"></i> contact&#64;siga.com.tn </a> 
+     <span>•</span> <a href="tel:+21671960281" title="Call"><i class="fas fa-phone"></i> (+216) 71 960 281</a> </div> 
+    </div> <div class="footer-right"> <span>v1.0</span> <a href="#" title="Privacy Policy">Privacy</a>
+       <a href="#" title="Terms of Service">Terms</a> </div> 
+      </footer>

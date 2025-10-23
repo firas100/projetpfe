@@ -1,0 +1,10 @@
+{
+  "realm": "pfe-realm",
+  "auth-server-url": "http://localhost:9090/",
+  "ssl-required": "external",
+  "resource": "spring-boot-app",
+  "public-client": false,
+  "confidential-port": 0,
+  "clientId": "spring-boot-app",
+  "clientSecret": "aVSdny7TAqlF58nqUVMlmQ3qiHbaEm7Y"
+}

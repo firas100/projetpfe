@@ -1,0 +1,106 @@
+<div class="meet-container">
+  <!-- Header -->
+  <header class="meet-header">
+    <div class="header-left">
+      <i class="fas fa-video brand-icon"></i>
+      <span class="brand">SIGA Pré-Entretien</span>
+    </div>
+    <div class="header-right">
+      <span class="user-info">Bienvenue, {{ username }}</span>
+      <button class="btn-settings" title="Paramètres" (click)="openSettings()">
+        <i class="fas fa-cog"></i>
+      </button>
+      <button class="btn-logout" title="Déconnexion" (click)="onLogout()">
+        <i class="fas fa-sign-out-alt"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Video Preview -->
+  <div class="video-wrapper">
+    <video #videoPlayer autoplay muted class="video-preview"></video>
+    <div class="overlay" *ngIf="globalMessage && isVideoRecorded">
+      <div class="success-message">
+        <i class="fas fa-check-circle success-icon"></i>
+        <p>{{ globalMessage }}</p>
+        <button class="btn btn-primary" (click)="resetRecording()">Nouvel Enregistrement</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Control Bar -->
+  <div class="control-bar" *ngIf="!isVideoRecorded" [class.active]="isControlBarVisible" (mouseenter)="showControlBar()" (mouseleave)="hideControlBar()">
+    <div class="controls">
+      <button (click)="startRecording()" [disabled]="isRecording" class="btn btn-record" title="Démarrer l'enregistrement">
+        <i class="fas fa-video"></i>
+        <span>{{ isRecording ? 'Enregistrement...' : 'Démarrer' }}</span>
+      </button>
+      <button (click)="stopRecording()" [disabled]="!isRecording" class="btn btn-stop" title="Arrêter l'enregistrement">
+        <i class="fas fa-stop"></i>
+        <span>Arrêter</span>
+      </button>
+      <div class="timer-wrapper">
+        <span class="timer"><i class="fas fa-clock"></i> {{ timer }}s</span>
+        <div class="timer-progress" [style.width.%]="(90 - timer) / 90 * 100"></div>
+      </div>
+      <button class="btn btn-toggle-questions" (click)="toggleQuestions()" title="{{ questionsCollapsed ? 'Afficher les questions' : 'Masquer les questions' }}">
+        <i class="fas fa-question-circle"></i>
+      </button>
+    </div>
+    <p *ngIf="uploadMessage" class="upload-message">{{ uploadMessage }}</p>
+  </div>
+
+  <!-- Questions Panel -->
+  <div class="questions-panel" [class.collapsed]="questionsCollapsed">
+    <div class="questions-header">
+      <h3>Questions</h3>
+      <button class="collapse-btn" (click)="toggleQuestions()" title="{{ questionsCollapsed ? 'Étendre' : 'Réduire' }}">
+        <i class="fas" [ngClass]="questionsCollapsed ? 'fa-chevron-left' : 'fa-chevron-right'"></i>
+      </button>
+    </div>
+    <div class="questions-content">
+      <div *ngIf="!questions || questions.length === 0" class="no-questions">
+        <i class="fas fa-exclamation-circle"></i> Aucune question disponible.
+      </div>
+      <div class="questions-list" *ngIf="questions && questions.length > 0">
+        <div *ngFor="let question of questions; let i = index" class="question-card" [class.active]="currentQuestionIndex === i">
+          <div class="question-header">
+            <span class="question-number">{{ i + 1 }}</span>
+            <span class="question-time">{{ questionDuration }}s</span>
+          </div>
+          <p class="question-text">{{ question.question }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings Modal -->
+  <div class="settings-modal" *ngIf="isSettingsOpen">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Paramètres</h3>
+        <button class="close-btn" (click)="closeSettings()" title="Fermer">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Caméra</label>
+          <select [(ngModel)]="selectedCamera" (change)="updateMediaDevices()" class="form-control">
+            <option *ngFor="let device of cameras; let i = index" [value]="device.deviceId">
+              {{ device.label || 'Caméra ' + (i + 1) }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Microphone</label>
+          <select [(ngModel)]="selectedMicrophone" (change)="updateMediaDevices()" class="form-control">
+            <option *ngFor="let device of microphones; let i = index" [value]="device.deviceId">
+              {{ device.label || 'Microphone ' + (i + 1) }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
