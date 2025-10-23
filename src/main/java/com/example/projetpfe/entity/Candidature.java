@@ -8,29 +8,31 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Entretien {
+public class Candidature {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private Date dateEntretien;
+    private LocalDateTime dateCandidature = LocalDateTime.now();
+
+    private String statut = "EN_ATTENTE";
 
     @ManyToOne
+    @JoinColumn(name = "candidat_id")
+    @JsonIgnore
     private Candidat candidat;
-    @ManyToOne
-    @JoinColumn(name = "candidature_id")
-    private Candidature candidature;
 
-    private String managerId;
-    private String managerEmail;
-    private String managerName;
-    private String commentaire;
-    private String status; // ENVOYE, CONFIRME, REFUSE
+    @ManyToOne
+    @JoinColumn(name = "offre_id")
+    @JsonIgnore
+    private Offre offre;
+
+
+
 }

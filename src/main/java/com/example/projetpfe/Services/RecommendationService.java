@@ -1,112 +1,142 @@
 package com.example.projetpfe.Services;
 
 import com.example.projetpfe.Repository.CandidatRepo;
+import com.example.projetpfe.Repository.OffreRepo;
 import com.example.projetpfe.Repository.PreInterviewRepo;
 import com.example.projetpfe.Repository.RecommendationRepo;
-import com.example.projetpfe.entity.Candidat;
-import com.example.projetpfe.entity.PreInterview;
-import com.example.projetpfe.entity.Recommendation;
-import com.example.projetpfe.entity.RecommendationDTO;
+import com.example.projetpfe.entity.*;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class RecommendationService {
     private final CandidatRepo candidatRepo;
     private final RecommendationRepo recommendationRepo;
-
-    private final PreInterviewRepo  preInterviewRepo;
+    private final PreInterviewRepo preInterviewRepo;
+    private final OffreRepo offreRepo;
 
     @Value("${python.script.path:C:\\Users\\Firas kdidi\\Desktop\\Pfe\\system-recommandation.py}")
     private String pythonScriptPath;
 
-    public RecommendationService(CandidatRepo candidatRepo, RecommendationRepo recommendationRepo, PreInterviewRepo preInterviewRepo) {
+    public RecommendationService(CandidatRepo candidatRepo, RecommendationRepo recommendationRepo,
+                                 PreInterviewRepo preInterviewRepo, OffreRepo offreRepo) {
         this.candidatRepo = candidatRepo;
         this.recommendationRepo = recommendationRepo;
         this.preInterviewRepo = preInterviewRepo;
-
+        this.offreRepo = offreRepo;
     }
 
-    public void executerRecommandation(String keywords, int experienceMin) throws IOException, InterruptedException {
+    private static final Logger logger = LoggerFactory.getLogger(RecommendationService.class);
+
+
+    public void executerRecommandationParOffre(Integer offreId, int experienceMin) throws IOException, InterruptedException {
+        Offre offre = offreRepo.findById(offreId)
+                .orElseThrow(() -> new RuntimeException("Offre introuvable pour l'id " + offreId));
+
+        String keywords = String.join(". ", offre.getDescriptionJob(), offre.getCompetencesTechniques(), offre.getProfilRecherche());
+
         File tempFile = new File("temp_keywords.txt");
         try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(tempFile), "UTF-8"))) {
             writer.write(keywords);
         }
 
-        ProcessBuilder builder = new ProcessBuilder("python",
-                pythonScriptPath,
-                tempFile.getAbsolutePath(),
-                String.valueOf(experienceMin));
-
+        ProcessBuilder builder = new ProcessBuilder("python", pythonScriptPath, tempFile.getAbsolutePath(), String.valueOf(experienceMin));
         builder.environment().put("PYTHONIOENCODING", "utf-8");
-        builder.redirectErrorStream(true); // Combine stdout et stderr
-
+        builder.redirectErrorStream(true);
         Process process = builder.start();
 
         String jsonOutput;
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(), "UTF-8"))) {
             jsonOutput = reader.lines().collect(Collectors.joining("\n"));
         }
+        logger.info("Python script output: {}", jsonOutput);
 
         int exitCode = process.waitFor();
         if (exitCode != 0) {
             throw new RuntimeException("Python script failed with exit code " + exitCode + ". Output: " + jsonOutput);
         }
 
-        if (jsonOutput.isEmpty() || (!jsonOutput.startsWith("[") && !jsonOutput.startsWith("{"))) {
-            throw new RuntimeException("Invalid JSON output from Python script: " + jsonOutput);
-        }
+        saveRecommendationsFromJson(jsonOutput, offreId);
+        tempFile.delete();
+    }
 
+    private void saveRecommendationsFromJson(String jsonOutput, Integer offreId) throws IOException {  // Add offreId param
         ObjectMapper mapper = new ObjectMapper();
-        try {
-            List<Map<String, Object>> recommandations = mapper.readValue(jsonOutput, new TypeReference<>() {});
-            for (Map<String, Object> rec : recommandations) {
-                if (rec.containsKey("error")) {
-                    throw new RuntimeException("Python script returned error: " + rec.get("error"));
-                }
+        List<Map<String, Object>> recommandations = mapper.readValue(jsonOutput, new TypeReference<>() {
+        });
 
-                String fullName = (String) rec.get("Name");
-                String cvPath = (String) rec.get("CV");
-                String nom = "";
-                String prenom = "";
-                if (fullName != null && !fullName.isEmpty()) {
-                    String[] nameParts = fullName.trim().split("\\s+", 2);
-                    nom = nameParts[0].toLowerCase();
-                    prenom = (nameParts.length > 1) ? nameParts[1].toLowerCase() : nameParts[0].toLowerCase();
-                }
+        // Déduppliquer par nom pour éviter les duplicates
+        List<Map<String, Object>> uniqueRecommandations = recommandations.stream()
+                .distinct()
+                .collect(Collectors.toList());
 
-                List<Candidat> candidats = candidatRepo.findByNomEtPrenom(nom, prenom);
-                for (Candidat candidat : candidats) {
-                    Optional<Recommendation> existingRecommendation = recommendationRepo.findByCandidat(candidat);
-                    Recommendation recommendation;
-                    if (existingRecommendation.isPresent()) {
-                        // Mettre à jour la recommandation existante
-                        recommendation = existingRecommendation.get();
-                        recommendation.setSimilarityScore(((Number) rec.get("Similarity_Score")).doubleValue());
-                        recommendation.setYearsOfExperience(((Number) rec.get("Years_of_Experience")).intValue());
-                    } else {
-                        // Créer une nouvelle recommandation
-                        recommendation = new Recommendation();
-                        recommendation.setCandidat(candidat);
-                        recommendation.setSimilarityScore(((Number) rec.get("Similarity_Score")).doubleValue());
-                        recommendation.setYearsOfExperience(((Number) rec.get("Years_of_Experience")).intValue());
-                    }
+        logger.info("Processing {} unique recommendations from Python for Offre ID: {}", uniqueRecommandations.size(), offreId);
 
-                    recommendationRepo.save(recommendation);
-                }
+        Offre offre = offreRepo.findById(offreId)
+                .orElseThrow(() -> new RuntimeException("Offre introuvable pour l'id " + offreId));
+
+        for (Map<String, Object> recMap : uniqueRecommandations) {
+            if (recMap.containsKey("error")) {
+                logger.error("Python error: {}", recMap.get("error"));
+                throw new RuntimeException("Python error: " + recMap.get("error"));
             }
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to parse JSON: " + e.getMessage() + ". Output: " + jsonOutput);
-        } finally {
-            tempFile.delete();
+
+            String fullName = (String) recMap.get("Name");
+            String cvPath = (String) recMap.get("CV");
+            String nom = "";
+            String prenom = "";
+            if (fullName != null && !fullName.isEmpty()) {
+                String[] parts = fullName.trim().split("\\s+");
+                nom = parts[0].toLowerCase().trim();
+                prenom = parts.length > 1 ? parts[1].toLowerCase().trim() : "";
+            }
+            logger.info("Searching Candidat for nom: {}, prenom: {}", nom, prenom);
+
+            // Essayer d'abord case-sensitive
+            List<Candidat> candidats = candidatRepo.findByNomEtPrenom(prenom, nom);
+
+            // Si pas trouvé, essayer case-insensitive
+            if (candidats.isEmpty()) {
+                logger.warn("No exact match for: {} {}. Trying case-insensitive...", nom, prenom);
+                candidats = candidatRepo.findByNomEtPrenom(prenom, nom);
+            }
+
+            if (candidats.isEmpty()) {
+                logger.warn("No match found for: {} {}", nom, prenom);
+                continue;  // Skip this rec
+            }
+
+            // Prendre le premier match
+            Candidat c = candidats.get(0);
+
+            // Vérifier si recommendation existe déjà pour ce candidat ET cette offre
+            Optional<Recommendation> existingRec = recommendationRepo.findByCandidatAndOffre(c, offre);
+            if (existingRec.isPresent()) {
+                logger.info("Recommendation already exists for Candidat ID: {} and Offre ID: {}. Updating similarity.", c.getId_candidature(), offreId);
+                Recommendation recommendationEntity = existingRec.get();
+                recommendationEntity.setSimilarityScore(((Number) recMap.get("Similarity_Score")).doubleValue());
+                recommendationEntity.setYearsOfExperience(((Number) recMap.get("Years_of_Experience")).intValue());
+                recommendationRepo.save(recommendationEntity);  // Update existing
+            } else {
+                // Create new with link to offre
+                Recommendation recommendation = new Recommendation();
+                recommendation.setCandidat(c);
+                recommendation.setOffre(offre);  // Link to the specific offre
+                double similarity = ((Number) recMap.get("Similarity_Score")).doubleValue();
+                if (similarity > 1.0) similarity = 1.0;
+                recommendation.setSimilarityScore(similarity);
+                recommendation.setYearsOfExperience(((Number) recMap.get("Years_of_Experience")).intValue());
+                recommendationRepo.save(recommendation);
+                logger.info("Saved new recommendation for Candidat ID: {} and Offre ID: {} with Similarity: {}", c.getId_candidature(), offreId, similarity);
+            }
         }
     }
 
@@ -115,31 +145,65 @@ public class RecommendationService {
     }
 
     public List<RecommendationDTO> findAllCandidatsWithScores() {
-        List<Candidat> candidats = candidatRepo.findAll(); // Tous les candidats, même sans recommandation
+        // Récupérer tous les candidats pour afficher tous, même sans recommendation
+        List<Candidat> allCandidats = candidatRepo.findAll();
 
-        return candidats.stream().map(c -> {
-            RecommendationDTO dto = new RecommendationDTO();
-            dto.setNom(c.getNom());
-            dto.setPrenom(c.getPrenom());
-            dto.setId(null); // Pas de recommendation, donc id null
+        List<RecommendationDTO> result = new ArrayList<>();
 
-            // Vérifier s'il existe une recommendation
-            Optional<Recommendation> recOpt = recommendationRepo.findByCandidat(c);
-            if (recOpt.isPresent()) {
-                Recommendation rec = recOpt.get();
-                dto.setId(rec.getIdRecommendation());
-                dto.setSimilarityScore(rec.getSimilarityScore());
-                dto.setYearsOfExperience(rec.getYearsOfExperience());
+        for (Candidat c : allCandidats) {
+            // Récupérer les recommendations pour ce candidat (peut en avoir plusieurs par offre)
+            List<Recommendation> recs = recommendationRepo.findByCandidat(c);
+
+            if (!recs.isEmpty()) {
+                for (Recommendation rec : recs) {
+                    RecommendationDTO dto = new RecommendationDTO();
+                    dto.setId(rec.getIdRecommendation());
+                    dto.setNom(c.getNom());
+                    dto.setPrenom(c.getPrenom());
+                    dto.setYearsOfExperience(rec.getYearsOfExperience());
+                    dto.setSimilarityScore(rec.getSimilarityScore());
+                    dto.setIdOffre(rec.getOffre().getIdOffre());
+                    dto.setTitreOffre(rec.getOffre() != null ? rec.getOffre().getTitreOffre() : "Aucune offre");
+
+                    // Ajouter le score final du pré-entretien (vidéo) spécifique à l'offre
+                    PreInterview pre = preInterviewRepo.findTopByCandidatAndCandidatureOffreOrderByDateEnregistrementDesc(c, rec.getOffre());
+                    dto.setFinalScore(pre != null ? pre.getFinalScore() : null);
+
+                    result.add(dto);
+                }
+            } else {
+                // Candidat sans recommendation : afficher avec valeurs null pour les champs de recommendation
+                RecommendationDTO dto = new RecommendationDTO();
+                dto.setId(null);
+                dto.setNom(c.getNom());
+                dto.setPrenom(c.getPrenom());
+                dto.setYearsOfExperience(null);
+                dto.setSimilarityScore(null);
+                dto.setIdOffre(null);
+                dto.setTitreOffre("Aucune offre");
+
+                // Pour les candidats sans rec, pas de score vidéo spécifique
+                dto.setFinalScore(null);
+
+                result.add(dto);
             }
+        }
 
-            // Vérifier s'il existe un PreInterview pour le candidat
-            PreInterview pre = preInterviewRepo.findTopByCandidatOrderByDateEnregistrementDesc(c);
-            if (pre != null) {
-                dto.setFinalScore(pre.getFinalScore());
-            }
+        return result;
+    }
 
-            return dto;
-        }).collect(Collectors.toList());
+    public List<RecommendationDTO> getRecommendationsFiltered(
+            Double minScore, String titreOffre) {
+
+        // Récupération de tous les candidats + recommendations (inclut ceux sans rec)
+        List<RecommendationDTO> all = findAllCandidatsWithScores();
+
+        // Application des filtres si demandés
+        return all.stream()
+                .filter(dto -> minScore == null || (dto.getSimilarityScore() != null && dto.getSimilarityScore() >= minScore))
+                .filter(dto -> titreOffre == null || titreOffre.equalsIgnoreCase("Tous") ||
+                        (dto.getTitreOffre() != null && dto.getTitreOffre().equalsIgnoreCase(titreOffre)))
+                .collect(Collectors.toList());
     }
 
 }

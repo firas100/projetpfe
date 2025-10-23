@@ -20,7 +20,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;  // Correct import for verify, times, when, any, etc.
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CandidatServiceTest {
@@ -166,7 +166,7 @@ class CandidatServiceTest {
     class GetCandidatListTest {
 
         @Test
-        @DisplayName("✅ Retourne la liste complète des candidats")
+        @DisplayName(" Retourne la liste complète des candidats")
         void getCandidatListSuccess() {
             when(candidatRepo.findAll()).thenReturn(List.of(new Candidat(), new Candidat(), new Candidat()));
 
@@ -177,7 +177,7 @@ class CandidatServiceTest {
         }
 
         @Test
-        @DisplayName("✅ Retourne une liste vide si aucun candidat")
+        @DisplayName(" Retourne une liste vide si aucun candidat")
         void getCandidatListEmpty() {
             when(candidatRepo.findAll()).thenReturn(Collections.emptyList());
 

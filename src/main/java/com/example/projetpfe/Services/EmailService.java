@@ -28,7 +28,6 @@ public class EmailService {
         helper.setSubject(subject);
         helper.setText(htmlContent, true); // true indique que c'est du HTML
 
-        // Envoyer l'email
         mailSender.send(mimeMessage);
     }
 }

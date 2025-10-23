@@ -1,14 +1,18 @@
 package com.example.projetpfe.Controller;
 
+import com.example.projetpfe.Repository.CandidatRepo;
+import com.example.projetpfe.Repository.CandidatureRepo;
+import com.example.projetpfe.Repository.PreInterviewRepo;
 import com.example.projetpfe.Services.CandidatService;
+import com.example.projetpfe.Services.CandidatureService;
 import com.example.projetpfe.Services.CvService;
-import com.example.projetpfe.entity.Candidat;
-import com.example.projetpfe.entity.Cv;
+import com.example.projetpfe.entity.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,6 +22,8 @@ import java.io.InputStreamReader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/Candidature")
@@ -26,9 +32,17 @@ public class CandidatController {
 
     @Autowired
     CandidatService candidatService;
+    @Autowired
+    CandidatRepo candidatRepo ;
+    @Autowired
+    private PreInterviewRepo preInterviewRepo;
+    @Autowired
+    private CandidatureRepo candidatureRepo;
 
     @Autowired
     CvService cvService;
+    @Autowired
+    private CandidatureService candidatureService;
 
     private final String uploadsDir = "C:\\Users\\Firas kdidi\\Desktop\\Pfe\\CV\\";
 
@@ -37,19 +51,16 @@ public class CandidatController {
         try {
             logger.info("Début de l'extraction pour le fichier : {}", cvFile.getOriginalFilename());
 
-            // Ne pas sauvegarder le fichier, utiliser directement les données
             byte[] pdfContent = cvFile.getBytes();
 
             // Configurer le ProcessBuilder pour le script Python
             ProcessBuilder pb = new ProcessBuilder("python", "C:\\Users\\Firas kdidi\\Desktop\\Pfe\\CV\\test2.py");
             Process process = pb.start();
 
-            // Écrire le contenu du PDF dans stdin du processus Python
             process.getOutputStream().write(pdfContent);
             process.getOutputStream().flush();
             process.getOutputStream().close();
 
-            // Lire la sortie du script
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             StringBuilder output = new StringBuilder();
             String line;
@@ -68,7 +79,6 @@ public class CandidatController {
                 throw new RuntimeException("Échec du script Python avec le code de sortie : " + exitCode + ", erreur : " + errorOutput.toString());
             }
 
-            // Parser la sortie JSON
             ObjectMapper mapper = new ObjectMapper();
             JsonNode data = mapper.readTree(output.toString());
             if (data.has("error")) {
@@ -93,21 +103,28 @@ public class CandidatController {
     }
 
     @PostMapping("/add")
-    public Candidat addCandidature(
+    public Candidature addCandidature(
+            @RequestParam Integer idOffre,
             @RequestParam("nom") String nom,
             @RequestParam("prenom") String prenom,
             @RequestParam("email") String email,
-            @RequestParam("Tel") String Tel,
+            @RequestParam("Tel") String tel,
             @RequestParam("adresse") String adresse,
+            @RequestParam("keycloakId") String keycloakId,
             @RequestPart("Cv") MultipartFile cvFile) {
-        logger.info("Received request to /Candidature/add with nom: {}, prenom: {}, email: {}, Tel: {}, adresse: {}", nom, prenom, email, Tel, adresse);
+
+        logger.info("Received request to /Candidature/add with nom: {}, prenom: {}, email: {}, Tel: {}, adresse: {}",
+                nom, prenom, email, tel, adresse);
+
         try {
+            // 🔹 Crée le dossier de stockage si nécessaire
             File uploadFolder = new File(uploadsDir);
             if (!uploadFolder.exists()) {
                 uploadFolder.mkdirs();
                 logger.info("Created upload folder: {}", uploadsDir);
             }
 
+            // 🔹 Génère le nom du fichier CV
             String cleanNom = nom.trim().replaceAll("\\s+", "").toLowerCase();
             String cleanPrenom = prenom.trim().replaceAll("\\s+", "").toLowerCase();
             String finalFileName = cleanPrenom + "_" + cleanNom + ".pdf";
@@ -117,26 +134,103 @@ public class CandidatController {
             File dest = new File(filePath);
             cvFile.transferTo(dest);
 
-            Candidat candidat = new Candidat();
-            candidat.setNom(nom);
-            candidat.setPrenom(prenom);
-            candidat.setEmail(email);
-            candidat.setTel(Tel);
-            candidat.setAdresse(adresse);
-            candidat.setCvPath(finalFileName);
+            Candidat existing = candidatRepo.findByKeycloakId(keycloakId).orElse(null);
+            Candidat savedCandidat;
 
-            logger.info("Saving candidat: {}", candidat);
-            Candidat savedCandidat = candidatService.addCondidature(candidat);
-            logger.info("Candidat saved successfully: {}", savedCandidat);
-            return savedCandidat;
+            if (existing != null) {
+                logger.info("Candidat existant trouvé: {}", existing);
+                savedCandidat = existing;
+            } else {
+                Candidat candidat = new Candidat();
+                candidat.setNom(nom);
+                candidat.setPrenom(prenom);
+                candidat.setEmail(email);
+                candidat.setTel(tel);
+                candidat.setAdresse(adresse);
+                candidat.setCvPath(finalFileName);
+                candidat.setKeycloakId(keycloakId);
+
+                savedCandidat = candidatService.addCondidature(candidat);
+                logger.info("Nouveau candidat créé: {}", savedCandidat);
+            }
+
+            // 🔹 Crée la candidature liée à ce candidat et à l'offre
+            Candidature candidature = candidatureService.Postuler(savedCandidat.getId_candidature(), idOffre);
+            logger.info("Candidature créée pour candidat {} et offre {}", savedCandidat.getId_candidature(), idOffre);
+
+            return candidature;
+
         } catch (Exception e) {
-            logger.error("Error in /add: {}", e.getMessage(), e);
+            logger.error("Erreur dans /add: {}", e.getMessage(), e);
             throw new RuntimeException("Erreur lors de l'ajout du candidat : " + e.getMessage());
         }
     }
+
+
+
     @GetMapping("/all")
     public List<Cv> getAllCandidats() {
         return cvService.getallcvLatex();
     }
 
+    @GetMapping("/{idCandidat}/offres")
+    public List<String> getOffresByCandidat(@PathVariable Integer idCandidat) {
+    List<Candidature> candidatures = candidatureRepo.findByCandidatId(idCandidat);
+        return candidatures.stream()
+                .map(c -> c.getOffre() != null ? c.getOffre().getTitreOffre() : "N/A")
+                .distinct()
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * 🔹 Récupère le dernier score vidéo du candidat
+     */
+    @GetMapping("/{idCandidat}/videoScore")
+    public Double getVideoScore(@PathVariable Integer idCandidat) {
+        List<PreInterview> videos = preInterviewRepo.findByCandidatId(idCandidat);
+        if (videos.isEmpty()) return null;
+
+        return videos.stream()
+                .sorted((v1, v2) -> v2.getDateEnregistrement().compareTo(v1.getDateEnregistrement()))
+                .map(PreInterview::getFinalScore)
+                .findFirst()
+                .orElse(null);
+    }
+
+    /**
+     * 🔹 Récupère le chemin de la dernière vidéo enregistrée
+     */
+    @GetMapping("/{idCandidat}/videoPath")
+    public String getVideoPath(@PathVariable Integer idCandidat) {
+        List<PreInterview> videos = preInterviewRepo.findByCandidatId(idCandidat);
+        if (videos.isEmpty()) return null;
+
+        return videos.stream()
+                .sorted((v1, v2) -> v2.getDateEnregistrement().compareTo(v1.getDateEnregistrement()))
+                .map(PreInterview::getVideoPath)
+                .findFirst()
+                .orElse(null);
+    }
+
+
+    @GetMapping("/history")
+    public List<CandidateHistoryDTO> getAllHistories() {
+        return candidatService.getAllCandidatesHistory();
+    }
+    @GetMapping("/byName/{nom}/{prenom}")
+    public ResponseEntity<Integer> getCandidateIdByName(@PathVariable String nom, @PathVariable String prenom) {
+        Optional<Candidat> candidats = candidatService.getCandidatByName(nom, prenom);  // Use service method
+        if (candidats.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        // Return first match (assume unique name; adjust if multiple)
+        Integer id = candidats.get().getId_candidature();
+        return ResponseEntity.ok(id);
+    }
+    @GetMapping("/{id}/history")
+    public CandidateHistoryDTO getHistoryById(@PathVariable Integer id) {
+        return candidatService.getCandidateHistory(id);
+    }
 }
+
+

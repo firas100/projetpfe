@@ -103,17 +103,14 @@ public class CvService {
         // Liste des fichiers LaTeX détectés
         List<String> latexCvs = afficherCv();
 
-        // Dossier des CVs
         String basePath = "C:\\Users\\Firas kdidi\\Desktop\\Pfe\\CV\\";
         File dossierCv = new File(basePath);
 
-        // Tous les fichiers PDF dans le dossier
         File[] fichiers = dossierCv.listFiles((dir, name) -> name.toLowerCase().endsWith(".pdf"));
 
         if (fichiers != null) {
             for (File fichier : fichiers) {
-                // Vérifie si le chemin complet (relatif) du fichier est dans la liste LaTeX
-                String cheminRelatif = fichier.getName(); // ex: "Ali_Salah.pdf"
+                String cheminRelatif = fichier.getName();
 
                 boolean estLatex = latexCvs.stream().anyMatch(p -> p.endsWith(cheminRelatif));
 

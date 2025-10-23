@@ -7,30 +7,26 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-import java.util.Date;
-
 @Entity
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Entretien {
+@Getter
+@Setter
+public class CandidatePreInterview {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer idCPreinterview;
 
-    private Date dateEntretien;
+    private String email;
+    private String nom;
+    private String prenom;
+    private Integer offreId;
+    private String offreTitre;
 
-    @ManyToOne
-    private Candidat candidat;
+    private boolean videoSaved = false;
+
     @ManyToOne
     @JoinColumn(name = "candidature_id")
+    @JsonIgnore
     private Candidature candidature;
-
-    private String managerId;
-    private String managerEmail;
-    private String managerName;
-    private String commentaire;
-    private String status; // ENVOYE, CONFIRME, REFUSE
 }

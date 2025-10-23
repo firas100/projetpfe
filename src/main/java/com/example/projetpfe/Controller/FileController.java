@@ -25,7 +25,7 @@ public class FileController {
 
             if (resource.exists() && resource.isReadable()) {
                 return ResponseEntity.ok()
-                        .contentType(MediaType.APPLICATION_PDF)  // Add this line
+                        .contentType(MediaType.APPLICATION_PDF)
                         .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + filename + "\"")
                         .body(resource);
             } else {

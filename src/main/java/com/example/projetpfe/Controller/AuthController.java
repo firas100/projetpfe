@@ -4,6 +4,7 @@ import com.example.projetpfe.Services.KeycloakUserService;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,6 +28,19 @@ public class AuthController {
         return ResponseEntity.ok(result);
     }
 
+
+    @PostMapping("/admin/signup")
+    public ResponseEntity<String> adminSignUp(
+            @RequestParam String username,
+            @RequestParam String email,
+            @RequestParam String firstName,
+            @RequestParam String lastName,
+            @RequestParam String password) {
+
+        String result = keycloakUserService.createManagerUser(username, email, firstName, lastName, password);
+        return ResponseEntity.ok(result);
+    }
+
     @PostMapping("/login")
     @CrossOrigin(origins = "http://localhost:4200")
     public ResponseEntity<String> login() {
@@ -35,7 +49,6 @@ public class AuthController {
 
     @GetMapping("/user-info")
     public ResponseEntity<String> getUserInfo() {
-        // Cet endpoint nécessite un token JWT valide
         return ResponseEntity.ok("User information");
     }
 

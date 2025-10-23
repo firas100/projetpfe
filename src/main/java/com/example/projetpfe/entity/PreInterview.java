@@ -1,5 +1,6 @@
 package com.example.projetpfe.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,7 +27,11 @@ public class PreInterview {
     private String videoPath; // chemin de la vidéo stockée
 
     @ManyToOne
-    @JoinColumn(name = "candidat_id") // clé étrangère vers la table Candidat
+    @JoinColumn(name = "candidat_id")
+    @JsonIgnore
     private Candidat candidat;
-
+    @ManyToOne
+    @JoinColumn(name = "candidature_id")
+    @JsonIgnore
+    private Candidature candidature;
 }

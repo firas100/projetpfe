@@ -21,7 +21,7 @@ public class VideoService {
     @Autowired
     private PreInterviewRepo preInterviewRepository;
 
-    public List<PreInterview> processVideos(String videoDirPath) throws Exception {
+    public List<PreInterview> processVideos(String videoDirPath, Integer offreId) throws Exception {
         List<PreInterview> processedVideos = new ArrayList<>();
 
         ProcessBuilder pb = new ProcessBuilder(
@@ -34,13 +34,13 @@ public class VideoService {
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
         String line;
-        String jsonString = "";  // Capture only the last non-info/error line (the JSON)
+        String jsonString = "";
 
         while ((line = reader.readLine()) != null) {
             if (line.startsWith("[INFO]") || line.startsWith("[ERROR]")) {
                 System.out.println(line);
             } else if (!line.trim().isEmpty()) {
-                jsonString = line;  // Overwrite with the last non-empty, non-info/error line
+                jsonString = line;
             }
         }
 
@@ -62,21 +62,22 @@ public class VideoService {
             Double finalScore = result.get("final_score") != null ? ((Number) result.get("final_score")).doubleValue() : null;
 
             if (nom != null && prenom != null && finalScore != null) {
-                PreInterview pre = preInterviewRepository
-                        .findByNomAndPrenom(prenom,nom)
-                        ;
-
-                if (pre != null) {
+                List<PreInterview> pres = preInterviewRepository.findByPrenomAndNomAndOffreId(prenom, nom, offreId);
+                if (pres.isEmpty()) {
+                    // Essayer avec inversion
+                    pres = preInterviewRepository.findByPrenomAndNomAndOffreId(nom, prenom, offreId);
+                }
+                if (!pres.isEmpty()) {
+                    PreInterview pre = pres.get(pres.size() - 1);
                     pre.setFinalScore(finalScore);
                     preInterviewRepository.save(pre);
                     processedVideos.add(pre);
                 } else {
-                    System.out.println("[WARN] Aucun PreInterview trouvé pour " + nom + " " + prenom);
+                    System.out.println("[WARN] Aucun PreInterview trouvé pour " + nom + " " + prenom + " et offreId " + offreId);
                 }
             }
         }
 
-        // For debugging, print the raw JSON if needed
         System.out.println("JSON parsed: " + jsonString);
 
         return processedVideos;

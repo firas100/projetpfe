@@ -8,6 +8,17 @@ public class RecommendationDTO {
     private Double similarityScore;
     private Integer yearsOfExperience;
     private Double finalScore;
+    private String titreOffre;
+    private Integer idOffre;
+
+    public Integer getIdOffre() {
+        return this.idOffre;
+    }
+
+    public void setIdOffre(Integer idOffre) {
+        this.idOffre = idOffre;
+    }
+
 
     public Integer getId() {
         return id;
@@ -15,6 +26,14 @@ public class RecommendationDTO {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getTitreOffre() {
+        return titreOffre;
+    }
+
+    public void setTitreOffre(String titreOffre) {
+        this.titreOffre = titreOffre;
     }
 
     public String getNom() {

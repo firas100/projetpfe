@@ -34,6 +34,7 @@ public class SecurityConfig {
                         .requestMatchers("/video/**").permitAll()
                         .requestMatchers("api/process/**").permitAll()
                         .requestMatchers("/files/cv/**").permitAll()
+                        .requestMatchers("/Offre/**").permitAll()
                        .anyRequest().permitAll()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2

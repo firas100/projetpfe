@@ -1,10 +1,14 @@
 package com.example.projetpfe.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -22,6 +26,22 @@ public class Candidat {
     private String Tel;
     private String adresse;
     private String cvPath ;
+
+    @Column(unique = true)
+    private String keycloakId;
+
+    @OneToMany(mappedBy = "candidat", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Candidature> candidatures = new ArrayList<>();
+
+    @OneToMany(mappedBy = "candidat", cascade = CascadeType.ALL)
+    private List<Recommendation> recommendations = new ArrayList<>();
+
+    @OneToMany(mappedBy = "candidat", cascade = CascadeType.ALL)
+    private List<PreInterview> preInterviews = new ArrayList<>();
+
+    @OneToMany(mappedBy = "candidat", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Entretien> entretiens = new ArrayList<>();
 
     public Integer getId_candidature() {
         return id_candidature;

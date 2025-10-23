@@ -1,8 +1,17 @@
 package com.example.projetpfe.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class Recommendation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,9 +22,32 @@ public class Recommendation {
 
     @ManyToOne
     @JoinColumn(name = "candidat_id")
+    @JsonIgnore  // Avoid cycle in JSON
     private Candidat candidat;
 
+    @ManyToOne
+    @JoinColumn(name = "offre_id")
+    @JsonIgnore
+    private Offre offre;  // New link to Offre
 
+    // Constructors
+    public Recommendation(Candidat candidat, Offre offre, double similarityScore, int yearsOfExperience) {
+        this.candidat = candidat;
+        this.offre = offre;
+        this.similarityScore = similarityScore;
+        this.yearsOfExperience = yearsOfExperience;
+    }
+
+    // Getters/Setters (keep existing, add for offre)
+    public Offre getOffre() {
+        return offre;
+    }
+
+    public void setOffre(Offre offre) {
+        this.offre = offre;
+    }
+
+    // Existing getters/setters...
     public Integer getIdRecommendation() {
         return idRecommendation;
     }
@@ -46,7 +78,4 @@ public class Recommendation {
     public void setCandidat(Candidat candidat) {
         this.candidat = candidat;
     }
-
-
-
 }

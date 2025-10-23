@@ -29,7 +29,6 @@ public class CvController {
             System.out.println("🧹 Suppression des CV non-LaTeX...");
             cvService.supprimerCvNonLatex();
 
-            // Chargement du fichier BPMN depuis les ressources
             ClassPathResource resource = new ClassPathResource("cv-process.bpmn");
 
             if (!resource.exists()) {
@@ -39,7 +38,6 @@ public class CvController {
                 System.out.println(" Fichier BPMN trouvé !");
             }
 
-            // Déploiement du processus
             zeebeClient.newDeployCommand()
                     .addResourceStream(resource.getInputStream(), "cv-process.bpmn")
                     .send()
@@ -47,7 +45,6 @@ public class CvController {
 
             System.out.println(" Processus BPMN déployé avec succès");
 
-            // Lancement d'instances du processus pour chaque CV restant
             File folder = new File(CV_FOLDER_PATH);
             File[] files = folder.listFiles((dir, name) -> name.toLowerCase().endsWith(".pdf"));
 
@@ -57,7 +54,7 @@ public class CvController {
                     variables.put("cvPath", cvFile.getAbsolutePath());
 
                     zeebeClient.newCreateInstanceCommand()
-                            .bpmnProcessId("cv_process") // Vérifie bien que l’ID du process BPMN est correct
+                            .bpmnProcessId("cv_process")
                             .latestVersion()
                             .variables(variables)
                             .send()
