@@ -19,6 +19,7 @@ import { SuivicandidatureComponent } from './suivicandidature/suivicandidature.c
 import { OffreAdminComponent } from './offre-admin/offre-admin.component';
 import { CandidateHistoryComponent } from './candidate-history/candidate-history.component';
 import { AdminSignupComponent } from './admin-signup/admin-signup.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 
 
@@ -68,6 +69,7 @@ const routes: Routes = [
     data: { role: 'RH'}},
     {path: 'SipnupManger', component: AdminSignupComponent,canActivate: [RoleGuard],
     data: { role: 'RH'}},
+    {path: 'ResetPassword', component: ResetPasswordComponent},
 
 
 ];

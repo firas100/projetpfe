@@ -22,12 +22,13 @@ import { OffreAdminComponent } from './offre-admin/offre-admin.component';
 import { SuivicandidatureComponent } from './suivicandidature/suivicandidature.component';
 import { CandidateHistoryComponent } from './candidate-history/candidate-history.component';
 import { AdminSignupComponent } from './admin-signup/admin-signup.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 
 
 @NgModule({
   declarations: [
-    AppComponent,UserInfoComponent,MangercalendrierComponent,OffreComponent,HomeOffreComponent,OffreAdminComponent,SuivicandidatureComponent,CandidateHistoryComponent,AdminSignupComponent
+    AppComponent,UserInfoComponent,MangercalendrierComponent,OffreComponent,HomeOffreComponent,OffreAdminComponent,SuivicandidatureComponent,CandidateHistoryComponent,AdminSignupComponent,ResetPasswordComponent
 
   ],
   imports: [
