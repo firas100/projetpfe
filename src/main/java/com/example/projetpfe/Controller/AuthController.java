@@ -46,8 +46,13 @@ public class AuthController {
     public ResponseEntity<String> login() {
         return ResponseEntity.ok("Please use Keycloak login endpoint at: http://localhost:9090/realms/pfe-realm/protocol/openid-connect/token");
     }
-
-    @GetMapping("/user-info")
+    @PostMapping("/forgot-password")
+    public ResponseEntity<String> forgotPassword(@RequestParam String email) {
+        String result = keycloakUserService.sendResetPasswordEmail(email);
+        return ResponseEntity.ok(result);
+    }
+    @
+            GetMapping("/user-info")
     public ResponseEntity<String> getUserInfo() {
         return ResponseEntity.ok("User information");
     }

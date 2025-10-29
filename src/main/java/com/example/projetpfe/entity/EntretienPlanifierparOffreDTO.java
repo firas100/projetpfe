@@ -10,5 +10,6 @@ public class EntretienPlanifierparOffreDTO {
     private String managerId;
     private Date dateEntretien;
     private String commentaire;
+    private String status ;
     private double minScore = 55;
 }

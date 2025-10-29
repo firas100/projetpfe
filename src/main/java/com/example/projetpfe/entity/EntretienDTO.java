@@ -11,6 +11,8 @@ public class EntretienDTO {
     private String managerId;  // id keycloak
     private Date dateEntretien;
     private String commentaire;
+    private String status ;
     private double minScore = 55;
     private Integer offreId;
+
 }

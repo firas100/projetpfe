@@ -9,14 +9,15 @@
     import org.springframework.data.repository.query.Param;
 
     import java.util.List;
+    import java.util.Optional;
 
     public interface   EntretienRepo extends JpaRepository<Entretien,Integer> {
         List<Entretien> findByManagerId(String managerId);
 
         @Query("SELECT e FROM Entretien e WHERE e.candidat.id_candidature = :candidatId")
         List<Entretien> findByCandidatIdCandidature(@Param("candidatId") Integer candidatId);
-        Entretien findByCandidatureId(Integer id_candidature);
-
+        @Query("SELECT e FROM Entretien e WHERE e.candidature.id = :id")
+        List<Entretien> findByCandidatureId(@Param("id") Integer id);
         @Query("SELECT p.candidat FROM PreInterview p WHERE p.finalScore >= :minScore ORDER BY p.finalScore DESC")
         List<Candidat> findCandidatsWithHighScore(@Param("minScore") Double minScore);
 

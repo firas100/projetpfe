@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -16,6 +17,7 @@ import java.nio.file.Paths;
 public class FileController {
 
     private final String CV_FOLDER = "C:/Users/Firas kdidi/Desktop/Pfe/CV"; // chemin local
+    private final String Videos_FOLDER = "C:/Uploads"; // chemin local
 
     @GetMapping("/files/cv/{filename}")
     public ResponseEntity<Resource> getCv(@PathVariable String filename) {
@@ -34,5 +36,19 @@ public class FileController {
         } catch (Exception e) {
             return ResponseEntity.status(500).build();
         }
+    }
+
+
+    @GetMapping("/video/{fileName}")
+    public ResponseEntity<Resource> getVideo(@PathVariable String fileName) throws IOException {
+        Path path = Paths.get(Videos_FOLDER).resolve(fileName);
+        Resource resource = new UrlResource(path.toUri());
+        if (!resource.exists()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=" + fileName)
+                .contentType(MediaType.parseMediaType("video/mp4"))
+                .body(resource);
     }
 }

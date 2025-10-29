@@ -202,6 +202,45 @@ public class KeycloakUserService {
         }
     }
 
+    public String sendResetPasswordEmail(String email) {
+        try {
+            // Connexion admin à Keycloak
+            Keycloak keycloakAdmin = KeycloakBuilder.builder()
+                    .serverUrl(serverUrl)
+                    .realm(adminRealm)
+                    .clientId(adminClientId)
+                    .username(adminUsername)
+                    .password(adminPassword)
+                    .build();
+
+            RealmResource realmResource = keycloakAdmin.realm(realm);
+
+            // Récupère tous les utilisateurs et cherche par email (insensible à la casse)
+            List<UserRepresentation> allUsers = realmResource.users().list();
+            UserRepresentation user = allUsers.stream()
+                    .filter(u -> email.equalsIgnoreCase(u.getEmail()))
+                    .findFirst()
+                    .orElse(null);
+
+            if (user == null) {
+                return "Aucun utilisateur trouvé avec cet email.";
+            }
+
+            String userId = user.getId();
+
+            // Envoi de l'email de réinitialisation
+            realmResource.users()
+                    .get(userId)
+                    .executeActionsEmail(List.of("UPDATE_PASSWORD"));
+
+            return "Email de réinitialisation envoyé à : " + email;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Erreur lors de l'envoi de l'email : " + e.getMessage();
+        }
+    }
+
 
 
 }
