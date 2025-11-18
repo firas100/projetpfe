@@ -215,6 +215,7 @@ public class CandidatController {
 
     @GetMapping("/history")
     public List<CandidateHistoryDTO> getAllHistories() {
+
         return candidatService.getAllCandidatesHistory();
     }
     @GetMapping("/byName/{nom}/{prenom}")

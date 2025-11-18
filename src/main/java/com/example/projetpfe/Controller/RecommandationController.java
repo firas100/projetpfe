@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/recommendations")
@@ -21,10 +22,13 @@ public class RecommandationController {
     @PostMapping("/generateByOffre")
     public ResponseEntity<?> startRecommandationByOffre(@RequestParam Integer offreId, @RequestParam int experienceMin){
         try {
-            service.executerRecommandationParOffre(offreId, experienceMin);
-            return ResponseEntity.ok("Recommandation terminée avec succès.");
+            List<Map<String, Object>> result = service.executerRecommandationParOffre(offreId, experienceMin);
+            return ResponseEntity.ok(result);
+        } catch (RuntimeException e) {
+            // Gestion d'erreur logique
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("erreur :" + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur serveur : " + e.getMessage());
         }
     }
 

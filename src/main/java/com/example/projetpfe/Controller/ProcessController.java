@@ -2,6 +2,7 @@ package com.example.projetpfe.Controller;
 
 import com.example.projetpfe.Camunda.EmailWorker;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,15 +21,18 @@ public class ProcessController {
     private ZeebeClient zeebeClient;
 
     @GetMapping("/start/{idOffre}")
-    public String triggerProcess(@PathVariable Integer idOffre) {
-        // Démarrer une instance de processus BPMN
+    public ResponseEntity<Map<String, Object>> triggerProcess(@PathVariable Integer idOffre) {
         zeebeClient.newCreateInstanceCommand()
-                .bpmnProcessId("sendEmailProcess") // ID du processus défini dans le fichier BPMN
+                .bpmnProcessId("sendEmailProcess")
                 .latestVersion()
-                .variables(Map.of("idOffre",idOffre))
+                .variables(Map.of("idOffre", idOffre))
                 .send()
                 .join();
 
-        return "Process to send email to top candidate has been triggered." +idOffre;
+        return ResponseEntity.ok(Map.of(
+                "message", "Process to send email to top candidate has been triggered.",
+                "idOffre", idOffre
+        ));
     }
+
 }

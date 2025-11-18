@@ -32,5 +32,5 @@ public class Entretien {
     private String managerEmail;
     private String managerName;
     private String commentaire;
-    private String status; // ENVOYE, CONFIRME, REFUSE
+    private String status;
 }

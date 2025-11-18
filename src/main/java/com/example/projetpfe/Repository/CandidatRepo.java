@@ -2,6 +2,7 @@ package com.example.projetpfe.Repository;
 
 import com.example.projetpfe.entity.Candidat;
 import com.example.projetpfe.entity.Candidature;
+import com.example.projetpfe.entity.Offre;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,7 +19,6 @@ public interface CandidatRepo extends JpaRepository<Candidat,Integer> {
 
     Optional<Candidat> findByNomAndPrenom(String nom, String prenom);
     Optional<Candidat> findByKeycloakId(String keycloakId);
-
     Candidat findByEmail(String email);
 
 

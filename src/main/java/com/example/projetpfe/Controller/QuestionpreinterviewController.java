@@ -24,6 +24,20 @@ public class QuestionpreinterviewController {
                 .toList();
     }
 
+    @PutMapping("/UpdateQ/{id}")
+    public Questionpreinterview updateQuestion(
+            @PathVariable Integer id,
+            @RequestBody Questionpreinterview question) {
+
+        return questionPreinterviewService.updateQuestion(id, question);
+    }
+
+    @DeleteMapping("/deleteQ/{id}")
+    public String deleteQuestion(@PathVariable Integer id) {
+        questionPreinterviewService.deleteQuestion(id);
+        return "Question with ID " + id + " has been deleted successfully.";
+    }
+
     @GetMapping("/getAllQuestion")
 
     public List <Questionpreinterview> getQuestion(){

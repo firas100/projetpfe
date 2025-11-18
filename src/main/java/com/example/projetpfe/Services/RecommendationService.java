@@ -1,9 +1,6 @@
 package com.example.projetpfe.Services;
 
-import com.example.projetpfe.Repository.CandidatRepo;
-import com.example.projetpfe.Repository.OffreRepo;
-import com.example.projetpfe.Repository.PreInterviewRepo;
-import com.example.projetpfe.Repository.RecommendationRepo;
+import com.example.projetpfe.Repository.*;
 import com.example.projetpfe.entity.*;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,53 +19,78 @@ public class RecommendationService {
     private final RecommendationRepo recommendationRepo;
     private final PreInterviewRepo preInterviewRepo;
     private final OffreRepo offreRepo;
+    private final CandidatureRepo candidatureRepo ;
 
     @Value("${python.script.path:C:\\Users\\Firas kdidi\\Desktop\\Pfe\\system-recommandation.py}")
     private String pythonScriptPath;
 
     public RecommendationService(CandidatRepo candidatRepo, RecommendationRepo recommendationRepo,
-                                 PreInterviewRepo preInterviewRepo, OffreRepo offreRepo) {
+                                 PreInterviewRepo preInterviewRepo, OffreRepo offreRepo,
+                                 CandidatureRepo candidatureRepo) {
         this.candidatRepo = candidatRepo;
         this.recommendationRepo = recommendationRepo;
         this.preInterviewRepo = preInterviewRepo;
         this.offreRepo = offreRepo;
+        this.candidatureRepo = candidatureRepo;
     }
 
     private static final Logger logger = LoggerFactory.getLogger(RecommendationService.class);
 
 
-    public void executerRecommandationParOffre(Integer offreId, int experienceMin) throws IOException, InterruptedException {
+    public List<Map<String, Object>> executerRecommandationParOffre(Integer offreId, int experienceMin)
+            throws IOException, InterruptedException {
+
+        // 1️⃣ Récupération de l'offre
         Offre offre = offreRepo.findById(offreId)
                 .orElseThrow(() -> new RuntimeException("Offre introuvable pour l'id " + offreId));
 
-        String keywords = String.join(". ", offre.getDescriptionJob(), offre.getCompetencesTechniques(), offre.getProfilRecherche());
+        // 2️⃣ Vérifier si l'offre a des candidatures
+        List<Candidature> candidatsPourOffre = candidatureRepo.findByOffre(offre); // ⚠️ nécessite une méthode dans CandidatRepo
+        if (candidatsPourOffre == null || candidatsPourOffre.isEmpty()) {
+            logger.warn("Aucune candidature trouvée pour l'offre ID: {}", offreId);
+            throw new RuntimeException("Aucune candidature trouvée pour cette offre.");
+        }
 
+        // 3️⃣ Construire les mots-clés pour le script Python
+        String keywords = String.join(". ",
+                offre.getDescriptionJob(),
+                offre.getCompetencesTechniques(),
+                offre.getProfilRecherche());
+
+        // 4️⃣ Écrire dans un fichier temporaire
         File tempFile = new File("temp_keywords.txt");
         try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(tempFile), "UTF-8"))) {
             writer.write(keywords);
         }
 
+        // 5️⃣ Exécuter le script Python
         ProcessBuilder builder = new ProcessBuilder("python", pythonScriptPath, tempFile.getAbsolutePath(), String.valueOf(experienceMin));
         builder.environment().put("PYTHONIOENCODING", "utf-8");
         builder.redirectErrorStream(true);
         Process process = builder.start();
 
+        // 6️⃣ Lire la sortie JSON
         String jsonOutput;
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(), "UTF-8"))) {
             jsonOutput = reader.lines().collect(Collectors.joining("\n"));
         }
         logger.info("Python script output: {}", jsonOutput);
 
+        // 7️⃣ Vérifier le code de sortie
         int exitCode = process.waitFor();
         if (exitCode != 0) {
             throw new RuntimeException("Python script failed with exit code " + exitCode + ". Output: " + jsonOutput);
         }
 
-        saveRecommendationsFromJson(jsonOutput, offreId);
+        // 8️⃣ Sauvegarder et retourner la liste
+        List<Map<String, Object>> recommandations = saveRecommendationsFromJson(jsonOutput, offreId);
         tempFile.delete();
+
+        return recommandations;
     }
 
-    private void saveRecommendationsFromJson(String jsonOutput, Integer offreId) throws IOException {  // Add offreId param
+
+    private List<Map<String, Object>> saveRecommendationsFromJson(String jsonOutput, Integer offreId) throws IOException {  // Add offreId param
         ObjectMapper mapper = new ObjectMapper();
         List<Map<String, Object>> recommandations = mapper.readValue(jsonOutput, new TypeReference<>() {
         });
@@ -138,6 +160,7 @@ public class RecommendationService {
                 logger.info("Saved new recommendation for Candidat ID: {} and Offre ID: {} with Similarity: {}", c.getId_candidature(), offreId, similarity);
             }
         }
+        return recommandations;
     }
 
     public List<Recommendation> findall() {

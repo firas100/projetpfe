@@ -10,6 +10,7 @@
     import com.example.projetpfe.entity.Candidature;
     import com.example.projetpfe.entity.PreInterview;
     import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.http.HttpStatus;
     import org.springframework.http.ResponseEntity;
     import org.springframework.web.bind.annotation.PostMapping;
     import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,7 @@
     import java.nio.file.Paths;
     import java.time.LocalDateTime;
     import java.util.List;
+    import java.util.Map;
     import java.util.Optional;
     import java.util.UUID;
 
@@ -103,18 +105,35 @@
         }
 
         @PostMapping("/process")
-        public ResponseEntity<String> processVideos(@RequestParam("offreId") Integer offreId) {
+        public ResponseEntity<?> processVideos(@RequestParam Integer offreId) {
             try {
                 String videoDirPath = "C:/Uploads/" + offreId + "/";
+                List<PreInterview> processed = videoService.processVideos(videoDirPath, offreId);
 
-                List<PreInterview> processedVideos = videoService.processVideos(videoDirPath, offreId);
+                if (processed.isEmpty()) {
+                    // Pas de vidéos
+                    return ResponseEntity.ok(Map.of(
+                            "status", "failed",
+                            "message", " Aucune vidéo disponible pour cette offre."
+                    ));
+                }
 
-                return ResponseEntity.ok("Traitement terminé pour " + processedVideos.size() + " vidéos !");
+                // Vidéos traitées
+                return ResponseEntity.ok(Map.of(
+                        "status", "success",
+                        "message", " Traitement terminé pour " + processed.size() + " vidéo(s)."
+                ));
+
             } catch (Exception e) {
                 e.printStackTrace();
-                return ResponseEntity.status(500).body("Erreur lors du traitement : " + e.getMessage());
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body(Map.of(
+                                "status", "error",
+                                "message", "Erreur lors du traitement des vidéos : " + e.getMessage()
+                        ));
             }
         }
 
 
-        }
+
+    }

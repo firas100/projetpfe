@@ -22,8 +22,20 @@ public class VideoService {
     private PreInterviewRepo preInterviewRepository;
 
     public List<PreInterview> processVideos(String videoDirPath, Integer offreId) throws Exception {
+        // Vérifier si des PreInterviews existent pour cette offre via candidature
+        List<PreInterview> preInterviews = preInterviewRepository.findAll().stream()
+                .filter(pre -> pre.getCandidature() != null
+                        && pre.getCandidature().getOffre() != null
+                        && pre.getCandidature().getOffre().getIdOffre().equals(offreId))
+                .toList();
+
+        if (preInterviews.isEmpty()) {
+            return new ArrayList<>();
+        }
+
         List<PreInterview> processedVideos = new ArrayList<>();
 
+        // Exécution du script Python
         ProcessBuilder pb = new ProcessBuilder(
                 "python",
                 "C:\\Users\\Firas kdidi\\Desktop\\Pfe\\Traitementdesvideo.py",
@@ -62,11 +74,11 @@ public class VideoService {
             Double finalScore = result.get("final_score") != null ? ((Number) result.get("final_score")).doubleValue() : null;
 
             if (nom != null && prenom != null && finalScore != null) {
-                List<PreInterview> pres = preInterviewRepository.findByPrenomAndNomAndOffreId(prenom, nom, offreId);
-                if (pres.isEmpty()) {
-                    // Essayer avec inversion
-                    pres = preInterviewRepository.findByPrenomAndNomAndOffreId(nom, prenom, offreId);
-                }
+                List<PreInterview> pres = preInterviews.stream()
+                        .filter(p -> (nom.equalsIgnoreCase(p.getNom()) && prenom.equalsIgnoreCase(p.getPrenom()))
+                                || (prenom.equalsIgnoreCase(p.getNom()) && nom.equalsIgnoreCase(p.getPrenom())))
+                        .toList();
+
                 if (!pres.isEmpty()) {
                     PreInterview pre = pres.get(pres.size() - 1);
                     pre.setFinalScore(finalScore);
@@ -77,8 +89,6 @@ public class VideoService {
                 }
             }
         }
-
-        System.out.println("JSON parsed: " + jsonString);
 
         return processedVideos;
     }

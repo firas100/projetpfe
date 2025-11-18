@@ -22,4 +22,23 @@ public class QuestionPreinterviewService {
     public List<Questionpreinterview> findQuestion() {
         return questionPreinterviewRepo.findAll();
     }
+
+    public Questionpreinterview updateQuestion(Integer id, Questionpreinterview updatedQuestion) {
+        Questionpreinterview existing = questionPreinterviewRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Question not found"));
+
+        if (updatedQuestion.getQuestion() == null || updatedQuestion.getQuestion().trim().isEmpty()) {
+            throw new IllegalArgumentException("Question cannot be empty");
+        }
+
+        existing.setQuestion(updatedQuestion.getQuestion());
+        return questionPreinterviewRepo.save(existing);
+    }
+
+    public void deleteQuestion(Integer id) {
+        if (!questionPreinterviewRepo.existsById(id)) {
+            throw new RuntimeException("Question not found");
+        }
+        questionPreinterviewRepo.deleteById(id);
+    }
 }
