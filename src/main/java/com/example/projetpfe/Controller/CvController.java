@@ -24,9 +24,31 @@ public class CvController {
     private static final String CV_FOLDER_PATH = "C:\\Users\\Firas kdidi\\Desktop\\Pfe\\CV";
 
     @PostConstruct
+    public void init() {
+        try {
+            System.out.println("DEPLOIEMENT DU PROCESSUS BPMN");
+
+            zeebeClient.newDeployCommand()
+                    .addResourceStream(
+                            new ClassPathResource("cv-process.bpmn").getInputStream(),
+                            "cv-process.bpmn"
+                    )
+                    .send()
+                    .join();
+
+            System.out.println("[SUCCESS] Processus BPMN deploye !");
+
+        } catch (Exception e) {
+            System.err.println("[ERREUR] Echec deploiement BPMN : " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+}
+   /* @PostConstruct
     public void startProcess() {
         try {
-            System.out.println("🧹 Suppression des CV non-LaTeX...");
+            System.out.println(" Suppression des CV non-LaTeX...");
             cvService.supprimerCvNonLatex();
 
             ClassPathResource resource = new ClassPathResource("cv-process.bpmn");
@@ -70,4 +92,4 @@ public class CvController {
             throw new RuntimeException(" Erreur lors du déploiement ou du lancement des processus", e);
         }
     }
-}
+}*/

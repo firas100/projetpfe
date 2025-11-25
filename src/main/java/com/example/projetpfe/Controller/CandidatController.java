@@ -9,6 +9,7 @@ import com.example.projetpfe.Services.CvService;
 import com.example.projetpfe.entity.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.camunda.zeebe.client.ZeebeClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,9 @@ import java.io.File;
 import java.io.InputStreamReader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -43,7 +46,8 @@ public class CandidatController {
     CvService cvService;
     @Autowired
     private CandidatureService candidatureService;
-
+    @Autowired
+    private ZeebeClient zeebeClient;
     private final String uploadsDir = "C:\\Users\\Firas kdidi\\Desktop\\Pfe\\CV\\";
 
     @PostMapping("/extract")
@@ -113,32 +117,32 @@ public class CandidatController {
             @RequestParam("keycloakId") String keycloakId,
             @RequestPart("Cv") MultipartFile cvFile) {
 
-        logger.info("Received request to /Candidature/add with nom: {}, prenom: {}, email: {}, Tel: {}, adresse: {}",
-                nom, prenom, email, tel, adresse);
+        logger.info("🎯 Réception candidature - Nom: {}, Prénom: {}, Email: {}", nom, prenom, email);
 
         try {
-            // 🔹 Crée le dossier de stockage si nécessaire
+            // 🔹 ÉTAPE 1 : Créer le dossier de stockage si nécessaire
             File uploadFolder = new File(uploadsDir);
             if (!uploadFolder.exists()) {
                 uploadFolder.mkdirs();
-                logger.info("Created upload folder: {}", uploadsDir);
+                logger.info(" Dossier créé : {}", uploadsDir);
             }
 
-            // 🔹 Génère le nom du fichier CV
+            // 🔹 ÉTAPE 2 : Générer le nom du fichier CV
             String cleanNom = nom.trim().replaceAll("\\s+", "").toLowerCase();
             String cleanPrenom = prenom.trim().replaceAll("\\s+", "").toLowerCase();
             String finalFileName = cleanPrenom + "_" + cleanNom + ".pdf";
             String filePath = uploadsDir + finalFileName;
 
-            logger.info("Saving CV file to: {}", filePath);
+            logger.info(" Sauvegarde du CV : {}", filePath);
             File dest = new File(filePath);
             cvFile.transferTo(dest);
 
+            // 🔹 ÉTAPE 3 : Vérifier si le candidat existe déjà
             Candidat existing = candidatRepo.findByKeycloakId(keycloakId).orElse(null);
             Candidat savedCandidat;
 
             if (existing != null) {
-                logger.info("Candidat existant trouvé: {}", existing);
+                logger.info("👤 Candidat existant trouvé : {}", existing.getEmail());
                 savedCandidat = existing;
             } else {
                 Candidat candidat = new Candidat();
@@ -151,21 +155,45 @@ public class CandidatController {
                 candidat.setKeycloakId(keycloakId);
 
                 savedCandidat = candidatService.addCondidature(candidat);
-                logger.info("Nouveau candidat créé: {}", savedCandidat);
+                logger.info(" Nouveau candidat créé avec ID : {}", savedCandidat.getId_candidature());
             }
 
-            // 🔹 Crée la candidature liée à ce candidat et à l'offre
+            // 🔹 ÉTAPE 4 : Créer la candidature
             Candidature candidature = candidatureService.Postuler(savedCandidat.getId_candidature(), idOffre);
-            logger.info("Candidature créée pour candidat {} et offre {}", savedCandidat.getId_candidature(), idOffre);
+            logger.info(" Candidature créée avec ID : {}", candidature.getId());
+
+            // 🔹 ÉTAPE 5 : DÉCLENCHER LE PROCESSUS CAMUNDA 8 (ZEEBE)
+            logger.info(" Déclenchement du processus Camunda pour vérifier le CV...");
+
+            Map<String, Object> processVariables = new HashMap<>();
+            processVariables.put("cvPath", filePath);
+            processVariables.put("nom", cleanNom);
+            processVariables.put("prenom", cleanPrenom);
+            processVariables.put("candidatId", savedCandidat.getId_candidature());
+            processVariables.put("candidatureId", candidature.getId());
+
+            try {
+                zeebeClient.newCreateInstanceCommand()
+                        .bpmnProcessId("cv_process")  // ID du processus dans le BPMN
+                        .latestVersion()
+                        .variables(processVariables)
+                        .send()
+                        .join();
+
+                logger.info(" Processus Camunda démarré avec succès pour : {}", filePath);
+
+            } catch (Exception e) {
+                logger.error(" Erreur lors du démarrage du processus Camunda : {}", e.getMessage());
+                // Ne pas bloquer la candidature si Camunda échoue
+            }
 
             return candidature;
 
         } catch (Exception e) {
-            logger.error("Erreur dans /add: {}", e.getMessage(), e);
+            logger.error(" Erreur dans /add : {}", e.getMessage(), e);
             throw new RuntimeException("Erreur lors de l'ajout du candidat : " + e.getMessage());
         }
     }
-
 
 
     @GetMapping("/all")
@@ -183,7 +211,7 @@ public class CandidatController {
     }
 
     /**
-     * 🔹 Récupère le dernier score vidéo du candidat
+     *  Récupère le dernier score vidéo du candidat
      */
     @GetMapping("/{idCandidat}/videoScore")
     public Double getVideoScore(@PathVariable Integer idCandidat) {
@@ -198,7 +226,7 @@ public class CandidatController {
     }
 
     /**
-     * 🔹 Récupère le chemin de la dernière vidéo enregistrée
+     *  Récupère le chemin de la dernière vidéo enregistrée
      */
     @GetMapping("/{idCandidat}/videoPath")
     public String getVideoPath(@PathVariable Integer idCandidat) {

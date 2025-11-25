@@ -1,25 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.34.0">
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+                  xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" 
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" 
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" 
+                  xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" 
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI" 
+                  id="Definitions_1" 
+                  targetNamespace="http://bpmn.io/schema/bpmn" 
+                  exporter="Camunda Modeler" 
+                  exporterVersion="5.34.0">
   <bpmn:process id="cv_process" name="CV Process" isExecutable="true">
-    <bpmn:serviceTask id="ServiceTask_1" name="Enregistrer CV">
+    
+    <bpmn:startEvent id="StartEvent_1" name="Start">
+      <bpmn:outgoing>Flow_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    
+    <!--  SERVICE TASK SANS ioMapping - Toutes les variables sont automatiquement disponibles -->
+    <bpmn:serviceTask id="ServiceTask_1" name="Vérifier et Enregistrer CV">
       <bpmn:extensionElements>
-        <zeebe:taskDefinition type="enregistrerCv" />
-        <zeebe:ioMapping>
-          <zeebe:input source="cvPath" target="cvPath" />
-        </zeebe:ioMapping>
+        <zeebe:taskDefinition type="verifierEtEnregistrerCv" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1</bpmn:incoming>
       <bpmn:outgoing>Flow_2</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:endEvent id="EndEvent_1" name="Fin">
+    
+    <bpmn:exclusiveGateway id="Gateway_1" name="Est LaTeX ?">
       <bpmn:incoming>Flow_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_3</bpmn:outgoing>
+      <bpmn:outgoing>Flow_4</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    
+    <bpmn:endEvent id="EndEvent_Ok" name="Candidature Enregistrée">
+      <bpmn:incoming>Flow_3</bpmn:incoming>
     </bpmn:endEvent>
+    
+    <bpmn:endEvent id="EndEvent_Rejet" name="Candidature Rejetée">
+      <bpmn:incoming>Flow_4</bpmn:incoming>
+    </bpmn:endEvent>
+    
     <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_1" targetRef="ServiceTask_1" />
-    <bpmn:sequenceFlow id="Flow_2" sourceRef="ServiceTask_1" targetRef="EndEvent_1" />
-    <bpmn:startEvent id="StartEvent_1" name="Start">
-      <bpmn:outgoing>Flow_1</bpmn:outgoing>
-    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="ServiceTask_1" targetRef="Gateway_1" />
+    
+    <bpmn:sequenceFlow id="Flow_3" name="Oui" sourceRef="Gateway_1" targetRef="EndEvent_Ok">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=isLatex = true</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    
+    <bpmn:sequenceFlow id="Flow_4" name="Non" sourceRef="Gateway_1" targetRef="EndEvent_Rejet">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=isLatex = false</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    
   </bpmn:process>
+  
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="cv_process">
       <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1">
@@ -31,8 +62,23 @@
       <bpmndi:BPMNShape id="ServiceTask_1_di" bpmnElement="ServiceTask_1">
         <dc:Bounds x="280" y="102" width="100" height="56" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="EndEvent_1_di" bpmnElement="EndEvent_1">
-        <dc:Bounds x="512" y="112" width="36" height="36" />
+      <bpmndi:BPMNShape id="Gateway_1_di" bpmnElement="Gateway_1" isMarkerVisible="true">
+        <dc:Bounds x="425" y="105" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="410" y="160" width="80" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_Ok_di" bpmnElement="EndEvent_Ok">
+        <dc:Bounds x="562" y="52" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="542" y="95" width="77" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_Rejet_di" bpmnElement="EndEvent_Rejet">
+        <dc:Bounds x="562" y="172" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="545" y="215" width="70" height="27" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1">
         <di:waypoint x="188" y="130" />
@@ -40,7 +86,23 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2">
         <di:waypoint x="380" y="130" />
-        <di:waypoint x="512" y="130" />
+        <di:waypoint x="425" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3">
+        <di:waypoint x="450" y="105" />
+        <di:waypoint x="450" y="70" />
+        <di:waypoint x="562" y="70" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="460" y="50" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4_di" bpmnElement="Flow_4">
+        <di:waypoint x="450" y="155" />
+        <di:waypoint x="450" y="190" />
+        <di:waypoint x="562" y="190" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="460" y="170" width="20" height="14" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
