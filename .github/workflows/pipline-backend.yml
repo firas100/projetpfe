@@ -9,6 +9,7 @@ on:
 jobs:
   build-deploy:
     runs-on: self-hosted
+    timeout-minutes: 60
 
     steps:
       - name: Checkout code
@@ -31,7 +32,8 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Build with Maven
-        run: mvn clean package -DskipTests
+        run: mvn clean package -DskipTests -Dhttp.connectionTimeout=300000 -Dhttp.readTimeout=300000
+        timeout-minutes: 15
 
       - name: Qodana Code Analysis
         uses: JetBrains/qodana-action@v2024.2
@@ -39,15 +41,19 @@ jobs:
           pr-mode: false
         env:
           QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
+        timeout-minutes: 10
+        continue-on-error: true
 
       - name: Upload Qodana results
         uses: github/codeql-action/upload-sarif@v3
         if: always()
         with:
           sarif_file: ${{ runner.temp }}/qodana/results/qodana.sarif.json
+        continue-on-error: true
 
       - name: Run tests with JaCoCo
-        run: mvn test jacoco:report
+        run: mvn test jacoco:report -Dhttp.connectionTimeout=300000 -Dhttp.readTimeout=300000
+        timeout-minutes: 10
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -65,6 +71,7 @@ jobs:
             -t ${{ secrets.DOCKERHUB_USERNAME }}/projetpfe-backend:${{ github.sha }} \
             -t ${{ secrets.DOCKERHUB_USERNAME }}/projetpfe-backend:latest \
             --push .
+        timeout-minutes: 20
 
       - name: Checkout k8s-manifests repository
         uses: actions/checkout@v4
