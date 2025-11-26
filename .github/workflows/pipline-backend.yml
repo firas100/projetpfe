@@ -37,7 +37,7 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Build with Maven
-        run: mvn clean package -DskipTests -Dhttp.connectionTimeout=300000 -Dhttp.readTimeout=300000
+        run: mvn clean package -DskipTests -Dhttp.connectionTimeout=9000000 -Dhttp.readTimeout=300000
         timeout-minutes: 15
 
       - name: Qodana Code Analysis
