@@ -1,0 +1,42 @@
+#-------------------------------------------------------------------------------#
+#               Qodana analysis is configured by qodana.yaml file               #
+#             https://www.jetbrains.com/help/qodana/qodana-yaml.html            #
+#-------------------------------------------------------------------------------#
+version: "1.0"
+
+# Specify inspection profile for code analysis
+profile:
+  name: qodana.starter
+
+# Disable specific inspections if needed
+#exclude:
+#  - name: <SomeDisabledInspectionId>
+#    paths:
+#      - <path/where/not/run/inspection>
+
+# Project JDK version (Applied in CI/CD pipeline)
+projectJDK: "17"
+
+# Execute shell command before Qodana execution (Applied in CI/CD pipeline)
+#bootstrap: sh ./prepare-qodana.sh
+
+# Install IDE plugins before Qodana execution (Applied in CI/CD pipeline)
+#plugins:
+#  - id: <plugin.id>
+
+# Specify Qodana linter for analysis (Applied in CI/CD pipeline)
+linter: jetbrains/qodana-jvm:2024.2
+
+# Exclude specific paths from analysis
+exclude:
+  - name: All
+    paths:
+      - target/**
+      - .idea/**
+      - .git/**
+      - node_modules/**
+
+# License check (optional)
+#licenseRules:
+#  - keys:
+#      - <your-license-key>
