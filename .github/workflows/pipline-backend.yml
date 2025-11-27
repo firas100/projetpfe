@@ -2,7 +2,7 @@ name: Pipeline Backend
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
 permissions:
   contents: write
@@ -15,8 +15,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -24,25 +22,14 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-
       - name: Verify Maven
         run: C:\maven\apache-maven\bin\mvn.cmd --version
         shell: cmd
 
-      - name: Build JAR with Maven
+      - name: Build with Maven
         run: C:\maven\apache-maven\bin\mvn.cmd clean package -DskipTests
         shell: cmd
-
-      # Étapes critiques pour Docker sur Windows self-hosted
-      - name: Verify Docker is running
-        run: docker version || exit 1
-        shell: cmd
-
-      - name: Free disk space (optional but recommended on Windows runners)
-        if: runner.os == 'Windows'
-        run: |
-          docker system prune -af --volumes
-        shell: cmd
+        timeout-minutes: 15
 
       - name: Login to Docker Hub
         uses: docker/login-action@v3
@@ -51,53 +38,57 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and push Docker image
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/projetpfe-backend:latest . && docker push ${{ secrets.DOCKERHUB_USERNAME }}/projetpfe-backend:latest
         shell: cmd
-        run: |
-          echo "Current directory:"
-          dir
-          echo "Building image with tag: ${{ secrets.DOCKERHUB_USERNAME }}/projetpfe-backend:${{ github.sha }}"
-          
-          docker build ^
-            --pull ^
-            --no-cache ^
-            -t ${{ secrets.DOCKERHUB_USERNAME }}/projetpfe-backend:${{ github.sha }} ^
-            -t ${{ secrets.DOCKERHUB_USERNAME }}/projetpfe-backend:latest .
-          
-          if %ERRORLEVEL% NEQ 0 (
-            echo "Docker build failed"
-            exit 1
-          )
-          
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/projetpfe-backend:${{ github.sha }}
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/projetpfe-backend:latest
-        timeout-minutes: 121
+        timeout-minutes: 60
 
-
-      - name: Checkout k8s-manifests repo
+      - name: Checkout k8s-manifests
         uses: actions/checkout@v4
         with:
           repository: firas100/k8s-manifests
-          token: ${{ secrets.GH_PAT }}
           path: k8s-manifests
+          token: ${{ secrets.GH_PAT }}
 
-      - name: Update Kubernetes deployment image
-        shell: pwsh
+      - name: Update image tag
+        shell: powershell
         run: |
           $manifestPath = "k8s-manifests/backend/deployment.yaml"
+          
           if (Test-Path $manifestPath) {
-            (Get-Content $manifestPath) -replace 'image: .*', "image: ${{ secrets.DOCKERHUB_USERNAME }}/projetpfe-backend:${{ github.sha }}" | Set-Content $manifestPath
-            cd k8s-manifests
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add .
-            if (git status --porcelain | Where-Object { $_ -match '^ M ' }) {
-              git commit -m "Deploy backend ${{ github.sha }}"
-              git push
-              Write-Host "Manifest updated and pushed"
-            } else {
-              Write-Host "No changes in deployment.yaml"
-            }
+              Write-Host "Fichier trouve: $manifestPath" -ForegroundColor Green
+          
+              $content = Get-Content $manifestPath -Raw
+              $newImage = "image: ${{ secrets.DOCKERHUB_USERNAME }}/projetpfe-backend:${{ github.sha }}"
+              $newContent = $content -replace 'image:.*projetpfe-backend.*', $newImage
+          
+              Set-Content $manifestPath -Value $newContent
+              Write-Host "Image mise a jour vers: $newImage" -ForegroundColor Cyan
+          
+              cd k8s-manifests
+          
+              git config user.name "firas100"
+              git config user.email "firas100@users.noreply.github.com"
+          
+              git add .
+          
+              $changes = git status --porcelain
+              if ($changes) {
+                  Write-Host "Changements detectes, commit en cours..." -ForegroundColor Yellow
+                  git commit -m "Update backend image to ${{ github.sha }}"
+          
+                  Write-Host "Push vers GitHub..." -ForegroundColor Yellow
+                  git push
+          
+                  if ($LASTEXITCODE -eq 0) {
+                      Write-Host "Push reussi!" -ForegroundColor Green
+                  } else {
+                      Write-Host "Erreur lors du push" -ForegroundColor Red
+                      exit 1
+                  }
+              } else {
+                  Write-Host "Aucun changement detecte" -ForegroundColor Yellow
+              }
           } else {
-            Write-Host "deployment.yaml not found at $manifestPath"
-            exit 1
+              Write-Host "ERREUR: Fichier non trouve: $manifestPath" -ForegroundColor Red
+              exit 1
           }
