@@ -40,7 +40,7 @@ jobs:
       - name: Build and push Docker image
         run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/projetpfe-backend:latest . && docker push ${{ secrets.DOCKERHUB_USERNAME }}/projetpfe-backend:latest
         shell: cmd
-        timeout-minutes: 20
+        timeout-minutes: 60
 
 
       - name: Checkout k8s-manifests
