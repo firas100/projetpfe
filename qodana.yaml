@@ -36,7 +36,3 @@ exclude:
       - .git/**
       - node_modules/**
 
-# License check (optional)
-#licenseRules:
-#  - keys:
-#      - <your-license-key>
