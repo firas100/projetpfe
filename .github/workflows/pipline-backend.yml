@@ -70,7 +70,8 @@ jobs:
           
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/projetpfe-backend:${{ github.sha }}
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/projetpfe-backend:latest
-        timeout-minutes: 120
+        timeout-minutes: 121
+
 
       # Mise à jour du manifest k8s
       - name: Checkout k8s-manifests repo
