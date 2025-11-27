@@ -1,4 +1,4 @@
-name: Pipeline Backend
+name: Pipeline Backend CI/CD
 
 on:
   push:
@@ -17,10 +17,6 @@ jobs:
     timeout-minutes: 60
 
     steps:
-      # ═══════════════════════════════════════════════════════════
-      # 1. CHECKOUT & SETUP
-      # ═══════════════════════════════════════════════════════════
-
       - name: Checkout code
         uses: actions/checkout@v4
         with:
@@ -31,10 +27,6 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-
-      # ═══════════════════════════════════════════════════════════
-      # 2. BUILD & TEST
-      # ═══════════════════════════════════════════════════════════
 
       - name: Verify Maven Installation
         run: C:\maven\apache-maven\bin\mvn.cmd --version
@@ -51,10 +43,6 @@ jobs:
         timeout-minutes: 10
         continue-on-error: true
 
-      # ═══════════════════════════════════════════════════════════
-      # 3. CODE QUALITY ANALYSIS
-      # ═══════════════════════════════════════════════════════════
-
       - name: Run Qodana Code Analysis
         run: qodana scan --save-report --results-dir=qodana-results
         shell: cmd
@@ -69,10 +57,6 @@ jobs:
         with:
           sarif_file: qodana-results/qodana.sarif.json
         continue-on-error: true
-
-      # ═══════════════════════════════════════════════════════════
-      # 4. DOCKER BUILD & PUSH
-      # ═══════════════════════════════════════════════════════════
 
       - name: Login to Docker Hub
         uses: docker/login-action@v3
@@ -89,13 +73,9 @@ jobs:
         run: |
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/projetpfe-backend:${{ github.sha }}
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/projetpfe-backend:latest
-          echo Image pushed successfully: ${{ secrets.DOCKERHUB_USERNAME }}/projetpfe-backend:${{ github.sha }}
+          echo Image pushed successfully
         shell: cmd
         timeout-minutes: 40
-
-      # ═══════════════════════════════════════════════════════════
-      # 5. UPDATE KUBERNETES MANIFESTS
-      # ═══════════════════════════════════════════════════════════
 
       - name: Checkout k8s-manifests Repository
         uses: actions/checkout@v4
@@ -107,87 +87,70 @@ jobs:
       - name: Update Kubernetes Deployment Manifest
         shell: powershell
         run: |
-          Write-Host "================================================" -ForegroundColor Cyan
-          Write-Host "  Updating Kubernetes Deployment Manifest" -ForegroundColor Cyan
-          Write-Host "================================================" -ForegroundColor Cyan
+          Write-Host "========================================" -ForegroundColor Cyan
+          Write-Host "Updating Kubernetes Deployment Manifest" -ForegroundColor Cyan
+          Write-Host "========================================" -ForegroundColor Cyan
           
           $manifestPath = "k8s-manifests/backend/deployment.yaml"
           
           if (Test-Path $manifestPath) {
-              Write-Host "[OK] Manifest file found: $manifestPath" -ForegroundColor Green
+              Write-Host "OK - Manifest file found: $manifestPath" -ForegroundColor Green
           
-              # Read current content
               $content = Get-Content $manifestPath -Raw
-          
-              # Prepare new image tag
               $newImage = "image: ${{ secrets.DOCKERHUB_USERNAME }}/projetpfe-backend:${{ github.sha }}"
-              Write-Host "[INFO] New image: $newImage" -ForegroundColor Cyan
+              Write-Host "INFO - New image: $newImage" -ForegroundColor Cyan
           
-              # Replace image line
               $newContent = $content -replace 'image:.*projetpfe-backend.*', $newImage
-          
-              # Write updated content
               Set-Content $manifestPath -Value $newContent
-              Write-Host "[OK] Manifest file updated" -ForegroundColor Green
+              Write-Host "OK - Manifest file updated" -ForegroundColor Green
           
-              # Navigate to manifests repo
               cd k8s-manifests
-          
-              # Configure Git
               git config user.name "firas100"
               git config user.email "firas100@users.noreply.github.com"
-          
-              # Add changes
               git add backend/deployment.yaml
           
-              # Check for changes
               $changes = git status --porcelain
               if ($changes) {
-                  Write-Host "[INFO] Changes detected, committing..." -ForegroundColor Yellow
-          
-                  # Commit
+                  Write-Host "INFO - Changes detected, committing..." -ForegroundColor Yellow
                   git commit -m "chore: update backend image to ${{ github.sha }}"
           
-                  # Push
-                  Write-Host "[INFO] Pushing to GitHub..." -ForegroundColor Yellow
+                  Write-Host "INFO - Pushing to GitHub..." -ForegroundColor Yellow
                   git push
           
                   if ($LASTEXITCODE -eq 0) {
-                      Write-Host "[SUCCESS] Manifest pushed successfully!" -ForegroundColor Green
+                      Write-Host "SUCCESS - Manifest pushed successfully" -ForegroundColor Green
                   } else {
-                      Write-Host "[ERROR] Failed to push manifest (exit code: $LASTEXITCODE)" -ForegroundColor Red
+                      Write-Host "ERROR - Failed to push manifest" -ForegroundColor Red
                       exit 1
                   }
               } else {
-                  Write-Host "[INFO] No changes detected in manifest" -ForegroundColor Yellow
+                  Write-Host "INFO - No changes detected in manifest" -ForegroundColor Yellow
               }
           } else {
-              Write-Host "[ERROR] Manifest file not found at: $manifestPath" -ForegroundColor Red
-              Write-Host "[INFO] Directory contents:" -ForegroundColor Yellow
-              Get-ChildItem k8s-manifests -Recurse | Select-Object FullName
+              Write-Host "ERROR - Manifest file not found at: $manifestPath" -ForegroundColor Red
               exit 1
           }
           
-          Write-Host "================================================" -ForegroundColor Cyan
-          Write-Host "  Deployment Update Complete" -ForegroundColor Green
-          Write-Host "================================================" -ForegroundColor Cyan
-
-      # ═══════════════════════════════════════════════════════════
-      # 6. DEPLOYMENT SUMMARY
-      # ═══════════════════════════════════════════════════════════
+          Write-Host "========================================" -ForegroundColor Cyan
+          Write-Host "Deployment Update Complete" -ForegroundColor Green
+          Write-Host "========================================" -ForegroundColor Cyan
 
       - name: Deployment Summary
         if: success()
         shell: powershell
         run: |
-       
-          Write-Host "📦 Image Details:" -ForegroundColor Cyan
-          Write-Host "   Repository: ${{ secrets.DOCKERHUB_USERNAME }}/projetpfe-backend" -ForegroundColor White
-          Write-Host "   Tag (SHA):  ${{ github.sha }}" -ForegroundColor White
-          Write-Host "   Tag (Latest): latest" -ForegroundColor White
           Write-Host ""
-          Write-Host "🔗 Resources:" -ForegroundColor Cyan
-          Write-Host "   Docker Hub: https://hub.docker.com/r/${{ secrets.DOCKERHUB_USERNAME }}/projetpfe-backend" -ForegroundColor White
-          Write-Host "   K8s Manifests: https://github.com/firas100/k8s-manifests" -ForegroundColor White
-          Write-Host "   Qodana Report: https://qodana.cloud" -ForegroundColor White
+          Write-Host "========================================" -ForegroundColor Green
+          Write-Host "     DEPLOYMENT SUCCESSFUL" -ForegroundColor Green
+          Write-Host "========================================" -ForegroundColor Green
+          Write-Host ""
+          Write-Host "Image Details:" -ForegroundColor Cyan
+          Write-Host "  Repository: ${{ secrets.DOCKERHUB_USERNAME }}/projetpfe-backend" -ForegroundColor White
+          Write-Host "  Tag SHA: ${{ github.sha }}" -ForegroundColor White
+          Write-Host "  Tag Latest: latest" -ForegroundColor White
+          Write-Host ""
+          Write-Host "Resources:" -ForegroundColor Cyan
+          Write-Host "  Docker Hub: https://hub.docker.com/r/${{ secrets.DOCKERHUB_USERNAME }}/projetpfe-backend" -ForegroundColor White
+          Write-Host "  K8s Manifests: https://github.com/firas100/k8s-manifests" -ForegroundColor White
+          Write-Host "  Qodana Report: https://qodana.cloud" -ForegroundColor White
           Write-Host ""
