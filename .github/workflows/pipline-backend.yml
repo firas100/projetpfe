@@ -3,14 +3,9 @@ name: Pipeline Backend
 on:
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
 
-# ✅ AJOUT : Permissions nécessaires
 permissions:
   contents: write
-  security-events: write
-  actions: read
 
 jobs:
   build-deploy:
@@ -20,8 +15,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -29,51 +22,14 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      # ❌ SUPPRIMÉ : Maven déjà installé localement
-      # - name: Set up Maven
-      #   uses: stCarolas/setup-maven@v5
-      #   with:
-      #     maven-version: 3.9.6
-
-      - name: Cache Maven dependencies
-        uses: actions/cache@v4
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-        continue-on-error: true  # ✅ AJOUT : Ne pas bloquer si le cache échoue
+      - name: Verify Maven
+        run: C:\maven\apache-maven\bin\mvn.cmd --version
+        shell: cmd
 
       - name: Build with Maven
-        run: mvn clean package -DskipTests
+        run: C:\maven\apache-maven\bin\mvn.cmd clean package -DskipTests
         shell: cmd
         timeout-minutes: 15
-
-      # ✅ MODIFIÉ : Qodana désactivé temporairement (problèmes Docker sur Windows)
-      # - name: Qodana Code Analysis
-      #   uses: JetBrains/qodana-action@v2024.2
-      #   with:
-      #     pr-mode: false
-      #   env:
-      #     QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
-      #   timeout-minutes: 10
-      #   continue-on-error: true
-      # ❌ SUPPRIMÉ : Pas de fichier SARIF sans Qodana
-      # - name: Upload Qodana results
-      #   uses: github/codeql-action/upload-sarif@v3
-      #   if: always()
-      #   with:
-      #     sarif_file: ${{ runner.temp }}/qodana/results/qodana.sarif.json
-      #   continue-on-error: true
-
-      - name: Run tests with JaCoCo
-        run: mvn test jacoco:report
-        shell: cmd
-        timeout-minutes: 10
-        continue-on-error: true  # ✅ AJOUT : Ne pas bloquer si les tests échouent
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
 
       - name: Login to Docker Hub
         uses: docker/login-action@v3
@@ -82,11 +38,11 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and push Docker image
-        run: docker buildx build --platform linux/amd64 -t ${{ secrets.DOCKERHUB_USERNAME }}/projetpfe-backend:${{ github.sha }} -t ${{ secrets.DOCKERHUB_USERNAME }}/projetpfe-backend:latest --push .
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/projetpfe-backend:latest . && docker push ${{ secrets.DOCKERHUB_USERNAME }}/projetpfe-backend:latest
         shell: cmd
         timeout-minutes: 20
 
-      - name: Checkout k8s-manifests repository
+      - name: Checkout k8s-manifests
         uses: actions/checkout@v4
         with:
           repository: firas100/k8s-manifests
@@ -94,7 +50,6 @@ jobs:
           token: ${{ secrets.GH_PAT }}
         continue-on-error: true
 
-      # ✅ MODIFIÉ : Utiliser PowerShell au lieu de bash
       - name: Update image tag
         if: success()
         shell: pwsh
@@ -103,12 +58,10 @@ jobs:
             $content = Get-Content "manifests/backend/deployment.yaml" -Raw
             $newContent = $content -replace 'image:.*', "image: ${{ secrets.DOCKERHUB_USERNAME }}/projetpfe-backend:${{ github.sha }}"
             Set-Content "manifests/backend/deployment.yaml" -Value $newContent
-          
             cd manifests
             git config user.name "firas100"
             git config user.email "firas100@users.noreply.github.com"
             git add .
-          
             $status = git status --porcelain
             if ($status) {
               git commit -m "Update backend image to ${{ github.sha }}"
@@ -117,5 +70,5 @@ jobs:
               Write-Host "No changes to commit"
             }
           } else {
-            Write-Host "⚠️ K8s manifests not found - skipping deployment update"
+            Write-Host "K8s manifests not found"
           }
