@@ -2,7 +2,7 @@ name: Pipeline Backend
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
 
 permissions:
   contents: write
@@ -15,6 +15,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -26,10 +28,20 @@ jobs:
         run: C:\maven\apache-maven\bin\mvn.cmd --version
         shell: cmd
 
-      - name: Build with Maven
+      - name: Build JAR with Maven
         run: C:\maven\apache-maven\bin\mvn.cmd clean package -DskipTests
         shell: cmd
-        timeout-minutes: 15
+
+      # Étapes critiques pour Docker sur Windows self-hosted
+      - name: Verify Docker is running
+        run: docker version || exit 1
+        shell: cmd
+
+      - name: Free disk space (optional but recommended on Windows runners)
+        if: runner.os == 'Windows'
+        run: |
+          docker system prune -af --volumes
+        shell: cmd
 
       - name: Login to Docker Hub
         uses: docker/login-action@v3
@@ -38,38 +50,53 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and push Docker image
-        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/projetpfe-backend:latest . && docker push ${{ secrets.DOCKERHUB_USERNAME }}/projetpfe-backend:latest
         shell: cmd
-        timeout-minutes: 60
+        run: |
+          echo "Current directory:"
+          dir
+          echo "Building image with tag: ${{ secrets.DOCKERHUB_USERNAME }}/projetpfe-backend:${{ github.sha }}"
+          
+          docker build ^
+            --pull ^
+            --no-cache ^
+            -t ${{ secrets.DOCKERHUB_USERNAME }}/projetpfe-backend:${{ github.sha }} ^
+            -t ${{ secrets.DOCKERHUB_USERNAME }}/projetpfe-backend:latest .
+          
+          if %ERRORLEVEL% NEQ 0 (
+            echo "Docker build failed"
+            exit 1
+          )
+          
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/projetpfe-backend:${{ github.sha }}
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/projetpfe-backend:latest
+        timeout-minutes: 20
 
-
-      - name: Checkout k8s-manifests
+      # Mise à jour du manifest k8s
+      - name: Checkout k8s-manifests repo
         uses: actions/checkout@v4
         with:
           repository: firas100/k8s-manifests
-          path: manifests
           token: ${{ secrets.GH_PAT }}
-        continue-on-error: true
+          path: k8s-manifests
 
-      - name: Update image tag
-        if: success()
+      - name: Update Kubernetes deployment image
         shell: pwsh
         run: |
-          if (Test-Path "manifests/backend/deployment.yaml") {
-            $content = Get-Content "manifests/backend/deployment.yaml" -Raw
-            $newContent = $content -replace 'image:.*', "image: ${{ secrets.DOCKERHUB_USERNAME }}/projetpfe-backend:${{ github.sha }}"
-            Set-Content "manifests/backend/deployment.yaml" -Value $newContent
-            cd manifests
-            git config user.name "firas100"
-            git config user.email "firas100@users.noreply.github.com"
+          $manifestPath = "k8s-manifests/backend/deployment.yaml"
+          if (Test-Path $manifestPath) {
+            (Get-Content $manifestPath) -replace 'image: .*', "image: ${{ secrets.DOCKERHUB_USERNAME }}/projetpfe-backend:${{ github.sha }}" | Set-Content $manifestPath
+            cd k8s-manifests
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add .
-            $status = git status --porcelain
-            if ($status) {
-              git commit -m "Update backend image to ${{ github.sha }}"
+            if (git status --porcelain | Where-Object { $_ -match '^ M ' }) {
+              git commit -m "Deploy backend ${{ github.sha }}"
               git push
+              Write-Host "Manifest updated and pushed"
             } else {
-              Write-Host "No changes to commit"
+              Write-Host "No changes in deployment.yaml"
             }
           } else {
-            Write-Host "K8s manifests not found"
+            Write-Host "deployment.yaml not found at $manifestPath"
+            exit 1
           }
