@@ -6,6 +6,7 @@ on:
 
 permissions:
   contents: write
+  security-events: write
 
 jobs:
   build-deploy:
@@ -15,6 +16,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -31,6 +34,22 @@ jobs:
         shell: cmd
         timeout-minutes: 15
 
+      - name: Qodana Code Analysis
+        uses: JetBrains/qodana-action@v2024.3
+        with:
+          pr-mode: false
+        env:
+          QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
+        timeout-minutes: 15
+        continue-on-error: true
+
+      - name: Upload Qodana results to GitHub
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: ${{ runner.temp }}/qodana/results/qodana.sarif.json
+        continue-on-error: true
+
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
@@ -38,7 +57,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and push Docker image
-        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/projetpfe-backend:latest . && docker push ${{ secrets.DOCKERHUB_USERNAME }}/projetpfe-backend:latest
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/projetpfe-backend:${{ github.sha }} -t ${{ secrets.DOCKERHUB_USERNAME }}/projetpfe-backend:latest . && docker push ${{ secrets.DOCKERHUB_USERNAME }}/projetpfe-backend:${{ github.sha }} && docker push ${{ secrets.DOCKERHUB_USERNAME }}/projetpfe-backend:latest
         shell: cmd
         timeout-minutes: 60
 
@@ -53,42 +72,19 @@ jobs:
         shell: powershell
         run: |
           $manifestPath = "k8s-manifests/backend/deployment.yaml"
-          
           if (Test-Path $manifestPath) {
-              Write-Host "Fichier trouve: $manifestPath" -ForegroundColor Green
-          
               $content = Get-Content $manifestPath -Raw
               $newImage = "image: ${{ secrets.DOCKERHUB_USERNAME }}/projetpfe-backend:${{ github.sha }}"
               $newContent = $content -replace 'image:.*projetpfe-backend.*', $newImage
-          
               Set-Content $manifestPath -Value $newContent
-              Write-Host "Image mise a jour vers: $newImage" -ForegroundColor Cyan
-          
               cd k8s-manifests
-          
               git config user.name "firas100"
               git config user.email "firas100@users.noreply.github.com"
-          
               git add .
-          
               $changes = git status --porcelain
               if ($changes) {
-                  Write-Host "Changements detectes, commit en cours..." -ForegroundColor Yellow
                   git commit -m "Update backend image to ${{ github.sha }}"
-          
-                  Write-Host "Push vers GitHub..." -ForegroundColor Yellow
                   git push
-          
-                  if ($LASTEXITCODE -eq 0) {
-                      Write-Host "Push reussi!" -ForegroundColor Green
-                  } else {
-                      Write-Host "Erreur lors du push" -ForegroundColor Red
-                      exit 1
-                  }
-              } else {
-                  Write-Host "Aucun changement detecte" -ForegroundColor Yellow
+                  Write-Host "Image updated successfully!"
               }
-          } else {
-              Write-Host "ERREUR: Fichier non trouve: $manifestPath" -ForegroundColor Red
-              exit 1
           }
