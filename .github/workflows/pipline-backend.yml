@@ -73,7 +73,6 @@ jobs:
         timeout-minutes: 121
 
 
-      # Mise à jour du manifest k8s
       - name: Checkout k8s-manifests repo
         uses: actions/checkout@v4
         with:
