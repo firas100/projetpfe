@@ -158,4 +158,5 @@ jobs:
           Write-Host "  Docker Hub: https://hub.docker.com/r/${{ secrets.DOCKERHUB_USERNAME }}/projetpfe-backend" -ForegroundColor White
           Write-Host "  K8s Manifests: https://github.com/firas100/k8s-manifests" -ForegroundColor White
           Write-Host "  Qodana Report: https://qodana.cloud" -ForegroundColor White
+          
           Write-Host ""
