@@ -29,23 +29,27 @@ jobs:
           distribution: 'temurin'
 
       - name: Verify Maven Installation
-        run: C:\maven\apache-maven\bin\mvn.cmd --version
-        shell: cmd
+        shell: powershell
+        run: |
+          & C:\maven\apache-maven\bin\mvn.cmd --version
 
       - name: Build with Maven
-        run: C:\maven\apache-maven\bin\mvn.cmd clean package -DskipTests
-        shell: cmd
+        shell: powershell
+        run: |
+          & C:\maven\apache-maven\bin\mvn.cmd clean package -DskipTests
         timeout-minutes: 15
 
       - name: Run Unit Tests
-        run: C:\maven\apache-maven\bin\mvn.cmd test
-        shell: cmd
+        shell: powershell
+        run: |
+          & C:\maven\apache-maven\bin\mvn.cmd test
         timeout-minutes: 10
         continue-on-error: true
 
       - name: Run Qodana Code Analysis
-        run: qodana scan --save-report --results-dir=qodana-results
-        shell: cmd
+        shell: powershell
+        run: |
+          qodana scan --save-report --results-dir=qodana-results
         timeout-minutes: 15
         continue-on-error: true
         env:
@@ -53,7 +57,7 @@ jobs:
 
       - name: Upload Qodana Results to GitHub Security
         uses: github/codeql-action/upload-sarif@v3
-        if: always()
+        if: always() && hashFiles('qodana-results/qodana.sarif.json') != ''
         with:
           sarif_file: qodana-results/qodana.sarif.json
         continue-on-error: true
@@ -65,16 +69,17 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build Docker Image
-        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/projetpfe-backend:${{ github.sha }} -t ${{ secrets.DOCKERHUB_USERNAME }}/projetpfe-backend:latest .
-        shell: cmd
+        shell: powershell
+        run: |
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/projetpfe-backend:${{ github.sha }} -t ${{ secrets.DOCKERHUB_USERNAME }}/projetpfe-backend:latest .
         timeout-minutes: 20
 
       - name: Push Docker Image to Registry
+        shell: powershell
         run: |
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/projetpfe-backend:${{ github.sha }}
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/projetpfe-backend:latest
-          echo Image pushed successfully
-        shell: cmd
+          Write-Host "Image pushed successfully"
         timeout-minutes: 40
 
       - name: Checkout k8s-manifests Repository
