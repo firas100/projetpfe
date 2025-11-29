@@ -116,3 +116,554 @@
 2025-09-25 16:05:56,114 - INFO - Texte extrait de C:/Users/Firas kdidi/Desktop/Pfe/CV\farjallah_farjallahanis.pdf
 2025-09-25 16:05:56,678 - INFO - Texte extrait de C:/Users/Firas kdidi/Desktop/Pfe/CV\kdidi_firas.pdf
 2025-09-25 16:05:56,976 - INFO - Recommandation terminée: 2 CVs trouvés
+2025-11-27 16:25:25,550 - INFO - Job skills extracted: spring mariadb angular mysql spring boot api rest git docker ci/cd java communication microservices react
+2025-11-27 16:25:26,026 - INFO - CV BENHMIDA AHMED WAJIH - Skills found: scrum swagger mvc jenkins python nestjs next.js docker soap communication microservices git oauth2 oracle jpa grafana css maven typescript rest api postman feign spring hibernate sql mariadb jwt devop
+2025-11-27 16:25:26,059 - INFO - CV BENHMIDA AHMED WAJIH: Score = 4.4, Experience = 3 ans
+2025-11-27 16:25:26,470 - INFO - CV FARJALLAH ANIS - Skills found: mvc python docker git css maven rest api postman spring hibernate sql devops angular java javascript php mysql spring boot html plsql
+2025-11-27 16:25:26,474 - INFO - CV FARJALLAH ANIS: Score = 2.9, Experience = 2 ans
+2025-11-27 16:25:26,758 - INFO - CV KDIDI FIRAS - Skills found: scrum mvc python docker communication git css maven rest api postman spring hibernate sql mariadb jwt devops agile angular ci/cd java javascript php mysql spring boot springboot api rest html les fram
+2025-11-27 16:25:26,762 - INFO - CV KDIDI FIRAS: Score = 3.8, Experience = 3 ans
+2025-11-27 16:27:09,797 - INFO - Job skills extracted: javascript react html api rest angular git css
+2025-11-27 16:27:10,250 - INFO - CV BENHMIDA AHMED WAJIH - Skills found: python typescript spring boot jenkins aws grafana communication hibernate html flask swagger angular postgresql git javascript jwt oauth2 jpa soap oracle rabbitmq feign gitlab eureka prometheus sql re
+2025-11-27 16:27:10,263 - INFO - CV BENHMIDA AHMED WAJIH: Score = 4.5, Experience = 3 ans
+2025-11-27 16:27:10,656 - INFO - CV FARJALLAH ANIS - Skills found: python spring boot hibernate html angular git javascript php sql rest api spring plsql postman maven java mvc docker devops mysql css
+2025-11-27 16:27:10,661 - INFO - CV FARJALLAH ANIS: Score = 2.9, Experience = 2 ans
+2025-11-27 16:27:10,941 - INFO - CV KDIDI FIRAS - Skills found: python spring boot communication hibernate html flask les frameworks angular git javascript jwt php sql rest api spring agile mariadb plsql sonarqube postman scrum maven java api rest mvc docker ci/cd
+2025-11-27 16:27:10,948 - INFO - CV KDIDI FIRAS: Score = 3.8, Experience = 3 ans
+2025-11-27 16:29:26,166 - INFO - Job skills extracted: mysql microservices communication react java docker api rest mariadb spring git angular spring boot ci/cd
+2025-11-27 16:29:26,644 - INFO - CV BENHMIDA AHMED WAJIH - Skills found: mysql mvc api gateway grafana soap python css springboot git oracle spring boot flask postgresql communication java maven docker feign jenkins cloud javascript agile rest api rabbitmq sonarqube html s
+2025-11-27 16:29:26,652 - INFO - CV BENHMIDA AHMED WAJIH: Score = 4.4, Experience = 3 ans
+2025-11-27 16:29:27,084 - INFO - CV FARJALLAH ANIS - Skills found: mysql mvc php python css git spring boot java maven docker javascript rest api html sql hibernate angular devops postman spring plsql
+2025-11-27 16:29:27,089 - INFO - CV FARJALLAH ANIS: Score = 2.9, Experience = 2 ans
+2025-11-27 16:29:27,369 - INFO - CV KDIDI FIRAS - Skills found: mysql mvc php python css springboot git spring boot flask communication java maven docker api rest javascript agile rest api sonarqube html scrum sql mariadb jwt hibernate angular devops postman sprin
+2025-11-27 16:29:27,374 - INFO - CV KDIDI FIRAS: Score = 3.8, Experience = 3 ans
+2025-11-27 16:36:31,077 - INFO - Job description: nous recherchons un développeur full stack motivé pour concevoir et maintenir des applications web. vous travaillerez sur le front-end et le back-end en collaboration avec notre équipe technique pour 
+2025-11-27 16:36:31,077 - INFO - Job skills: docker api rest spring microservices ci/cd react angular java mysql mariadb git spring boot
+2025-11-27 16:36:31,254 - INFO - Candidat: BENHMIDA AHMED WAJIH
+2025-11-27 16:36:31,254 - INFO - CV skills: rabbitmq swagger nestjs agile feign rest api prometheus mariadb jenkins html mvc api gateway maven jira hibernate microservices nexus grafana oauth2 java aws git spring boot scrum postman openapi type
+2025-11-27 16:36:31,269 - INFO - BENHMIDA AHMED WAJIH: 76.6% - 6 ans
+2025-11-27 16:36:31,514 - INFO - Candidat: FARJALLAH ANIS
+2025-11-27 16:36:31,514 - INFO - CV skills: javascript python docker mvc maven postman css uml spring hibernate rest api angular sql java mysql git spring boot html
+2025-11-27 16:36:31,518 - INFO - FARJALLAH ANIS: 51.9% - 12 ans
+2025-11-27 16:36:31,716 - INFO - Candidat: KDIDI FIRAS
+2025-11-27 16:36:31,716 - INFO - CV skills: agile rest api api rest mariadb html mvc maven jira hibernate java git spring boot scrum postman uml jwt sonarqube angular springboot flask javascript python docker css angularjs spring ci/cd sql mysq
+2025-11-27 16:36:31,723 - INFO - KDIDI FIRAS: 73.5% - 6 ans
+2025-11-27 16:40:45,529 - INFO - Job description: nous recherchons un développeur full stack motivé pour concevoir et maintenir des applications web. vous travaillerez sur le front-end et le back-end en collaboration avec notre équipe technique pour 
+2025-11-27 16:40:45,529 - INFO - Job skills: docker spring boot microservices mysql git java react ci/cd api rest angular mariadb spring
+2025-11-27 16:40:45,690 - INFO - Candidat: BENHMIDA AHMED WAJIH
+2025-11-27 16:40:45,690 - INFO - CV skills: typescript sql springboot oracle rest api nestjs cloud oauth2 maven aws jpa mvc html spring scrum jira flask docker css rabbitmq angularjs postman jwt mysql ci/cd gitlab angular mariadb agile uml soap
+2025-11-27 16:40:45,696 - INFO - BENHMIDA AHMED WAJIH: 76.6% - 6 ans
+2025-11-27 16:40:45,924 - INFO - Candidat: FARJALLAH ANIS
+2025-11-27 16:40:45,924 - INFO - CV skills: sql rest api javascript docker css python spring boot postman maven mysql git java angular mvc html uml spring hibernate
+2025-11-27 16:40:45,928 - INFO - FARJALLAH ANIS: 51.9% - 6 ans
+2025-11-27 16:40:46,060 - INFO - Candidat: KDIDI FIRAS
+2025-11-27 16:40:46,060 - INFO - CV skills: sql rest api springboot maven mvc html spring scrum jira flask docker css angularjs postman jwt mysql ci/cd api rest angular mariadb agile uml hibernate python sonarqube javascript spring boot git jav
+2025-11-27 16:40:46,064 - INFO - KDIDI FIRAS: 73.5% - 6 ans
+2025-11-27 16:42:34,143 - INFO - Job description: nous recherchons un développeur full stack motivé pour concevoir et maintenir des applications web. vous travaillerez sur le front-end et le back-end en collaboration avec notre équipe technique pour 
+2025-11-27 16:42:34,143 - INFO - Job skills: mysql spring spring boot microservices ci/cd git react angular docker api rest java mariadb
+2025-11-27 16:42:34,276 - ERROR - Erreur CV C:/Users/Firas kdidi/Desktop/Pfe/CV\ahmedwajih_benhmida.pdf: name 'extract_years_of_experience' is not defined
+2025-11-27 16:42:34,502 - ERROR - Erreur CV C:/Users/Firas kdidi/Desktop/Pfe/CV\anis_farjallah.pdf: name 'extract_years_of_experience' is not defined
+2025-11-27 16:42:34,608 - ERROR - Erreur CV C:/Users/Firas kdidi/Desktop/Pfe/CV\firas_kdidi.pdf: name 'extract_years_of_experience' is not defined
+2025-11-27 16:48:10,398 - INFO - Job description: nous recherchons un développeur full stack motivé pour concevoir et maintenir des applications web. vous travaillerez sur le front-end et le back-end en collaboration avec notre équipe technique pour 
+2025-11-27 16:48:10,399 - INFO - Job skills: mariadb java spring angular mysql git microservices docker ci/cd spring boot api rest react
+2025-11-27 16:48:10,532 - INFO - Section expérience trouvée ligne 44
+2025-11-27 16:48:10,533 - INFO - Fin section expérience ligne 82
+2025-11-27 16:48:10,533 - INFO - Première expérience pro: 2022, total: 3 ans
+2025-11-27 16:48:10,533 - ERROR - Erreur CV C:/Users/Firas kdidi/Desktop/Pfe/CV\ahmedwajih_benhmida.pdf: name 'extract_name' is not defined
+2025-11-27 16:48:10,778 - INFO - Section expérience trouvée ligne 44
+2025-11-27 16:48:10,779 - INFO - Fin section expérience ligne 45
+2025-11-27 16:48:10,779 - INFO - Expérience calculée (fallback): 4 ans depuis 2021
+2025-11-27 16:48:10,779 - ERROR - Erreur CV C:/Users/Firas kdidi/Desktop/Pfe/CV\anis_farjallah.pdf: name 'extract_name' is not defined
+2025-11-27 16:48:10,895 - INFO - Section expérience trouvée ligne 49
+2025-11-27 16:48:10,895 - INFO - Fin section expérience ligne 66
+2025-11-27 16:48:10,896 - ERROR - Erreur CV C:/Users/Firas kdidi/Desktop/Pfe/CV\firas_kdidi.pdf: name 'extract_name' is not defined
+2025-11-27 16:50:14,477 - INFO - Job description: nous recherchons un développeur full stack motivé pour concevoir et maintenir des applications web. vous travaillerez sur le front-end et le back-end en collaboration avec notre équipe technique pour 
+2025-11-27 16:50:14,478 - INFO - Job skills: angular react git ci/cd spring boot java api rest mariadb microservices spring docker mysql
+2025-11-27 16:53:56,312 - INFO - Job description: nous recherchons un développeur full stack motivé pour concevoir et maintenir des applications web. vous travaillerez sur le front-end et le back-end en collaboration avec notre équipe technique pour 
+2025-11-27 16:53:56,312 - INFO - Job skills: react mysql mariadb api rest docker git java ci/cd angular microservices spring boot spring
+2025-11-27 16:53:56,312 - INFO - Nombre de CVs trouvés: 3
+2025-11-27 16:53:56,463 - INFO - Section expérience trouvée ligne 44
+2025-11-27 16:53:56,464 - INFO - Fin section expérience ligne 82
+2025-11-27 16:53:56,465 - INFO - Première expérience pro: 2022, total: 3 ans
+2025-11-27 16:53:56,481 - INFO - Candidat: BENHMIDA AHMED WAJIH
+2025-11-27 16:53:56,481 - INFO - CV skills: jira mysql mariadb sql oracle rest api prometheus uml typescript java soap microservices agile spring boot scrum python html maven git nestjs jpa sonarqube mvc angular css flask oauth2 javascript api 
+2025-11-27 16:53:56,488 - INFO - BENHMIDA AHMED WAJIH: 76.6% - 3 ans
+2025-11-27 16:53:56,720 - INFO - Section expérience trouvée ligne 44
+2025-11-27 16:53:56,720 - INFO - Fin section expérience ligne 45
+2025-11-27 16:53:56,720 - INFO - Expérience calculée (fallback): 4 ans depuis 2021
+2025-11-27 16:53:56,738 - INFO - Candidat: FARJALLAH ANIS
+2025-11-27 16:53:56,738 - INFO - CV skills: html mysql maven sql rest api docker git uml hibernate java mvc javascript angular css spring boot spring postman python
+2025-11-27 16:53:56,741 - INFO - FARJALLAH ANIS: 51.9% - 4 ans
+2025-11-27 16:53:56,852 - INFO - Section expérience trouvée ligne 49
+2025-11-27 16:53:56,852 - INFO - Fin section expérience ligne 66
+2025-11-27 16:53:56,869 - INFO - Candidat: KDIDI FIRAS
+2025-11-27 16:53:56,869 - INFO - CV skills: jira mysql mariadb sql rest api uml java agile spring boot scrum python html maven api rest git sonarqube mvc angular css flask javascript postman angularjs docker hibernate springboot jwt ci/cd sprin
+2025-11-27 16:53:56,873 - INFO - KDIDI FIRAS: 73.5% - 0 ans
+2025-11-27 16:58:22,282 - INFO - Job description: nous recherchons un développeur full stack motivé pour concevoir et maintenir des applications web. vous travaillerez sur le front-end et le back-end en collaboration avec notre équipe technique pour 
+2025-11-27 16:58:22,283 - INFO - Job skills: spring docker mariadb mysql ci/cd react angular spring boot api rest microservices java git
+2025-11-27 16:58:22,416 - INFO - \U0001f4cd Section expérience pro ligne 44
+2025-11-27 16:58:22,416 - INFO - \U0001f6d1 Fin section expérience ligne 101
+2025-11-27 16:58:22,416 - WARNING - \u26a0\ufe0f Section expérience contient des mentions d'études, filtrage...
+2025-11-27 16:58:22,417 - INFO - \U0001f4c5 Date trouvée: 2023
+2025-11-27 16:58:22,417 - INFO - \U0001f4c5 Date trouvée: 2022
+2025-11-27 16:58:22,418 - INFO - \u2705 Expérience calculée: 3 ans (depuis 2022)
+2025-11-27 16:58:22,418 - ERROR - Erreur CV C:/Users/Firas kdidi/Desktop/Pfe/CV\ahmedwajih_benhmida.pdf: name 'extract_name' is not defined
+2025-11-27 16:58:22,656 - INFO - \U0001f4cd Section expérience pro ligne 44
+2025-11-27 16:58:22,656 - INFO - \U0001f6d1 Fin section expérience ligne 45
+2025-11-27 16:58:22,657 - INFO - \u26a0\ufe0f Expérience estimée (fallback): 4 ans depuis 2021
+2025-11-27 16:58:22,657 - ERROR - Erreur CV C:/Users/Firas kdidi/Desktop/Pfe/CV\anis_farjallah.pdf: name 'extract_name' is not defined
+2025-11-27 16:58:22,761 - INFO - \U0001f4cd Section expérience pro ligne 49
+2025-11-27 16:58:22,762 - INFO - \U0001f6d1 Fin section expérience ligne 66
+2025-11-27 16:58:22,762 - WARNING - \u26a0\ufe0f Section expérience contient des mentions d'études, filtrage...
+2025-11-27 16:58:22,763 - WARNING - \u274c Aucune expérience professionnelle détectée
+2025-11-27 16:58:22,763 - ERROR - Erreur CV C:/Users/Firas kdidi/Desktop/Pfe/CV\firas_kdidi.pdf: name 'extract_name' is not defined
+2025-11-27 17:00:51,920 - INFO - Job description: nous recherchons un développeur full stack motivé pour concevoir et maintenir des applications web. vous travaillerez sur le front-end et le back-end en collaboration avec notre équipe technique pour 
+2025-11-27 17:00:51,920 - INFO - Job skills: ci/cd docker angular api rest mariadb git spring spring boot java react mysql microservices
+2025-11-27 17:00:52,053 - INFO -  Section expérience pro ligne 44
+2025-11-27 17:00:52,054 - INFO -  Fin section expérience ligne 101
+2025-11-27 17:00:52,054 - WARNING - \u26a0\ufe0f Section expérience contient des mentions d'études, filtrage...
+2025-11-27 17:00:52,054 - INFO -  Date trouvée: 2023
+2025-11-27 17:00:52,055 - INFO -  Date trouvée: 2022
+2025-11-27 17:00:52,055 - INFO -  Expérience calculée: 3 ans (depuis 2022)
+2025-11-27 17:00:52,055 - ERROR - Erreur CV C:/Users/Firas kdidi/Desktop/Pfe/CV\ahmedwajih_benhmida.pdf: name 'extract_name' is not defined
+2025-11-27 17:00:52,282 - INFO -  Section expérience pro ligne 44
+2025-11-27 17:00:52,282 - INFO -  Fin section expérience ligne 45
+2025-11-27 17:00:52,283 - INFO -  Expérience estimée (fallback): 4 ans depuis 2021
+2025-11-27 17:00:52,283 - ERROR - Erreur CV C:/Users/Firas kdidi/Desktop/Pfe/CV\anis_farjallah.pdf: name 'extract_name' is not defined
+2025-11-27 17:00:52,400 - INFO -  Section expérience pro ligne 49
+2025-11-27 17:00:52,401 - INFO -  Fin section expérience ligne 66
+2025-11-27 17:00:52,401 - WARNING - \u26a0\ufe0f Section expérience contient des mentions d'études, filtrage...
+2025-11-27 17:00:52,402 - WARNING -  Aucune expérience professionnelle détectée
+2025-11-27 17:00:52,402 - ERROR - Erreur CV C:/Users/Firas kdidi/Desktop/Pfe/CV\firas_kdidi.pdf: name 'extract_name' is not defined
+2025-11-27 17:01:54,824 - INFO - Job description: nous recherchons un développeur full stack motivé pour concevoir et maintenir des applications web. vous travaillerez sur le front-end et le back-end en collaboration avec notre équipe technique pour 
+2025-11-27 17:02:54,897 - INFO - Job skills: java api rest microservices docker spring boot angular ci/cd react mariadb spring mysql git
+2025-11-27 17:02:54,898 - INFO - Expérience minimum requise: 0 ans
+2025-11-27 17:02:54,906 - INFO - Nombre de CVs trouvés: 3
+2025-11-27 17:02:54,908 - INFO - 
+============================================================
+Traitement: C:/Users/Firas kdidi/Desktop/Pfe/CV\ahmedwajih_benhmida.pdf
+2025-11-27 17:02:55,571 - INFO - \U0001f4cd Section expérience ligne 44
+2025-11-27 17:02:55,571 - INFO - \U0001f6d1 Fin section ligne 61
+2025-11-27 17:02:55,572 - INFO - \U0001f4c5 Date valide trouvée: 2023
+2025-11-27 17:02:55,574 - INFO - \u2705 Expérience: 2 ans (depuis 2023)
+2025-11-27 17:02:55,575 - INFO - Expérience détectée: 2 ans
+2025-11-27 17:02:55,648 - INFO - Candidat: BENHMIDA AHMED WAJIH
+2025-11-27 17:02:55,648 - INFO - Compétences: cloud rest api postman spring boot typescript springboot uml sonarqube flask javascript gitlab prome...
+2025-11-27 17:02:55,663 - INFO - \u2705 Score: 76.6% - Expérience: 2 ans
+2025-11-27 17:02:55,663 - INFO - 
+============================================================
+Traitement: C:/Users/Firas kdidi/Desktop/Pfe/CV\anis_farjallah.pdf
+2025-11-27 17:02:56,100 - INFO - \U0001f4cd Section expérience ligne 44
+2025-11-27 17:02:56,100 - INFO - \U0001f6d1 Fin section ligne 68
+2025-11-27 17:02:56,100 - INFO - \u23ed\ufe0f  Ligne ignorée (contient mot exclu): Développeur FullStack (Stage d’ingénieur)
+2025-11-27 17:02:56,100 - INFO - \U0001f4c5 Date valide trouvée: 2024
+2025-11-27 17:02:56,101 - INFO - \u23ed\ufe0f  Ligne ignorée (contient mot exclu): Développeur FullStack (Stage d’été)
+2025-11-27 17:02:56,101 - INFO - \U0001f4c5 Date valide trouvée: 2023
+2025-11-27 17:02:56,101 - INFO - \u2705 Expérience: 2 ans (depuis 2023)
+2025-11-27 17:02:56,101 - INFO - Expérience détectée: 2 ans
+2025-11-27 17:02:56,132 - INFO - Candidat: FARJALLAH ANIS
+2025-11-27 17:02:56,133 - INFO - Compétences: java hibernate rest api docker spring boot angular postman mysql spring html sql python uml javascri...
+2025-11-27 17:02:56,140 - INFO - \u2705 Score: 51.9% - Expérience: 2 ans
+2025-11-27 17:02:56,142 - INFO - 
+============================================================
+Traitement: C:/Users/Firas kdidi/Desktop/Pfe/CV\firas_kdidi.pdf
+2025-11-27 17:02:56,365 - INFO - \U0001f4cd Section expérience ligne 49
+2025-11-27 17:02:56,365 - INFO - \U0001f6d1 Fin section ligne 62
+2025-11-27 17:02:56,366 - WARNING - \u274c Aucune expérience détectée
+2025-11-27 17:02:56,366 - INFO - Expérience détectée: 0 ans
+2025-11-27 17:02:56,382 - INFO - Candidat: KDIDI FIRAS
+2025-11-27 17:02:56,382 - INFO - Compétences: rest api postman spring boot springboot uml sonarqube flask javascript hibernate ci/cd mariadb sprin...
+2025-11-27 17:02:56,387 - INFO - \u2705 Score: 73.5% - Expérience: 0 ans
+2025-11-27 17:02:56,387 - INFO - 
+============================================================
+Nombre de candidats retenus: 3
+2025-11-27 17:14:09,439 - INFO - Job description (début): nous recherchons un développeur full stack motivé pour concevoir et maintenir des applications web. vous travaillerez sur le front-end et le back-end en collaboration avec notre équipe technique pour 
+2025-11-27 17:14:09,439 - INFO - Job skills: java spring spring boot angular react mysql mariadb api rest microservices docker git ci/cd
+2025-11-27 17:14:09,439 - INFO - Expérience minimum requise: 0 ans
+2025-11-27 17:14:09,439 - INFO - Nombre de CVs trouvés: 3 (C:\Users\Firas kdidi\Desktop\Pfe\CV\*.pdf)
+2025-11-27 17:14:09,439 - INFO - Traitement : C:\Users\Firas kdidi\Desktop\Pfe\CV\ahmedwajih_benhmida.pdf
+2025-11-27 17:14:09,568 - INFO - Expérience estimée : 5 ans (depuis 2020)
+2025-11-27 17:14:09,569 - INFO - Expérience détectée: 5 ans
+2025-11-27 17:14:09,668 - INFO - Score: 76.7% - Bases de Données - 5 ans
+2025-11-27 17:14:09,668 - INFO - Traitement : C:\Users\Firas kdidi\Desktop\Pfe\CV\anis_farjallah.pdf
+2025-11-27 17:14:09,915 - INFO - Expérience estimée : 6 ans (depuis 2019)
+2025-11-27 17:14:09,915 - INFO - Expérience détectée: 6 ans
+2025-11-27 17:14:09,980 - INFO - Score: 51.9% - Ben Arous - 6 ans
+2025-11-27 17:14:09,980 - INFO - Traitement : C:\Users\Firas kdidi\Desktop\Pfe\CV\firas_kdidi.pdf
+2025-11-27 17:14:10,108 - INFO - Expérience estimée : 6 ans (depuis 2019)
+2025-11-27 17:14:10,108 - INFO - Expérience détectée: 6 ans
+2025-11-27 17:14:10,162 - INFO - Score: 73.5% - Rest API - 6 ans
+2025-11-27 17:14:10,162 - INFO - Nombre de candidats retenus: 3
+2025-11-27 17:17:32,327 - INFO - Job description: nous recherchons un développeur full stack motivé pour concevoir et maintenir des applications web. vous travaillerez sur le front-end et le back-end en collaboration avec notre équipe technique pour 
+2025-11-27 17:17:32,328 - INFO - Job skills: java ci/cd angular spring react mysql spring boot api rest git docker microservices mariadb
+2025-11-27 17:17:32,328 - INFO - Expérience minimum: 0 ans
+2025-11-27 17:17:32,328 - INFO - CVs trouvés: 3
+2025-11-27 17:17:32,328 - INFO - 
+============================================================
+CV: C:/Users/Firas kdidi/Desktop/Pfe/CV\ahmedwajih_benhmida.pdf
+2025-11-27 17:17:32,476 - INFO -  Section expérience pro ligne 41
+2025-11-27 17:17:32,476 - INFO -  Fin section ligne 58
+2025-11-27 17:17:32,477 - INFO -  Date trouvée: 2023
+2025-11-27 17:17:32,477 - INFO -  Expérience: 2 ans (depuis 2023)
+2025-11-27 17:17:32,477 - INFO - Expérience: 2 ans
+2025-11-27 17:17:32,491 - INFO - Candidat: BENHMIDA AHMED WAJIH
+2025-11-27 17:17:32,498 - INFO - 76.6% - 2 ans
+2025-11-27 17:17:32,498 - INFO - 
+============================================================
+CV: C:/Users/Firas kdidi/Desktop/Pfe/CV\anis_farjallah.pdf
+2025-11-27 17:17:32,747 - INFO -  Section expérience pro ligne 36
+2025-11-27 17:17:32,747 - INFO -  Fin section ligne 63
+2025-11-27 17:17:32,747 - INFO -  Date trouvée: 2024
+2025-11-27 17:17:32,747 - INFO -  Date trouvée: 2023
+2025-11-27 17:17:32,747 - INFO -  Date trouvée: 2019
+2025-11-27 17:17:32,748 - INFO -  Date trouvée: 2021
+2025-11-27 17:17:32,748 - INFO -  Date trouvée: 2021
+2025-11-27 17:17:32,748 - INFO -  Expérience: 6 ans (depuis 2019)
+2025-11-27 17:17:32,748 - INFO - Expérience: 6 ans
+2025-11-27 17:17:32,767 - INFO - Candidat: FARJALLAH ANIS
+2025-11-27 17:17:32,773 - INFO - 51.9% - 6 ans
+2025-11-27 17:17:32,773 - INFO - 
+============================================================
+CV: C:/Users/Firas kdidi/Desktop/Pfe/CV\firas_kdidi.pdf
+2025-11-27 17:17:32,895 - INFO -  Section expérience pro ligne 44
+2025-11-27 17:17:32,895 - INFO -  Fin section ligne 56
+2025-11-27 17:17:32,895 - WARNING -  Aucune expérience détectée
+2025-11-27 17:17:32,895 - INFO - Expérience: 0 ans
+2025-11-27 17:17:32,912 - INFO - Candidat: KDIDI FIRAS
+2025-11-27 17:17:32,916 - INFO - 73.5% - 0 ans
+2025-11-27 17:17:32,916 - INFO - 
+Candidats retenus: 3
+2025-11-27 17:19:18,607 - INFO - Job description: nous recherchons un développeur front-end pour créer des interfaces web interactives et performantes. vous serez responsable de l ergonomie de l expérience utilisateur et de la compatibilité multi-nav
+2025-11-27 17:19:18,607 - INFO - Job skills: api rest javascript angular git react html css
+2025-11-27 17:19:18,607 - INFO - Expérience minimum: 0 ans
+2025-11-27 17:19:18,608 - INFO - CVs trouvés: 3
+2025-11-27 17:19:18,608 - INFO - 
+============================================================
+CV: C:/Users/Firas kdidi/Desktop/Pfe/CV\ahmedwajih_benhmida.pdf
+2025-11-27 17:19:18,737 - INFO -  Section expérience pro ligne 41
+2025-11-27 17:19:18,737 - INFO -  Fin section ligne 58
+2025-11-27 17:19:18,737 - INFO -  Date trouvée: 2023
+2025-11-27 17:19:18,737 - INFO -  Expérience: 2 ans (depuis 2023)
+2025-11-27 17:19:18,738 - INFO - Expérience: 2 ans
+2025-11-27 17:19:18,738 - ERROR -  Erreur: name 'extract_name' is not defined
+Traceback (most recent call last):
+  File "C:\Users\Firas kdidi\Desktop\Pfe\system-recommandation.py", line 284, in recommend_candidates
+    name = extract_name(raw_text)
+           ^^^^^^^^^^^^
+NameError: name 'extract_name' is not defined
+2025-11-27 17:19:18,741 - INFO - 
+============================================================
+CV: C:/Users/Firas kdidi/Desktop/Pfe/CV\anis_farjallah.pdf
+2025-11-27 17:19:18,982 - INFO -  Section expérience pro ligne 36
+2025-11-27 17:19:18,983 - INFO -  Fin section ligne 63
+2025-11-27 17:19:18,983 - INFO -  Date trouvée: 2024
+2025-11-27 17:19:18,983 - INFO -  Date trouvée: 2023
+2025-11-27 17:19:18,983 - INFO -  Date trouvée: 2019
+2025-11-27 17:19:18,983 - INFO -  Date trouvée: 2021
+2025-11-27 17:19:18,983 - INFO -  Date trouvée: 2021
+2025-11-27 17:19:18,983 - INFO -  Expérience: 6 ans (depuis 2019)
+2025-11-27 17:19:18,983 - INFO - Expérience: 6 ans
+2025-11-27 17:19:18,983 - ERROR -  Erreur: name 'extract_name' is not defined
+Traceback (most recent call last):
+  File "C:\Users\Firas kdidi\Desktop\Pfe\system-recommandation.py", line 284, in recommend_candidates
+    name = extract_name(raw_text)
+           ^^^^^^^^^^^^
+NameError: name 'extract_name' is not defined
+2025-11-27 17:19:18,987 - INFO - 
+============================================================
+CV: C:/Users/Firas kdidi/Desktop/Pfe/CV\firas_kdidi.pdf
+2025-11-27 17:19:19,093 - INFO -  Section expérience pro ligne 44
+2025-11-27 17:19:19,093 - INFO -  Fin section ligne 56
+2025-11-27 17:19:19,094 - WARNING -  Aucune expérience détectée
+2025-11-27 17:19:19,094 - INFO - Expérience: 0 ans
+2025-11-27 17:19:19,094 - ERROR -  Erreur: name 'extract_name' is not defined
+Traceback (most recent call last):
+  File "C:\Users\Firas kdidi\Desktop\Pfe\system-recommandation.py", line 284, in recommend_candidates
+    name = extract_name(raw_text)
+           ^^^^^^^^^^^^
+NameError: name 'extract_name' is not defined
+2025-11-27 17:19:19,097 - INFO - 
+Candidats retenus: 0
+2025-11-27 17:20:09,426 - INFO - Job description: nous recherchons un développeur front-end pour créer des interfaces web interactives et performantes. vous serez responsable de l ergonomie de l expérience utilisateur et de la compatibilité multi-nav
+2025-11-27 17:20:09,426 - INFO - Job skills: javascript html css git api rest react angular
+2025-11-27 17:20:09,427 - INFO - Expérience minimum: 0 ans
+2025-11-27 17:20:09,427 - INFO - CVs trouvés: 3
+2025-11-27 17:20:09,427 - INFO - 
+============================================================
+CV: C:/Users/Firas kdidi/Desktop/Pfe/CV\ahmedwajih_benhmida.pdf
+2025-11-27 17:20:09,561 - INFO -  Section expérience pro ligne 41
+2025-11-27 17:20:09,562 - INFO -  Fin section ligne 58
+2025-11-27 17:20:09,563 - INFO -  Date trouvée: 2023
+2025-11-27 17:20:09,563 - INFO -  Expérience: 2 ans (depuis 2023)
+2025-11-27 17:20:09,564 - INFO - Expérience: 2 ans
+2025-11-27 17:20:09,564 - ERROR -  Erreur: name 'extract_name' is not defined
+Traceback (most recent call last):
+  File "C:\Users\Firas kdidi\Desktop\Pfe\system-recommandation.py", line 284, in recommend_candidates
+    name = extract_name(raw_text)
+           ^^^^^^^^^^^^
+NameError: name 'extract_name' is not defined
+2025-11-27 17:20:09,568 - INFO - 
+============================================================
+CV: C:/Users/Firas kdidi/Desktop/Pfe/CV\anis_farjallah.pdf
+2025-11-27 17:20:09,833 - INFO -  Section expérience pro ligne 36
+2025-11-27 17:20:09,833 - INFO -  Fin section ligne 63
+2025-11-27 17:20:09,833 - INFO -  Date trouvée: 2024
+2025-11-27 17:20:09,833 - INFO -  Date trouvée: 2023
+2025-11-27 17:20:09,834 - INFO -  Date trouvée: 2019
+2025-11-27 17:20:09,834 - INFO -  Date trouvée: 2021
+2025-11-27 17:20:09,834 - INFO -  Date trouvée: 2021
+2025-11-27 17:20:09,834 - INFO -  Expérience: 6 ans (depuis 2019)
+2025-11-27 17:20:09,834 - INFO - Expérience: 6 ans
+2025-11-27 17:20:09,834 - ERROR -  Erreur: name 'extract_name' is not defined
+Traceback (most recent call last):
+  File "C:\Users\Firas kdidi\Desktop\Pfe\system-recommandation.py", line 284, in recommend_candidates
+    name = extract_name(raw_text)
+           ^^^^^^^^^^^^
+NameError: name 'extract_name' is not defined
+2025-11-27 17:20:09,838 - INFO - 
+============================================================
+CV: C:/Users/Firas kdidi/Desktop/Pfe/CV\firas_kdidi.pdf
+2025-11-27 17:20:09,953 - INFO -  Section expérience pro ligne 44
+2025-11-27 17:20:09,953 - INFO -  Fin section ligne 56
+2025-11-27 17:20:09,953 - WARNING -  Aucune expérience détectée
+2025-11-27 17:20:09,953 - INFO - Expérience: 0 ans
+2025-11-27 17:20:09,953 - ERROR -  Erreur: name 'extract_name' is not defined
+Traceback (most recent call last):
+  File "C:\Users\Firas kdidi\Desktop\Pfe\system-recommandation.py", line 284, in recommend_candidates
+    name = extract_name(raw_text)
+           ^^^^^^^^^^^^
+NameError: name 'extract_name' is not defined
+2025-11-27 17:20:09,957 - INFO - 
+Candidats retenus: 0
+2025-11-27 17:28:06,206 - INFO - 
+================================================================================
+2025-11-27 17:28:06,206 - INFO - NOUVELLE ANALYSE DE RECOMMANDATION
+2025-11-27 17:28:06,206 - INFO - ================================================================================
+2025-11-27 17:28:06,206 - INFO - Description poste: nous recherchons un développeur front-end pour créer des interfaces web interactives et performantes. vous serez responsable de l ergonomie de l expérience utilisateur et de la compatibilité multi-nav...
+2025-11-27 17:28:06,206 - INFO - Compétences requises: git react api rest angular html css javascript
+2025-11-27 17:28:06,206 - INFO - Expérience minimum: 0 ans
+2025-11-27 17:28:06,206 - INFO - Nombre de CVs trouvés: 3
+2025-11-27 17:28:06,207 - INFO - 
+------------------------------------------------------------
+2025-11-27 17:28:06,207 - INFO - Analyse CV: C:/Users/Firas kdidi/Desktop/Pfe/CV\ahmedwajih_benhmida.pdf
+2025-11-27 17:28:06,341 - INFO - Nom extrait: BENHMIDA AHMED WAJIH
+2025-11-27 17:28:06,342 - INFO -  Section expérience ligne 41
+2025-11-27 17:28:06,342 - INFO -  Fin section ligne 58
+2025-11-27 17:28:06,343 - INFO -  Date trouvée: 2023
+2025-11-27 17:28:06,343 - INFO -  Expérience: 2 ans (depuis 2023)
+2025-11-27 17:28:06,362 - INFO - Candidat: BENHMIDA AHMED WAJIH
+2025-11-27 17:28:06,362 - INFO - Expérience: 2 ans
+2025-11-27 17:28:06,362 - INFO - Compétences CV: angularjs prometheus agile cloud java springboot nestjs jpa eureka sql nexus feign oauth2 soap uml python openapi ci/cd microservices mariadb grafana ...
+2025-11-27 17:28:06,368 - INFO - Compétences communes: {'api', 'git', 'angular', 'html', 'css', 'rest', 'javascript'}
+2025-11-27 17:28:06,368 - INFO - Ratio compétences: 100.00%
+2025-11-27 17:28:06,368 - INFO -  Score: 79.9% | Expérience: 2 ans
+2025-11-27 17:28:06,368 - INFO - 
+------------------------------------------------------------
+2025-11-27 17:28:06,368 - INFO - Analyse CV: C:/Users/Firas kdidi/Desktop/Pfe/CV\anis_farjallah.pdf
+2025-11-27 17:28:06,596 - INFO - Nom extrait: FARJALLAH ANIS
+2025-11-27 17:28:06,597 - INFO -  Section expérience ligne 36
+2025-11-27 17:28:06,597 - INFO -  Fin section ligne 63
+2025-11-27 17:28:06,597 - INFO -  Date trouvée: 2024
+2025-11-27 17:28:06,597 - INFO -  Date trouvée: 2023
+2025-11-27 17:28:06,597 - INFO -  Date trouvée: 2019
+2025-11-27 17:28:06,597 - INFO -  Date trouvée: 2021
+2025-11-27 17:28:06,597 - INFO -  Date trouvée: 2021
+2025-11-27 17:28:06,597 - INFO -  Expérience: 6 ans (depuis 2019)
+2025-11-27 17:28:06,618 - INFO - Candidat: FARJALLAH ANIS
+2025-11-27 17:28:06,618 - INFO - Expérience: 6 ans
+2025-11-27 17:28:06,618 - INFO - Compétences CV: postman html uml python git mvc java spring mysql docker spring boot angular sql maven rest api hibernate css javascript...
+2025-11-27 17:28:06,623 - INFO - Compétences communes: {'api', 'git', 'angular', 'html', 'css', 'rest', 'javascript'}
+2025-11-27 17:28:06,623 - INFO - Ratio compétences: 100.00%
+2025-11-27 17:28:06,623 - INFO -  Score: 72.2% | Expérience: 6 ans
+2025-11-27 17:28:06,623 - INFO - 
+------------------------------------------------------------
+2025-11-27 17:28:06,624 - INFO - Analyse CV: C:/Users/Firas kdidi/Desktop/Pfe/CV\firas_kdidi.pdf
+2025-11-27 17:28:06,743 - INFO - Nom extrait: KDIDI FIRAS
+2025-11-27 17:28:06,744 - INFO -  Section expérience ligne 44
+2025-11-27 17:28:06,744 - INFO -  Fin section ligne 56
+2025-11-27 17:28:06,744 - INFO -  Aucune expérience détectée (0 ans)
+2025-11-27 17:28:06,766 - INFO - Candidat: KDIDI FIRAS
+2025-11-27 17:28:06,766 - INFO - Expérience: 0 ans
+2025-11-27 17:28:06,766 - INFO - Compétences CV: angularjs agile java springboot sql uml python ci/cd mariadb hibernate sonarqube javascript jwt postman mvc mysql rest api angular maven jira flask ht...
+2025-11-27 17:28:06,770 - INFO - Compétences communes: {'api', 'git', 'angular', 'html', 'css', 'rest', 'javascript'}
+2025-11-27 17:28:06,777 - INFO - Ratio compétences: 100.00%
+2025-11-27 17:28:06,777 - INFO -  Score: 76.7% | Expérience: 0 ans
+2025-11-27 17:28:06,777 - INFO - 
+================================================================================
+2025-11-27 17:28:06,777 - INFO - RÉSULTATS FINAUX: 3 candidats analysés
+2025-11-27 17:28:06,777 - INFO - ================================================================================
+
+2025-11-27 23:13:53,832 - INFO - 
+================================================================================
+2025-11-27 23:13:53,833 - INFO - NOUVELLE ANALYSE DE RECOMMANDATION
+2025-11-27 23:13:53,833 - INFO - ================================================================================
+2025-11-27 23:13:53,833 - INFO - Description poste: nous recherchons un développeur full stack motivé pour concevoir et maintenir des applications web. vous travaillerez sur le front-end et le back-end en collaboration avec notre équipe technique pour ...
+2025-11-27 23:13:53,834 - INFO - Compétences requises: spring mariadb java docker ci/cd angular mysql git react spring boot microservices api rest
+2025-11-27 23:13:53,834 - INFO - Expérience minimum: 0 ans
+2025-11-27 23:13:53,834 - INFO - Nombre de CVs trouvés: 3
+2025-11-27 23:13:53,834 - INFO - 
+------------------------------------------------------------
+2025-11-27 23:13:53,834 - INFO - Analyse CV: C:/Users/Firas kdidi/Desktop/Pfe/CV\ahmedwajih_benhmida.pdf
+2025-11-27 23:13:54,105 - INFO - Nom extrait: BENHMIDA AHMED WAJIH
+2025-11-27 23:13:54,107 - INFO -  Section expérience ligne 41
+2025-11-27 23:13:54,107 - INFO -  Fin section ligne 58
+2025-11-27 23:13:54,108 - INFO -  Date trouvée: 2023
+2025-11-27 23:13:54,108 - INFO -  Expérience: 2 ans (depuis 2023)
+2025-11-27 23:13:54,139 - INFO - Candidat: BENHMIDA AHMED WAJIH
+2025-11-27 23:13:54,139 - INFO - Expérience: 2 ans
+2025-11-27 23:13:54,139 - INFO - Compétences CV: spring rabbitmq oracle mvc postman java nexus maven git flask grafana prometheus mariadb css python docker feign agile angular swagger mysql gitlab sp...
+2025-11-27 23:13:54,160 - INFO - Compétences communes: {'spring', 'boot', 'mariadb', 'java', 'ci/cd', 'docker', 'angular', 'mysql', 'git', 'microservices', 'api', 'rest'}
+2025-11-27 23:13:54,161 - INFO - Ratio compétences: 100.00%
+2025-11-27 23:13:54,161 - INFO -  Score: 76.6% | Expérience: 2 ans
+2025-11-27 23:13:54,161 - INFO - 
+------------------------------------------------------------
+2025-11-27 23:13:54,162 - INFO - Analyse CV: C:/Users/Firas kdidi/Desktop/Pfe/CV\anis_farjallah.pdf
+2025-11-27 23:13:54,712 - INFO - Nom extrait: FARJALLAH ANIS
+2025-11-27 23:13:54,715 - INFO -  Section expérience ligne 36
+2025-11-27 23:13:54,715 - INFO -  Fin section ligne 63
+2025-11-27 23:13:54,716 - INFO -  Date trouvée: 2024
+2025-11-27 23:13:54,716 - INFO -  Date trouvée: 2023
+2025-11-27 23:13:54,717 - INFO -  Date trouvée: 2019
+2025-11-27 23:13:54,717 - INFO -  Date trouvée: 2021
+2025-11-27 23:13:54,717 - INFO -  Date trouvée: 2021
+2025-11-27 23:13:54,717 - INFO -  Expérience: 6 ans (depuis 2019)
+2025-11-27 23:13:54,751 - INFO - Candidat: FARJALLAH ANIS
+2025-11-27 23:13:54,751 - INFO - Expérience: 6 ans
+2025-11-27 23:13:54,752 - INFO - Compétences CV: rest api spring uml sql python css mvc java javascript docker postman angular mysql spring boot maven git hibernate html...
+2025-11-27 23:13:54,760 - INFO - Compétences communes: {'spring', 'boot', 'java', 'docker', 'angular', 'mysql', 'git', 'api', 'rest'}
+2025-11-27 23:13:54,761 - INFO - Ratio compétences: 69.23%
+2025-11-27 23:13:54,764 - INFO -  Score: 51.9% | Expérience: 6 ans
+2025-11-27 23:13:54,764 - INFO - 
+------------------------------------------------------------
+2025-11-27 23:13:54,764 - INFO - Analyse CV: C:/Users/Firas kdidi/Desktop/Pfe/CV\firas_kdidi.pdf
+2025-11-27 23:13:55,003 - INFO - Nom extrait: KDIDI FIRAS
+2025-11-27 23:13:55,004 - INFO -  Section expérience ligne 44
+2025-11-27 23:13:55,004 - INFO -  Fin section ligne 56
+2025-11-27 23:13:55,005 - INFO -  Aucune expérience détectée (0 ans)
+2025-11-27 23:13:55,037 - INFO - Candidat: KDIDI FIRAS
+2025-11-27 23:13:55,037 - INFO - Expérience: 0 ans
+2025-11-27 23:13:55,037 - INFO - Compétences CV: spring mvc postman java maven git flask mariadb css python docker agile angular mysql springboot sql javascript hibernate jira ci/cd spring boot html ...
+2025-11-27 23:13:55,043 - INFO - Compétences communes: {'spring', 'boot', 'mariadb', 'java', 'ci/cd', 'docker', 'angular', 'mysql', 'git', 'api', 'rest'}
+2025-11-27 23:13:55,043 - INFO - Ratio compétences: 100.00%
+2025-11-27 23:13:55,043 - INFO -  Score: 73.5% | Expérience: 0 ans
+2025-11-27 23:13:55,043 - INFO - 
+================================================================================
+2025-11-27 23:13:55,043 - INFO - RÉSULTATS FINAUX: 3 candidats analysés
+2025-11-27 23:13:55,043 - INFO - ================================================================================
+
+2025-11-27 23:14:32,721 - INFO - 
+================================================================================
+2025-11-27 23:14:32,723 - INFO - NOUVELLE ANALYSE DE RECOMMANDATION
+2025-11-27 23:14:32,724 - INFO - ================================================================================
+2025-11-27 23:14:32,728 - INFO - Description poste: nous recherchons un développeur front-end pour créer des interfaces web interactives et performantes. vous serez responsable de l ergonomie de l expérience utilisateur et de la compatibilité multi-nav...
+2025-11-27 23:14:32,728 - INFO - Compétences requises: react angular html javascript git css api rest
+2025-11-27 23:14:32,729 - INFO - Expérience minimum: 0 ans
+2025-11-27 23:14:32,730 - INFO - Nombre de CVs trouvés: 3
+2025-11-27 23:14:32,732 - INFO - 
+------------------------------------------------------------
+2025-11-27 23:14:32,732 - INFO - Analyse CV: C:/Users/Firas kdidi/Desktop/Pfe/CV\ahmedwajih_benhmida.pdf
+2025-11-27 23:14:33,101 - INFO - Nom extrait: BENHMIDA AHMED WAJIH
+2025-11-27 23:14:33,103 - INFO -  Section expérience ligne 41
+2025-11-27 23:14:33,103 - INFO -  Fin section ligne 58
+2025-11-27 23:14:33,104 - INFO -  Date trouvée: 2023
+2025-11-27 23:14:33,104 - INFO -  Expérience: 2 ans (depuis 2023)
+2025-11-27 23:14:33,137 - INFO - Candidat: BENHMIDA AHMED WAJIH
+2025-11-27 23:14:33,138 - INFO - Expérience: 2 ans
+2025-11-27 23:14:33,138 - INFO - Compétences CV: nexus postgresql sonarqube spring boot mvc flask prometheus css agile spring jenkins docker oauth2 scrum hibernate javascript grafana gitlab git eurek...
+2025-11-27 23:14:33,151 - INFO - Compétences communes: {'rest', 'angular', 'html', 'javascript', 'git', 'css', 'api'}
+2025-11-27 23:14:33,152 - INFO - Ratio compétences: 100.00%
+2025-11-27 23:14:33,152 - INFO -  Score: 79.9% | Expérience: 2 ans
+2025-11-27 23:14:33,152 - INFO - 
+------------------------------------------------------------
+2025-11-27 23:14:33,152 - INFO - Analyse CV: C:/Users/Firas kdidi/Desktop/Pfe/CV\anis_farjallah.pdf
+2025-11-27 23:14:33,725 - INFO - Nom extrait: FARJALLAH ANIS
+2025-11-27 23:14:33,728 - INFO -  Section expérience ligne 36
+2025-11-27 23:14:33,728 - INFO -  Fin section ligne 63
+2025-11-27 23:14:33,728 - INFO -  Date trouvée: 2024
+2025-11-27 23:14:33,729 - INFO -  Date trouvée: 2023
+2025-11-27 23:14:33,729 - INFO -  Date trouvée: 2019
+2025-11-27 23:14:33,729 - INFO -  Date trouvée: 2021
+2025-11-27 23:14:33,729 - INFO -  Date trouvée: 2021
+2025-11-27 23:14:33,729 - INFO -  Expérience: 6 ans (depuis 2019)
+2025-11-27 23:14:33,762 - INFO - Candidat: FARJALLAH ANIS
+2025-11-27 23:14:33,762 - INFO - Expérience: 6 ans
+2025-11-27 23:14:33,762 - INFO - Compétences CV: spring sql docker python postman spring boot uml mvc java hibernate angular javascript html mysql git maven css rest api...
+2025-11-27 23:14:33,768 - INFO - Compétences communes: {'rest', 'angular', 'html', 'javascript', 'git', 'css', 'api'}
+2025-11-27 23:14:33,768 - INFO - Ratio compétences: 100.00%
+2025-11-27 23:14:33,768 - INFO -  Score: 72.2% | Expérience: 6 ans
+2025-11-27 23:14:33,768 - INFO - 
+------------------------------------------------------------
+2025-11-27 23:14:33,768 - INFO - Analyse CV: C:/Users/Firas kdidi/Desktop/Pfe/CV\firas_kdidi.pdf
+2025-11-27 23:14:33,976 - INFO - Nom extrait: KDIDI FIRAS
+2025-11-27 23:14:33,978 - INFO -  Section expérience ligne 44
+2025-11-27 23:14:33,978 - INFO -  Fin section ligne 56
+2025-11-27 23:14:33,979 - INFO -  Aucune expérience détectée (0 ans)
+2025-11-27 23:14:34,003 - INFO - Candidat: KDIDI FIRAS
+2025-11-27 23:14:34,003 - INFO - Expérience: 0 ans
+2025-11-27 23:14:34,003 - INFO - Compétences CV: sonarqube spring boot mvc flask css agile spring docker scrum hibernate javascript git jira springboot python uml html mysql rest api jwt api rest mar...
+2025-11-27 23:14:34,018 - INFO - Compétences communes: {'rest', 'angular', 'html', 'javascript', 'git', 'css', 'api'}
+2025-11-27 23:14:34,019 - INFO - Ratio compétences: 100.00%
+2025-11-27 23:14:34,019 - INFO -  Score: 76.7% | Expérience: 0 ans
+2025-11-27 23:14:34,019 - INFO - 
+================================================================================
+2025-11-27 23:14:34,019 - INFO - RÉSULTATS FINAUX: 3 candidats analysés
+2025-11-27 23:14:34,019 - INFO - ================================================================================
+
+2025-11-27 23:15:07,015 - INFO - 
+================================================================================
+2025-11-27 23:15:07,016 - INFO - NOUVELLE ANALYSE DE RECOMMANDATION
+2025-11-27 23:15:07,016 - INFO - ================================================================================
+2025-11-27 23:15:07,016 - INFO - Description poste: nous cherchons un développeur back-end pour concevoir des apis robustes et sécurisées. vous travaillerez sur l architecture serveur et les bases de données pour supporter les applications front-end.. ...
+2025-11-27 23:15:07,016 - INFO - Compétences requises: java soap mysql git spring boot docker mariadb spring
+2025-11-27 23:15:07,016 - INFO - Expérience minimum: 0 ans
+2025-11-27 23:15:07,017 - INFO - Nombre de CVs trouvés: 3
+2025-11-27 23:15:07,017 - INFO - 
+------------------------------------------------------------
+2025-11-27 23:15:07,017 - INFO - Analyse CV: C:/Users/Firas kdidi/Desktop/Pfe/CV\ahmedwajih_benhmida.pdf
+2025-11-27 23:15:07,295 - INFO - Nom extrait: BENHMIDA AHMED WAJIH
+2025-11-27 23:15:07,301 - INFO -  Section expérience ligne 41
+2025-11-27 23:15:07,301 - INFO -  Fin section ligne 58
+2025-11-27 23:15:07,303 - INFO -  Date trouvée: 2023
+2025-11-27 23:15:07,304 - INFO -  Expérience: 2 ans (depuis 2023)
+2025-11-27 23:15:07,324 - INFO - Candidat: BENHMIDA AHMED WAJIH
+2025-11-27 23:15:07,324 - INFO - Expérience: 2 ans
+2025-11-27 23:15:07,324 - INFO - Compétences CV: sql rabbitmq cloud javascript api gateway jenkins git hibernate openapi jwt flask ci/cd nestjs uml microservices postgresql maven mariadb prometheus s...
+2025-11-27 23:15:07,331 - INFO - Compétences communes: {'boot', 'java', 'soap', 'git', 'mysql', 'docker', 'mariadb', 'spring'}
+2025-11-27 23:15:07,332 - INFO - Ratio compétences: 100.00%
+2025-11-27 23:15:07,332 - INFO -  Score: 77.4% | Expérience: 2 ans
+2025-11-27 23:15:07,332 - INFO - 
+------------------------------------------------------------
+2025-11-27 23:15:07,332 - INFO - Analyse CV: C:/Users/Firas kdidi/Desktop/Pfe/CV\anis_farjallah.pdf
+2025-11-27 23:15:07,796 - INFO - Nom extrait: FARJALLAH ANIS
+2025-11-27 23:15:07,797 - INFO -  Section expérience ligne 36
+2025-11-27 23:15:07,799 - INFO -  Fin section ligne 63
+2025-11-27 23:15:07,799 - INFO -  Date trouvée: 2024
+2025-11-27 23:15:07,799 - INFO -  Date trouvée: 2023
+2025-11-27 23:15:07,800 - INFO -  Date trouvée: 2019
+2025-11-27 23:15:07,800 - INFO -  Date trouvée: 2021
+2025-11-27 23:15:07,800 - INFO -  Date trouvée: 2021
+2025-11-27 23:15:07,800 - INFO -  Expérience: 6 ans (depuis 2019)
+2025-11-27 23:15:07,829 - INFO - Candidat: FARJALLAH ANIS
+2025-11-27 23:15:07,829 - INFO - Expérience: 6 ans
+2025-11-27 23:15:07,829 - INFO - Compétences CV: postman sql javascript java git hibernate mysql spring boot python html css docker uml mvc maven angular spring rest api...
+2025-11-27 23:15:07,835 - INFO - Compétences communes: {'boot', 'java', 'git', 'mysql', 'docker', 'spring'}
+2025-11-27 23:15:07,836 - INFO - Ratio compétences: 90.00%
+2025-11-27 23:15:07,836 - INFO -  Score: 64.8% | Expérience: 6 ans
+2025-11-27 23:15:07,836 - INFO - 
+------------------------------------------------------------
+2025-11-27 23:15:07,836 - INFO - Analyse CV: C:/Users/Firas kdidi/Desktop/Pfe/CV\firas_kdidi.pdf
+2025-11-27 23:15:08,050 - INFO - Nom extrait: KDIDI FIRAS
+2025-11-27 23:15:08,052 - INFO -  Section expérience ligne 44
+2025-11-27 23:15:08,052 - INFO -  Fin section ligne 56
+2025-11-27 23:15:08,053 - INFO -  Aucune expérience détectée (0 ans)
+2025-11-27 23:15:08,092 - INFO - Candidat: KDIDI FIRAS
+2025-11-27 23:15:08,092 - INFO - Expérience: 0 ans
+2025-11-27 23:15:08,092 - INFO - Compétences CV: sql javascript git hibernate api rest jwt flask ci/cd uml maven mariadb css scrum java jira spring boot html sonarqube angular angularjs postman mysql...
+2025-11-27 23:15:08,104 - INFO - Compétences communes: {'boot', 'java', 'git', 'mysql', 'docker', 'mariadb', 'spring'}
+2025-11-27 23:15:08,104 - INFO - Ratio compétences: 100.00%
+2025-11-27 23:15:08,105 - INFO -  Score: 72.9% | Expérience: 0 ans
+2025-11-27 23:15:08,105 - INFO - 
+================================================================================
+2025-11-27 23:15:08,105 - INFO - RÉSULTATS FINAUX: 3 candidats analysés
+2025-11-27 23:15:08,105 - INFO - ================================================================================
+

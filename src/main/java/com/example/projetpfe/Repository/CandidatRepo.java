@@ -24,5 +24,13 @@ public interface CandidatRepo extends JpaRepository<Candidat,Integer> {
 
     @Query("SELECT c FROM Candidature c WHERE c.candidat.email = :email AND c.offre.idOffre = :offreId")
     Candidature findByCandidatEmailAndOffreId(@Param("email") String email, @Param("offreId") Integer offreId);
-
+    @Query("SELECT c FROM Candidat c WHERE " +
+            "LOWER(c.nom) LIKE LOWER(CONCAT('%', :search1, '%')) OR " +
+            "LOWER(c.prenom) LIKE LOWER(CONCAT('%', :search1, '%')) OR " +
+            "LOWER(c.nom) LIKE LOWER(CONCAT('%', :search2, '%')) OR " +
+            "LOWER(c.prenom) LIKE LOWER(CONCAT('%', :search2, '%'))")
+    List<Candidat> findByNomContainingIgnoreCaseOrPrenomContainingIgnoreCase(
+            @Param("search1") String search1,
+            @Param("search2") String search2
+    );
 }

@@ -14,6 +14,8 @@ public interface CandidatureRepo extends JpaRepository<Candidature,Integer> {
     List<Candidature> findByOffre(Offre offre);
     Candidature findByCandidatAndOffre(Candidat candidat, Offre offre);
 
+    boolean existsByCandidatAndOffre(Candidat candidat, Offre offre);
+
     @Query("SELECT c FROM Candidature c WHERE c.candidat.id_candidature = :idCandidat")
     List<Candidature> findByCandidatId(@Param("idCandidat") Integer idCandidat);
 

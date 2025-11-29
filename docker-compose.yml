@@ -1,88 +1,75 @@
-version: '3.8'
+  version: '3.8'
 
-services:
-  # Base de données MariaDB
-  mariadb:
-    image: mariadb:11.2
-    container_name: mariadb-projetpfe
-    ports:
-      - "3306:3306"
-    environment:
-      MYSQL_ROOT_PASSWORD: 0000
-      MYSQL_DATABASE: projetpfe
-    volumes:
-      - mariadb-data:/var/lib/mysql
-    networks:
-      - projetpfe-network
-    healthcheck:
-      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+  services:
+    # Base de données MariaDB
+    mariadb:
+      image: mariadb:11.2
+      container_name: mariadb-projetpfe
+      ports:
+        - "3306:3306"
+      environment:
+        MYSQL_ROOT_PASSWORD: 0000
+        MYSQL_DATABASE: projetpfe
+      volumes:
+        - mariadb-data:/var/lib/mysql
+      networks:
+        - projetpfe-network
+      healthcheck:
+        test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
 
-  # Zeebe pour Camunda
-  zeebe:
-    image: camunda/zeebe:8.4.1
-    container_name: zeebe
-    ports:
-      - "26500:26500"
-    environment:
-      - ZEEBE_LOG_LEVEL=debug
-    networks:
-      - projetpfe-network
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9600/ready"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+    # Zeebe pour Camunda
+    zeebe:
+        image: camunda/zeebe:8.4.1
+        container_name: zeebe
+        ports:
+          - "26500:26500"
+        environment:
+          - ZEEBE_LOG_LEVEL=debug
+          -
+    # Keycloak pour l'authentification
+    keycloak:
+      container_name: keycloak-bsn
+      image: quay.io/keycloak/keycloak:24.0.2
+      ports:
+        - 9090:8080
+      environment:
+        KEYCLOAK_ADMIN: admin
+        KEYCLOAK_ADMIN_PASSWORD: admin
 
-  # Keycloak pour l'authentification
-  keycloak:
-    container_name: keycloak-bsn
-    image: quay.io/keycloak/keycloak:24.0.2
-    ports:
-      - "9090:8080"
-    environment:
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: admin
-    command:
-      - "start-dev"
-    networks:
-      - projetpfe-network
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/health/ready"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      command:
+        - "start-dev"
 
-  # Application Spring Boot (optionnel - pour test local)
-  backend:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: projetpfe-backend
-    ports:
-      - "8086:8086"
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:mariadb://mariadb:3306/projetpfe
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=0000
-      - CAMUNDA_CLIENT_ZEEBE_GATEWAY_ADDRESS=zeebe:26500
-      - KEYCLOAK_AUTH_SERVER_URL=http://keycloak:8080
-      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://keycloak:8080/realms/pfe-realm
-    depends_on:
-      mariadb:
-        condition: service_healthy
-      zeebe:
-        condition: service_healthy
-      keycloak:
-        condition: service_healthy
-    networks:
-      - projetpfe-network
+    # Application Spring Boot (optionnel - pour test local)
+    backend:
+      build:
+        context: .
+        dockerfile: Dockerfile
+      container_name: projetpfe-backend
+      ports:
+        - "8086:8086"
+      environment:
+        - SPRING_DATASOURCE_URL=jdbc:mariadb://mariadb:3306/projetpfe
+        - SPRING_DATASOURCE_USERNAME=root
+        - SPRING_DATASOURCE_PASSWORD=0000
+        - CAMUNDA_CLIENT_ZEEBE_GATEWAY_ADDRESS=zeebe:26500
+        - KEYCLOAK_AUTH_SERVER_URL=http://keycloak:8080
+        - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://keycloak:8080/realms/pfe-realm
+      depends_on:
+        mariadb:
+          condition: service_healthy
+        zeebe:
+          condition: service_healthy
+        keycloak:
+          condition: service_healthy
+      networks:
+        - projetpfe-network
 
-networks:
-  projetpfe-network:
-    driver: bridge
+  networks:
+    projetpfe-network:
+      driver: bridge
 
-volumes:
-  mariadb-data:
+  volumes:
+    mariadb-data:

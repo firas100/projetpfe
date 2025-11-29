@@ -90,79 +90,83 @@ public class RecommendationService {
     }
 
 
-    private List<Map<String, Object>> saveRecommendationsFromJson(String jsonOutput, Integer offreId) throws IOException {  // Add offreId param
+    private List<Map<String, Object>> saveRecommendationsFromJson(String jsonOutput, Integer offreId) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        List<Map<String, Object>> recommandations = mapper.readValue(jsonOutput, new TypeReference<>() {
-        });
+        List<Map<String, Object>> recommandations = mapper.readValue(jsonOutput, new TypeReference<>() {});
 
-        // Déduppliquer par nom pour éviter les duplicates
-        List<Map<String, Object>> uniqueRecommandations = recommandations.stream()
-                .distinct()
-                .collect(Collectors.toList());
-
-        logger.info("Processing {} unique recommendations from Python for Offre ID: {}", uniqueRecommandations.size(), offreId);
+        logger.info("Processing {} recommendations for Offre ID: {}", recommandations.size(), offreId);
 
         Offre offre = offreRepo.findById(offreId)
                 .orElseThrow(() -> new RuntimeException("Offre introuvable pour l'id " + offreId));
 
-        for (Map<String, Object> recMap : uniqueRecommandations) {
+        for (Map<String, Object> recMap : recommandations) {
             if (recMap.containsKey("error")) {
                 logger.error("Python error: {}", recMap.get("error"));
-                throw new RuntimeException("Python error: " + recMap.get("error"));
+                continue; // Skip errors mais continue avec les autres
             }
 
             String fullName = (String) recMap.get("Name");
-            String cvPath = (String) recMap.get("CV");
+
+            // 🔥 CORRECTION: Parsing robuste du nom
             String nom = "";
             String prenom = "";
+
             if (fullName != null && !fullName.isEmpty()) {
                 String[] parts = fullName.trim().split("\\s+");
-                nom = parts[0].toLowerCase().trim();
-                prenom = parts.length > 1 ? parts[1].toLowerCase().trim() : "";
+                if (parts.length >= 2) {
+                    // Prendre le dernier mot comme nom, le reste comme prénom
+                    nom = parts[parts.length - 1];  // WAJIH
+                    prenom = String.join(" ", java.util.Arrays.copyOf(parts, parts.length - 1)); // BENHMIDA AHMED
+                } else {
+                    nom = parts[0];
+                }
             }
-            logger.info("Searching Candidat for nom: {}, prenom: {}", nom, prenom);
 
-            // Essayer d'abord case-sensitive
-            List<Candidat> candidats = candidatRepo.findByNomEtPrenom(prenom, nom);
+            logger.info("Recherche candidat: prenom='{}', nom='{}'", prenom, nom);
 
-            // Si pas trouvé, essayer case-insensitive
+            // 🔥 CORRECTION: Recherche insensible à la casse avec LIKE
+            List<Candidat> candidats = candidatRepo.findByNomContainingIgnoreCaseOrPrenomContainingIgnoreCase(nom, prenom);
+
+            // Si pas trouvé, essayer avec inversion nom/prénom
             if (candidats.isEmpty()) {
-                logger.warn("No exact match for: {} {}. Trying case-insensitive...", nom, prenom);
-                candidats = candidatRepo.findByNomEtPrenom(prenom, nom);
+                logger.warn("Pas trouvé avec nom='{}', essai avec prénom='{}'", nom, prenom);
+                candidats = candidatRepo.findByNomContainingIgnoreCaseOrPrenomContainingIgnoreCase(prenom, nom);
             }
 
             if (candidats.isEmpty()) {
-                logger.warn("No match found for: {} {}", nom, prenom);
-                continue;  // Skip this rec
+                logger.error("❌ Candidat NON TROUVÉ: '{}' - Vérifiez la base de données!", fullName);
+                continue;
             }
 
-            // Prendre le premier match
             Candidat c = candidats.get(0);
+            logger.info("✅ Candidat trouvé: ID={}, nom={}, prenom={}", c.getId_candidature(), c.getNom(), c.getPrenom());
 
-            // Vérifier si recommendation existe déjà pour ce candidat ET cette offre
+            // Vérifier si recommendation existe déjà
             Optional<Recommendation> existingRec = recommendationRepo.findByCandidatAndOffre(c, offre);
+
+            // 🔥 CORRECTION: Score est déjà en % (0-100)
+            double similarity = ((Number) recMap.get("Similarity_Score")).doubleValue();
+            int yearsExp = ((Number) recMap.get("Years_of_Experience")).intValue();
+
             if (existingRec.isPresent()) {
-                logger.info("Recommendation already exists for Candidat ID: {} and Offre ID: {}. Updating similarity.", c.getId_candidature(), offreId);
-                Recommendation recommendationEntity = existingRec.get();
-                recommendationEntity.setSimilarityScore(((Number) recMap.get("Similarity_Score")).doubleValue());
-                recommendationEntity.setYearsOfExperience(((Number) recMap.get("Years_of_Experience")).intValue());
-                recommendationRepo.save(recommendationEntity);  // Update existing
+                logger.info("Mise à jour recommendation existante");
+                Recommendation rec = existingRec.get();
+                rec.setSimilarityScore(similarity);  // Score en %
+                rec.setYearsOfExperience(yearsExp);
+                recommendationRepo.save(rec);
             } else {
-                // Create new with link to offre
-                Recommendation recommendation = new Recommendation();
-                recommendation.setCandidat(c);
-                recommendation.setOffre(offre);  // Link to the specific offre
-                double similarity = ((Number) recMap.get("Similarity_Score")).doubleValue();
-                if (similarity > 1.0) similarity = 1.0;
-                recommendation.setSimilarityScore(similarity);
-                recommendation.setYearsOfExperience(((Number) recMap.get("Years_of_Experience")).intValue());
-                recommendationRepo.save(recommendation);
-                logger.info("Saved new recommendation for Candidat ID: {} and Offre ID: {} with Similarity: {}", c.getId_candidature(), offreId, similarity);
+                Recommendation rec = new Recommendation();
+                rec.setCandidat(c);
+                rec.setOffre(offre);
+                rec.setSimilarityScore(similarity);  // Score en %
+                rec.setYearsOfExperience(yearsExp);
+                recommendationRepo.save(rec);
+                logger.info(" Nouvelle recommendation sauvegardée: {}% pour {}", similarity, fullName);
             }
         }
+
         return recommandations;
     }
-
     public List<Recommendation> findall() {
         return recommendationRepo.findAll();
     }
