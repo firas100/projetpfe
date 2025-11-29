@@ -11,7 +11,6 @@ import java.util.Map;
 @RequestMapping("/api/progress")
 
 public class CandidatureProgressController {
-
     private CandidatureProgressService progressService;
 
     public CandidatureProgressController(CandidatureProgressService progressService) {
