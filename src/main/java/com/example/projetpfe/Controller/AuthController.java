@@ -28,7 +28,6 @@ public class AuthController {
         return ResponseEntity.ok(result);
     }
 
-
     @PostMapping("/admin/signup")
     public ResponseEntity<String> adminSignUp(
             @RequestParam String username,
