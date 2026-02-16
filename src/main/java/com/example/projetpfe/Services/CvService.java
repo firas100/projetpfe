@@ -301,9 +301,7 @@ public class CvService {
         return cvRepo.findAll();
     }
 
-    // ═══════════════════════════════════════════════════════════════
-    // MÉTHODES UTILITAIRES (pour tests)
-    // ═══════════════════════════════════════════════════════════════
+
     protected File getFile(String path) {
         return new File(path);
     }
