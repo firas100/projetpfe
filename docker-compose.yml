@@ -28,7 +28,6 @@
           - "26500:26500"
         environment:
           - ZEEBE_LOG_LEVEL=debug
-          -
     # Keycloak pour l'authentification
     keycloak:
       container_name: keycloak-bsn
