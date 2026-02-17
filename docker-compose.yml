@@ -34,13 +34,17 @@
       container_name: keycloak-bsn
       image: quay.io/keycloak/keycloak:24.0.2
       ports:
-        - 9090:8080
+        - "9090:8080"
       environment:
         KEYCLOAK_ADMIN: admin
         KEYCLOAK_ADMIN_PASSWORD: admin
-
+      volumes:
+        - ./keycloak/pfe-realm.json:/opt/keycloak/data/import/pfe-realm.json
       command:
         - "start-dev"
+        - "--import-realm"
+      networks:
+        - projetpfe-network
 
     # Application Spring Boot (optionnel - pour test local)
     backend:
@@ -58,12 +62,10 @@
         - KEYCLOAK_AUTH_SERVER_URL=http://keycloak:8080
         - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://keycloak:8080/realms/pfe-realm
       depends_on:
-        mariadb:
-          condition: service_healthy
-        zeebe:
-          condition: service_healthy
-        keycloak:
-          condition: service_healthy
+        - mariadb
+        - zeebe
+        - keycloak
+
       networks:
         - projetpfe-network
 
