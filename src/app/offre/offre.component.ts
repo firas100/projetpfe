@@ -8,7 +8,7 @@ import { AuthService } from '../auth/services/auth.service';
   selector: 'app-offre',
   standalone: false,
   templateUrl: './offre.component.html',
-  styleUrl: './offre.component.css'
+  styleUrl: './offre.component.scss'
 })
 export class OffreComponent {
 offre = {
@@ -24,6 +24,8 @@ offre = {
   sidebarCollapsed: boolean = false;
   searchTerm: string = '';
     username: string = '';
+totalCandidates: any;
+questionMenuOpen: any;
 
   constructor(private http: HttpClient, private router: Router,private authService:AuthService) {}
   ngOnInit(): void {

@@ -1,216 +1,709 @@
-<div class="page-container">
-  <!-- Hero Search Section -->
-  <div class="hero-section">
-    <div class="hero-content">
-      <h1 class="hero-title">Découvrez votre prochaine opportunité</h1>
-      <p class="hero-subtitle">Des milliers d'offres qui correspondent à votre profil</p>
-      
-      <div class="search-container">
-        <div class="search-box">
-          <span class="search-icon">🔍</span>
-          <input 
-            type="search" 
-            [(ngModel)]="searchTerm" 
-            placeholder="Rechercher par titre, compétences ou mots-clés..."
-            class="search-input"
-          >
-          <button class="search-btn" type="button">Rechercher</button>
-        </div>
+<!-- Modern Navbar -->
+<nav class="navbar">
+  <div class="navbar-container">
+    <div class="navbar-brand">
+      <div class="brand-logo">
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+          <rect width="40" height="40" rx="10" fill="url(#logoGradient)"/>
+          <path d="M12 15h16M12 20h12M12 25h14" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+          <defs>
+            <linearGradient id="logoGradient" x1="0" y1="0" x2="40" y2="40">
+              <stop offset="0%" stop-color="#667eea"/>
+              <stop offset="100%" stop-color="#764ba2"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <span class="brand-name">JobMatch</span>
+        <span class="brand-tagline">Trouvez votre carrière idéale</span>
+      </div>
+    </div>
+
+    <button class="navbar-toggle" (click)="toggleMobileMenu()" [class.active]="mobileMenuOpen">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <div class="navbar-menu" [class.active]="mobileMenuOpen">
+      <div class="navbar-links">
+        <a href="#" class="nav-link active">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <path d="M2 7l7-5 7 5v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Accueil</span>
+        </a>
+        <a href="#" class="nav-link">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <rect x="2" y="5" width="14" height="10" rx="2" stroke="currentColor" stroke-width="2"/>
+            <path d="M6 5V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          <span>Offres</span>
+        </a>
+        
+        <a href="#" class="nav-link">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <path d="M15 16l-3-3M2 7l7-5 7 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Ressources</span>
+        </a>
+      </div>
+
+      <div class="navbar-actions">
+        <button class="nav-button secondary">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <path d="M15 16v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2M9 8a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Connexion</span>
+        </button>
+        <button class="nav-button primary">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <path d="M9 1v16M1 9h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <span>Inscription</span>
+        </button>
       </div>
     </div>
   </div>
+</nav>
 
-  <!-- Main Content -->
-  <div class="main-content">
-    <!-- Results Header -->
-    <div class="results-header">
-      <h2 class="results-title">
-        <span class="results-count">{{ filteredOffres().length }}</span> 
-        {{ filteredOffres().length === 1 ? 'offre disponible' : 'offres disponibles' }}
-      </h2>
-      <div class="filter-tags">
-        <span 
-          class="tag" 
-          [class.active]="activeFilter === 'Toutes les offres'"
-          (click)="setFilter('Toutes les offres')"
-        >Toutes les offres</span>
-        <span 
-          class="tag" 
-          [class.active]="activeFilter === 'Récentes'"
-          (click)="setFilter('Récentes')"
-        >Récentes</span>
-        <span 
-          class="tag" 
-          [class.active]="activeFilter === 'À distance'"
-          (click)="setFilter('À distance')"
-        >À distance</span>
-      </div>
-    </div>
-
-    <!-- Job Cards Grid -->
-    <div class="jobs-grid">
-      <div *ngFor="let offre of paginatedOffres()" class="job-card">
-        <!-- Card Header -->
-        <div class="card-header">
-          <div class="company-logo">
-            <span class="logo-text">{{ offre.titreOffre.charAt(0).toUpperCase() }}</span>
-          </div>
-          <div class="job-info">
-            <h3 class="job-title">{{ offre.titreOffre }}</h3>
-            <div class="job-meta">
-              <span class="company-name">Entreprise Partenaire</span>
-              <span class="meta-separator">•</span>
-              <span class="location">📍 Tunis, Tunisie</span>
-            </div>
-            <div class="job-badges">
-              <span class="badge badge-primary">{{ offre.nbreDePoste }} poste{{ offre.nbreDePoste > 1 ? 's' : '' }}</span>
-              <span class="badge badge-secondary">Postuler maintenant</span>
-              <span class="badge badge-time">Il y a 2 jours</span>
-            </div>
-          </div>
-          <button class="bookmark-btn" title="Sauvegarder cette offre">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
-            </svg>
-          </button>
-        </div>
-
-        <!-- Card Body -->
-        <div class="card-body">
-          <p class="job-description">{{ offre.descriptionJob | slice:0:180 }}{{ offre.descriptionJob.length > 180 ? '...' : '' }}</p>
-          
-          <!-- Skills Preview -->
-          <div class="skills-preview" *ngIf="offre.competencesTechniques">
-            <span class="skill-tag" *ngFor="let skill of offre.competencesTechniques.split(',').slice(0, 4)">
-              {{ skill.trim() }}
-            </span>
-          </div>
-        </div>
-
-        <!-- Card Actions -->
-        <div class="card-actions">
-          <button 
-            class="btn-expand" 
-            (click)="toggleDetails(offre.idOffre)"
-            [class.expanded]="showDetails.get(offre.idOffre)">
-            <span>{{ showDetails.get(offre.idOffre) ? 'Voir moins' : 'Voir plus de détails' }}</span>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" [class.rotated]="showDetails.get(offre.idOffre)">
-              <polyline points="6 9 12 15 18 9"/>
-            </svg>
-          </button>
-        </div>
-
-        <!-- Expandable Details -->
-        <div class="details-panel" *ngIf="showDetails.get(offre.idOffre)">
-          <div class="details-content">
-            <div class="detail-section">
-              <h4 class="detail-title">📋 Description complète</h4>
-              <p class="detail-text">{{ offre.descriptionJob }}</p>
-            </div>
-
-            <div class="detail-section">
-              <h4 class="detail-title">👤 Profil recherché</h4>
-              <p class="detail-text">{{ offre.profilRecherche }}</p>
-            </div>
-
-            <div class="detail-section">
-              <h4 class="detail-title">💡 Compétences techniques</h4>
-              <div class="skills-grid">
-                <span class="skill-badge" *ngFor="let skill of offre.competencesTechniques.split(',')">
-                  ✓ {{ skill.trim() }}
-                </span>
-              </div>
-            </div>
-
-            <div class="detail-section">
-              <h4 class="detail-title">📊 Informations sur le poste</h4>
-              <div class="info-grid">
-                <div class="info-item">
-                  <span class="info-label">Nombre de postes</span>
-                  <span class="info-value">{{ offre.nbreDePoste }}</span>
-                </div>
-                <div class="info-item">
-                  <span class="info-label">Type de contrat</span>
-                  <span class="info-value">CDI</span>
-                </div>
-                <div class="info-item">
-                  <span class="info-label">Niveau d'expérience</span>
-                  <span class="info-value">Intermédiaire</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="apply-section">
-              <button class="btn-apply" (click)="GoToAddCandidature(offre)">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M9 11l3 3L22 4"/>
-                  <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
-                </svg>
-                Postuler maintenant
-              </button>
-              <button class="btn-share">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <circle cx="18" cy="5" r="3"/>
-                  <circle cx="6" cy="12" r="3"/>
-                  <circle cx="18" cy="19" r="3"/>
-                  <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
-                  <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
-                </svg>
-                Partager
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Empty State -->
-    <div *ngIf="paginatedOffres().length === 0" class="empty-state">
-      <div class="empty-icon">
-        <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
-          <circle cx="11" cy="11" r="8"/>
-          <path d="m21 21-4.35-4.35"/>
+<!-- Loading Overlay -->
+<div class="loading-overlay" *ngIf="isLoading">
+  <div class="loading-content">
+    <div class="loading-animation">
+      <div class="loading-briefcase">
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+          <rect x="8" y="20" width="48" height="32" rx="4" stroke="#667eea" stroke-width="3"/>
+          <path d="M20 20V16a4 4 0 0 1 4-4h16a4 4 0 0 1 4 4v4" stroke="#667eea" stroke-width="3"/>
+          <rect x="28" y="32" width="8" height="8" rx="2" fill="#667eea"/>
         </svg>
       </div>
-      <h3 class="empty-title">Aucune offre trouvée</h3>
-      <p class="empty-text">Nous n'avons trouvé aucune offre correspondant à votre recherche.</p>
-      <p class="empty-suggestion">Essayez de modifier vos critères ou recherchez avec d'autres mots-clés.</p>
-      <button class="btn-reset" (click)="searchTerm = ''">Effacer la recherche</button>
-    </div>
-
-    <!-- Pagination -->
-    <div class="pagination" *ngIf="totalPages() > 1">
-      <button 
-        class="pagination-btn" 
-        (click)="previousPage()" 
-        [disabled]="currentPage === 1">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <polyline points="15 18 9 12 15 6"/>
-        </svg>
-        Précédent
-      </button>
-      
-      <div class="pagination-pages">
-        <button 
-          *ngFor="let page of getPageNumbers()"
-          class="pagination-btn page-number"
-          [class.active]="page === currentPage"
-          (click)="goToPage(page)"
-        >
-          {{ page }}
-        </button>
-        <span class="page-info">Page {{ currentPage }} sur {{ totalPages() }}</span>
+      <div class="loading-dots">
+        <span></span>
+        <span></span>
+        <span></span>
       </div>
-
-      <button 
-        class="pagination-btn" 
-        (click)="nextPage()" 
-        [disabled]="currentPage === totalPages()">
-        Suivant
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <polyline points="9 18 15 12 9 6"/>
-        </svg>
-      </button>
     </div>
+    <h3 class="loading-title">Chargement des opportunités</h3>
+    <p class="loading-subtitle">Préparation de votre expérience...</p>
   </div>
 </div>
+
+<!-- Main Wrapper -->
+<div class="app-wrapper">
+
+  <!-- Full Width Hero Section -->
+  <section class="hero-section-fullwidth">
+    <div class="hero-background">
+      <div class="hero-gradient"></div>
+      <div class="hero-pattern"></div>
+      <div class="floating-elements">
+        <div class="float-element" style="--delay: 0s; --duration: 20s; left: 5%; top: 15%;"></div>
+        <div class="float-element" style="--delay: 2s; --duration: 25s; right: 10%; top: 25%;"></div>
+        <div class="float-element" style="--delay: 4s; --duration: 22s; right: 20%; bottom: 20%;"></div>
+        <div class="float-element" style="--delay: 1s; --duration: 24s; left: 15%; bottom: 30%;"></div>
+        <div class="float-element" style="--delay: 3s; --duration: 23s; left: 40%; top: 10%;"></div>
+      </div>
+    </div>
+
+    <div class="hero-content-wrapper">
+      <div class="hero-content">
+        <div class="status-badge">
+          <span class="status-dot"></span>
+          <span class="status-text">{{ filteredOffres().length }} postes disponibles</span>
+          <span class="status-separator">•</span>
+          <span class="status-text">Mis à jour aujourd'hui</span>
+        </div>
+
+        <h1 class="hero-heading">
+          Transformez votre carrière
+          <span class="hero-highlight">
+            <span class="highlight-text">dès maintenant</span>
+            <svg class="highlight-underline" viewBox="0 0 280 12" fill="none">
+              <path d="M2 10C70 3 210 3 278 10" stroke="url(#underlineGrad)" stroke-width="3" stroke-linecap="round"/>
+              <defs>
+                <linearGradient id="underlineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#667eea"/>
+                  <stop offset="100%" stop-color="#f093fb"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </span>
+        </h1>
+
+        <p class="hero-description">
+          Découvrez des milliers d'opportunités qui correspondent à vos compétences et ambitions. 
+          Rejoignez les meilleurs talents et trouvez l'entreprise de vos rêves.
+        </p>
+
+        <div class="hero-search">
+          <div class="search-box-hero">
+            <div class="search-input-wrapper">
+              <svg class="search-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+                <path d="M17 17l4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              <input 
+                type="text" 
+                class="search-input"
+                [(ngModel)]="searchTerm"
+                (input)="onSearchChange(searchTerm)"
+                placeholder="Titre du poste, compétences, localisation..."
+                autocomplete="off"
+              />
+              <button 
+                class="search-clear-hero" 
+                *ngIf="searchTerm" 
+                (click)="clearSearch()"
+              >
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path d="M15 5L5 15M5 5l10 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </button>
+            </div>
+            <button class="search-submit-hero">
+              <span>Rechercher</span>
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M4 10h12M12 6l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat-item-hero">
+            <div class="stat-icon-hero">💼</div>
+            <div class="stat-details">
+              <div class="stat-number">{{ filteredOffres().length }}</div>
+              <div class="stat-label">Offres actives</div>
+            </div>
+          </div>
+          <div class="stat-divider-hero"></div>
+          <div class="stat-item-hero">
+            <div class="stat-icon-hero">🏢</div>
+            <div class="stat-details">
+              <div class="stat-number">500+</div>
+              <div class="stat-label">Entreprises</div>
+            </div>
+          </div>
+          <div class="stat-divider-hero"></div>
+          <div class="stat-item-hero">
+            <div class="stat-icon-hero">✨</div>
+            <div class="stat-details">
+              <div class="stat-number">{{ savedOffers.size }}</div>
+              <div class="stat-label">Sauvegardées</div>
+            </div>
+          </div>
+          <div class="stat-divider-hero"></div>
+          <div class="stat-item-hero">
+            <div class="stat-icon-hero">👥</div>
+            <div class="stat-details">
+              <div class="stat-number">10K+</div>
+              <div class="stat-label">Candidats</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content with Sidebar -->
+  <div class="content-layout">
+    <div class="layout-container">
+      
+      <!-- Sidebar Filters -->
+      <aside class="sidebar-filters" [class.mobile-open]="sidebarOpen">
+        <div class="sidebar-header">
+          <h3 class="sidebar-title">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M3 6h14M6 10h8M8 14h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            Filtres
+          </h3>
+          <button class="sidebar-close" (click)="toggleSidebar()">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M15 5L5 15M5 5l10 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="sidebar-content">
+          <!-- Filter Categories -->
+          <div class="filter-section">
+            <div class="filter-section-header">
+              <h4 class="filter-section-title">Catégories</h4>
+              <button 
+                class="filter-reset-btn" 
+                (click)="resetFilters()" 
+                *ngIf="activeFilter !== 'all' || searchTerm"
+              >
+                Réinitialiser
+              </button>
+            </div>
+            <div class="filter-options">
+              <button 
+                *ngFor="let filter of filterOptions"
+                class="filter-option"
+                [class.active]="activeFilter === filter.id"
+                (click)="setFilter(filter.id)"
+              >
+                <span class="filter-option-icon">{{ filter.icon }}</span>
+                <span class="filter-option-label">{{ filter.label }}</span>
+                <span class="filter-option-badge" *ngIf="activeFilter === filter.id">
+                  {{ filteredOffres().length }}
+                </span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Quick Stats in Sidebar -->
+          <div class="sidebar-stats">
+            <div class="sidebar-stat-card">
+              <div class="sidebar-stat-icon">📊</div>
+              <div class="sidebar-stat-content">
+                <div class="sidebar-stat-value">{{ filteredOffres().length }}</div>
+                <div class="sidebar-stat-label">Résultats</div>
+              </div>
+            </div>
+            <div class="sidebar-stat-card">
+              <div class="sidebar-stat-icon">💾</div>
+              <div class="sidebar-stat-content">
+                <div class="sidebar-stat-value">{{ savedOffers.size }}</div>
+                <div class="sidebar-stat-label">Sauvegardés</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Job Type Filter -->
+          <div class="filter-section">
+            <h4 class="filter-section-title">Type de contrat</h4>
+            <div class="filter-checkboxes">
+              <label class="filter-checkbox">
+                <input type="checkbox" [(ngModel)]="filters.cdi">
+                <span class="checkbox-custom"></span>
+                <span class="checkbox-label">CDI</span>
+              </label>
+              <label class="filter-checkbox">
+                <input type="checkbox" [(ngModel)]="filters.cdd">
+                <span class="checkbox-custom"></span>
+                <span class="checkbox-label">CDD</span>
+              </label>
+              <label class="filter-checkbox">
+                <input type="checkbox" [(ngModel)]="filters.freelance">
+                <span class="checkbox-custom"></span>
+                <span class="checkbox-label">Freelance</span>
+              </label>
+              <label class="filter-checkbox">
+                <input type="checkbox" [(ngModel)]="filters.stage">
+                <span class="checkbox-custom"></span>
+                <span class="checkbox-label">Stage</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Work Mode Filter -->
+          <div class="filter-section">
+            <h4 class="filter-section-title">Mode de travail</h4>
+            <div class="filter-checkboxes">
+              <label class="filter-checkbox">
+                <input type="checkbox" [(ngModel)]="filters.remote">
+                <span class="checkbox-custom"></span>
+                <span class="checkbox-label">Remote</span>
+              </label>
+              <label class="filter-checkbox">
+                <input type="checkbox" [(ngModel)]="filters.hybrid">
+                <span class="checkbox-custom"></span>
+                <span class="checkbox-label">Hybride</span>
+              </label>
+              <label class="filter-checkbox">
+                <input type="checkbox" [(ngModel)]="filters.onsite">
+                <span class="checkbox-custom"></span>
+                <span class="checkbox-label">Sur site</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Saved Jobs Quick Access -->
+          <div class="sidebar-saved-section" *ngIf="savedOffers.size > 0">
+            <h4 class="filter-section-title">Mes favoris</h4>
+            <div class="saved-preview">
+              <button class="saved-preview-btn">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                  <path d="M3 2h12a1 1 0 0 1 1 1v13a.5.5 0 0 1-.777.416L9 13l-6.223 3.416A.5.5 0 0 1 2 16V3a1 1 0 0 1 1-1z" fill="currentColor"/>
+                </svg>
+                <span>Voir mes {{ savedOffers.size }} offre(s) sauvegardée(s)</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Content Area -->
+      <main class="main-content">
+        <!-- Mobile Filters Toggle -->
+        <div class="mobile-filters-toggle">
+          <button class="filters-toggle-btn" (click)="toggleSidebar()">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M3 6h14M6 10h8M8 14h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <span>Filtres</span>
+            <span class="filter-badge" *ngIf="activeFilter !== 'all'">1</span>
+          </button>
+          <div class="results-count">
+            {{ filteredOffres().length }} offre(s)
+          </div>
+        </div>
+
+        <!-- Error State -->
+        <div class="error-container" *ngIf="error && !isLoading">
+          <div class="error-card">
+            <div class="error-icon-wrapper">
+              <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+                <circle cx="32" cy="32" r="30" stroke="#ef4444" stroke-width="3"/>
+                <path d="M32 20v16M32 44h.01" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3 class="error-title">Erreur de chargement</h3>
+            <p class="error-message">{{ error }}</p>
+            <button class="error-retry" (click)="loadOffres()">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <path d="M17 2v6h-6M1 16v-6h6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M3.5 9A7.5 7.5 0 0 1 16 5l1-3M14.5 9A7.5 7.5 0 0 1 2 13l-1 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Réessayer
+            </button>
+          </div>
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-container" *ngIf="filteredOffres().length === 0 && !isLoading && !error">
+          <div class="empty-card">
+            <div class="empty-illustration">
+              <svg width="200" height="200" viewBox="0 0 200 200" fill="none">
+                <circle cx="100" cy="100" r="80" fill="#f3f4f6"/>
+                <path d="M60 90c0-22.091 17.909-40 40-40s40 17.909 40 40" stroke="#667eea" stroke-width="4" stroke-linecap="round"/>
+                <circle cx="80" cy="85" r="6" fill="#667eea"/>
+                <circle cx="120" cy="85" r="6" fill="#667eea"/>
+                <path d="M75 120c5 10 20 15 25 15s20-5 25-15" stroke="#667eea" stroke-width="4" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3 class="empty-title">Aucune offre trouvée</h3>
+            <p class="empty-message">
+              {{ searchTerm ? 
+                'Essayez de modifier vos critères de recherche ou de retirer certains filtres.' : 
+                'Aucune offre n\'est disponible pour le moment. Revenez bientôt !' 
+              }}
+            </p>
+            <div class="empty-actions">
+              <button class="empty-button primary" (click)="resetFilters()">
+                Réinitialiser les filtres
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Job Cards Grid -->
+        <div class="jobs-grid" *ngIf="filteredOffres().length > 0">
+          <article 
+            *ngFor="let offre of paginatedOffres(); let i = index" 
+            class="job-card"
+            [class.is-saved]="isSaved(offre.idOffre)"
+          >
+            <div class="job-card-header">
+              <div class="company-avatar">
+                <div class="avatar-gradient" [style.--avatar-hue]="offre.idOffre * 137.5 + 'deg'">
+                  <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                    <path d="M8 10h12M8 14h8M8 18h10" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                    <rect x="6" y="6" width="16" height="16" rx="2" stroke="white" stroke-width="2"/>
+                  </svg>
+                </div>
+              </div>
+
+              <div class="job-card-meta">
+                <div class="job-card-badges">
+                  <span class="meta-badge featured" *ngIf="offre.nbreDePoste >= 2">
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                      <path d="M6 1l1.5 3 3.5.5-2.5 2 .5 3.5L6 8.5 3 10l.5-3.5L1 4.5 4.5 4 6 1z" fill="currentColor"/>
+                    </svg>
+                    Vedette
+                  </span>
+                  <span class="meta-badge">
+                    {{ offre.nbreDePoste }} poste(s)
+                  </span>
+                </div>
+              </div>
+
+              <div class="job-card-actions">
+                <button 
+                  class="action-button"
+                  [class.is-active]="isSaved(offre.idOffre)"
+                  (click)="toggleSaveOffer(offre, $event)"
+                  [attr.aria-label]="isSaved(offre.idOffre) ? 'Retirer' : 'Sauvegarder'"
+                >
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M4 3h12a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L10 14.5l-7.223 4.416A.5.5 0 0 1 2 18.5V5a2 2 0 0 1 2-2z" 
+                      stroke="currentColor" 
+                      stroke-width="1.5" 
+                      [attr.fill]="isSaved(offre.idOffre) ? 'currentColor' : 'none'"
+                    />
+                  </svg>
+                </button>
+                <button 
+                  class="action-button"
+                  (click)="shareOffer(offre, $event)"
+                  aria-label="Partager"
+                >
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <circle cx="5" cy="10" r="2" stroke="currentColor" stroke-width="1.5"/>
+                    <circle cx="15" cy="5" r="2" stroke="currentColor" stroke-width="1.5"/>
+                    <circle cx="15" cy="15" r="2" stroke="currentColor" stroke-width="1.5"/>
+                    <path d="M7 9l6-3M7 11l6 3" stroke="currentColor" stroke-width="1.5"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="job-card-content">
+              <h3 class="job-title">{{ offre.titreOffre }}</h3>
+              
+              <p class="job-description" [class.is-expanded]="showDetails.get(offre.idOffre)">
+                {{ offre.descriptionJob }}
+              </p>
+
+              <button 
+                class="expand-button" 
+                (click)="toggleDetails(offre.idOffre)"
+                *ngIf="offre.descriptionJob && offre.descriptionJob.length > 150"
+              >
+                {{ showDetails.get(offre.idOffre) ? 'Voir moins' : 'Lire plus' }}
+                <svg 
+                  width="14" 
+                  height="14" 
+                  viewBox="0 0 14 14" 
+                  fill="none"
+                  [class.is-rotated]="showDetails.get(offre.idOffre)"
+                >
+                  <path d="M3.5 5.25L7 8.75l3.5-3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+
+              <div class="job-skills" *ngIf="offre.competencesTechniques">
+                <div class="skills-label">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M8 1l2 4 4 .5-3 2.5.5 4L8 10.5l-3.5 1.5.5-4L2 5.5 6 5l2-4z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <span>Compétences</span>
+                </div>
+                <div class="skills-list">
+                  <span 
+                    *ngFor="let skill of extractSkillsPreview(offre.competencesTechniques, 4)" 
+                    class="skill-chip"
+                  >
+                    {{ skill }}
+                  </span>
+                  <span 
+                    class="skill-chip more" 
+                    *ngIf="getSkillsArray(offre.competencesTechniques).length > 4"
+                  >
+                    +{{ getSkillsArray(offre.competencesTechniques).length - 4 }}
+                  </span>
+                </div>
+              </div>
+
+              <div class="job-profile" *ngIf="offre.profilRecherche && showDetails.get(offre.idOffre)">
+                <div class="profile-label">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <circle cx="8" cy="5" r="2.5" stroke="currentColor" stroke-width="1.5"/>
+                    <path d="M3 14a5 5 0 0 1 10 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  </svg>
+                  <span>Profil recherché</span>
+                </div>
+                <p class="profile-text">{{ offre.profilRecherche }}</p>
+              </div>
+            </div>
+
+            <div class="job-card-footer">
+              <button class="apply-button" (click)="goToAddCandidature(offre)">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                  <path d="M9 1v16M1 9h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <span>Postuler maintenant</span>
+              </button>
+            </div>
+
+            <div class="saved-badge" *ngIf="isSaved(offre.idOffre)">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M12 4L5.5 10.5 2 7" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </article>
+        </div>
+
+        <!-- Pagination -->
+        <nav class="pagination-section" *ngIf="filteredOffres().length > 0 && totalPages() > 1">
+          <div class="pagination-info">
+            <span class="pagination-text">
+              Affichage <strong>{{ (currentPage - 1) * pageSize + 1 }}</strong> à 
+              <strong>{{ Math.min(currentPage * pageSize, filteredOffres().length) }}</strong> 
+              sur <strong>{{ filteredOffres().length }}</strong> offres
+            </span>
+          </div>
+          
+          <div class="pagination-controls">
+            <button 
+              class="pagination-button"
+              [disabled]="currentPage === 1"
+              (click)="previousPage()"
+              aria-label="Page précédente"
+            >
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M12 16l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+
+            <div class="pagination-pages">
+              <button 
+                *ngFor="let page of getPageNumbers()"
+                class="page-button"
+                [class.is-active]="currentPage === page"
+                (click)="goToPage(page)"
+              >
+                {{ page }}
+              </button>
+            </div>
+
+            <button 
+              class="pagination-button"
+              [disabled]="currentPage === totalPages()"
+              (click)="nextPage()"
+              aria-label="Page suivante"
+            >
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M8 4l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+        </nav>
+
+      </main>
+    </div>
+  </div>
+
+</div>
+
+<!-- Modern Footer -->
+<footer class="footer">
+  <div class="footer-container">
+    <!-- Footer Top -->
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+            <rect width="48" height="48" rx="12" fill="url(#footerLogoGradient)"/>
+            <path d="M14 18h20M14 24h16M14 30h18" stroke="white" stroke-width="3" stroke-linecap="round"/>
+            <defs>
+              <linearGradient id="footerLogoGradient" x1="0" y1="0" x2="48" y2="48">
+                <stop offset="0%" stop-color="#667eea"/>
+                <stop offset="100%" stop-color="#764ba2"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <h3 class="footer-brand-name">JobMatch</h3>
+        <p class="footer-brand-description">
+          Votre partenaire de confiance pour trouver l'opportunité professionnelle idéale. 
+          Connectons les talents avec les meilleures entreprises.
+        </p>
+        <div class="footer-social">
+          <a href="#" class="social-link" aria-label="LinkedIn">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M16 2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zM7 15H5V8h2v7zM6 7a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm9 8h-2v-3.5c0-1.5-2-1.4-2 0V15H9V8h2v1.2c.9-1.6 4-1.7 4 1.5V15z" fill="currentColor"/>
+            </svg>
+          </a>
+          <a href="#" class="social-link" aria-label="Twitter">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M18 4.5c-.6.3-1.2.4-1.9.5.7-.4 1.2-1 1.4-1.8-.6.4-1.3.6-2.1.8-.6-.6-1.5-1-2.4-1-1.7 0-3.2 1.5-3.2 3.3 0 .3 0 .5.1.7-2.7-.1-5.2-1.4-6.8-3.4-.3.5-.4 1-.4 1.7 0 1.1.6 2.1 1.5 2.7-.5 0-1-.2-1.5-.4C2.7 8.7 4 10 5.7 10.3c-.3.1-.6.1-.9.1-.2 0-.4 0-.6-.1.4 1.3 1.6 2.3 3.1 2.3-1.1.9-2.5 1.4-4.1 1.4H2c1.5.9 3.2 1.5 5 1.5 6 0 9.3-5 9.3-9.3v-.4c.7-.5 1.3-1.1 1.7-1.8z" fill="currentColor"/>
+            </svg>
+          </a>
+          <a href="#" class="social-link" aria-label="Facebook">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M18 10c0-4.4-3.6-8-8-8s-8 3.6-8 8c0 4 2.9 7.3 6.7 7.9v-5.6H6.9V10h1.8V8.3c0-1.8 1.1-2.8 2.7-2.8.8 0 1.6.1 1.6.1v1.8h-.9c-.9 0-1.2.6-1.2 1.1V10h2l-.3 2.3h-1.7v5.6c3.8-.6 6.7-3.9 6.7-7.9z" fill="currentColor"/>
+            </svg>
+          </a>
+          <a href="#" class="social-link" aria-label="Instagram">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <rect x="2" y="2" width="16" height="16" rx="4" stroke="currentColor" stroke-width="2"/>
+              <circle cx="10" cy="10" r="3" stroke="currentColor" stroke-width="2"/>
+              <circle cx="15" cy="5" r="1" fill="currentColor"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-links-group">
+        <div class="footer-column">
+          <h4 class="footer-column-title">Entreprise</h4>
+          <ul class="footer-links">
+            <li><a href="#" class="footer-link">À propos</a></li>
+            <li><a href="#" class="footer-link">Notre équipe</a></li>
+            <li><a href="#" class="footer-link">Carrières</a></li>
+            <li><a href="#" class="footer-link">Presse</a></li>
+            <li><a href="#" class="footer-link">Blog</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h4 class="footer-column-title">Pour les candidats</h4>
+          <ul class="footer-links">
+            <li><a href="#" class="footer-link">Parcourir les offres</a></li>
+            <li><a href="#" class="footer-link">Créer un profil</a></li>
+            <li><a href="#" class="footer-link">Conseils carrière</a></li>
+            <li><a href="#" class="footer-link">Témoignages</a></li>
+            <li><a href="#" class="footer-link">FAQ</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h4 class="footer-column-title">Pour les entreprises</h4>
+          <ul class="footer-links">
+            <li><a href="#" class="footer-link">Publier une offre</a></li>
+            <li><a href="#" class="footer-link">Solutions recrutement</a></li>
+            <li><a href="#" class="footer-link">Tarifs</a></li>
+            <li><a href="#" class="footer-link">Ressources RH</a></li>
+            <li><a href="#" class="footer-link">Support</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h4 class="footer-column-title">Ressources</h4>
+          <ul class="footer-links">
+            <li><a href="#" class="footer-link">Centre d'aide</a></li>
+            <li><a href="#" class="footer-link">Guides</a></li>
+            <li><a href="#" class="footer-link">API</a></li>
+            <li><a href="#" class="footer-link">Partenaires</a></li>
+            <li><a href="#" class="footer-link">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Bottom -->
+    <div class="footer-bottom">
+      <div class="footer-bottom-content">
+        <p class="footer-copyright">
+          © 2024 JobMatch. Tous droits réservés.
+        </p>
+        <div class="footer-legal">
+          <a href="#" class="footer-legal-link">Mentions légales</a>
+          <span class="footer-separator">•</span>
+          <a href="#" class="footer-legal-link">Confidentialité</a>
+          <span class="footer-separator">•</span>
+          <a href="#" class="footer-legal-link">Cookies</a>
+          <span class="footer-separator">•</span>
+          <a href="#" class="footer-legal-link">CGU</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>

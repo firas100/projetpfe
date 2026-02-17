@@ -1,69 +1,177 @@
-<!-- NAVBAR -->
+<!-- ═══════════════════════════════════════════════════════════════
+     ULTIMATE PREMIUM HR RECRUITMENT DASHBOARD - JOB OFFERS MODULE
+     Enhanced Design System - Professional Recruitment Experience
+     ═══════════════════════════════════════════════════════════════ -->
+
+<!-- NAVBAR - Ultimate Premium Design -->
 <nav class="navbar">
-  <div class="navbar-left">
-    <button class="hamburger" (click)="toggleSidebar()" aria-label="Toggle sidebar">
-      <span></span><span></span><span></span>
-    </button>
-    <span class="brand">SIGA <small class="brand-sub">Admin</small></span>
-  </div>
-
-  <form class="search-wrapper" (submit)="$event.preventDefault(); applyFilter()">
-    <div class="search-field">
-      <input
-        type="search"
-        class="search"
-        placeholder="Recherche: nom, prénom, email..."
-        [(ngModel)]="searchTerm"
-        name="search"
-        aria-label="Search candidates"
-      />
-      <button type="button" class="btn btn-search" (click)="applyFilter()" title="Rechercher">
-        <i class="fas fa-search"></i>
+  <div class="navbar-container">
+    <!-- Left Section -->
+    <div class="navbar-left">
+      <button class="hamburger" (click)="toggleSidebar()" aria-label="Toggle sidebar">
+        <span></span>
+        <span></span>
+        <span></span>
       </button>
-    </div>
-  </form>
-
-  <div class="navbar-right">
-    <div class="user">
-      <div class="user-info">
-        <div class="user-emoji">👋</div>
-        <div class="user-text">
-          <div class="user-hi">Bienvenue</div>
-          <div class="user-name">{{ username }}</div>
+      
+      <div class="brand-logo">
+        <div class="logo-icon">
+          <i class="fas fa-rocket"></i>
+          <div class="logo-shine"></div>
         </div>
-        <button class="btn-logout" title="Déconnexion" (click)="onLogout()">
+        <div class="logo-text">
+          <span class="brand">SIGA</span>
+          <span class="brand-sub">Recruitment Excellence</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Center Search -->
+    <form class="search-wrapper" (submit)="$event.preventDefault(); applyFilter()">
+      <div class="search-field">
+        <i class="fas fa-search search-icon"></i>
+        <input
+          class="search"
+          type="search"
+          [(ngModel)]="searchTerm"
+          name="search"
+          placeholder="Rechercher une offre par titre, compétences..."
+          aria-label="Search offers"
+          (input)="applyFilter()"
+        />
+        <button 
+          *ngIf="searchTerm" 
+          type="button" 
+          class="search-clear"
+          aria-label="Clear search"
+        >
+          <i class="fas fa-times"></i>
+        </button>
+        <kbd class="search-shortcut">⌘K</kbd>
+      </div>
+    </form>
+
+    <!-- Right Section -->
+    <div class="navbar-right">
+      <button class="icon-btn notif-btn" title="Notifications" aria-label="Notifications">
+        <i class="fas fa-bell"></i>
+        <span class="badge-dot"></span>
+        <span class="badge-count">3</span>
+      </button>
+      
+      <div class="divider-vertical"></div>
+      
+      <div class="user-menu">
+        <div class="user-avatar">
+          <div class="avatar-gradient">
+            <span>{{ username.charAt(0).toUpperCase() }}</span>
+          </div>
+          <div class="status-indicator online"></div>
+        </div>
+        <div class="user-details">
+          <span class="user-greeting">Bonjour,</span>
+          <span class="user-name">{{ username }}</span>
+        </div>
+        <button class="btn-logout" title="Déconnexion" (click)="onLogout()" aria-label="Logout">
           <i class="fas fa-sign-out-alt"></i>
-        </button> 
+        </button>
       </div>
     </div>
   </div>
+  <div class="navbar-glow"></div>
 </nav>
 
-<!-- SIDEBAR -->
+<!-- SIDEBAR - Ultimate Premium Design -->
 <aside class="sidebar" [class.collapsed]="sidebarCollapsed">
-  <div class="sidebar-top">
-    <div class="brand">
-      <i class="fas fa-rocket"></i>
-      <span>SIGA</span>
+  <div class="sidebar-header">
+    <div class="sidebar-brand">
+      <div class="brand-icon">
+        <i class="fas fa-users-cog"></i>
+        <div class="icon-pulse"></div>
+      </div>
+      <span class="brand-text">SIGA HR</span>
     </div>
-    <button class="collapse-btn" (click)="toggleSidebar()">
-      <i class="fas" [ngClass]="sidebarCollapsed ? 'fa-angle-right' : 'fa-angle-left'"></i>
+    <button class="collapse-toggle" (click)="toggleSidebar()" aria-label="Toggle sidebar">
+      <i class="fas" [ngClass]="sidebarCollapsed ? 'fa-chevron-right' : 'fa-chevron-left'"></i>
     </button>
   </div>
 
-  <nav class="nav-links">
-    <a routerLink="/getall" routerLinkActive="active"><i class="fas fa-tachometer-alt"></i><span class="link-text">Dashboard</span></a>
-    <a routerLink="/recommendation" routerLinkActive="active"><i class="fas fa-file-alt"></i><span class="link-text">Analyse CV</span></a>
-    <a routerLink="/candidats" routerLinkActive="active"><i class="fas fa-users"></i><span class="link-text">Candidats</span></a>
-    <a routerLink="/settings" routerLinkActive="active"><i class="fas fa-cog"></i><span class="link-text">Paramètres</span></a>
+  <nav class="sidebar-nav">
+    <!-- Main Menu -->
+    <div class="nav-section">
+      <span class="nav-section-title">Menu Principal</span>
+      
+      <a routerLink="/getall" class="nav-link" routerLinkActive="active">
+        <div class="nav-icon">
+          <i class="fas fa-chart-line"></i>
+        </div>
+        <span class="nav-text">Dashboard</span>
+        <div class="nav-indicator"></div>
+      </a>
+      
+      <a routerLink="/recommendation" routerLinkActive="active" class="nav-link">
+        <div class="nav-icon">
+          <i class="fas fa-brain"></i>
+        </div>
+        <span class="nav-text">Analyse CV</span>
+        <div class="nav-indicator"></div>
+      </a>
+      
+      <a routerLink="/HistoriqueCandidat" routerLinkActive="active" class="nav-link">
+        <div class="nav-icon">
+          <i class="fas fa-history"></i>
+        </div>
+        <span class="nav-text">Historique</span>
+        <div class="nav-indicator"></div>
+      </a>
+      
+      <a routerLink="/getCandidats" class="nav-link" routerLinkActive="active">
+        <div class="nav-icon">
+          <i class="fas fa-user-friends"></i>
+        </div>
+        <span class="nav-text">Candidats</span>
+        <div class="nav-indicator"></div>
+      </a>
+    </div>
+
+    <!-- Management Section -->
+    <div class="nav-section">
+      <span class="nav-section-title">Gestion</span>
+      
+      <a routerLink="/Calendrier" class="nav-link" routerLinkActive="active">
+        <div class="nav-icon">
+          <i class="fas fa-calendar-check"></i>
+        </div>
+        <span class="nav-text">Calendrier</span>
+        <div class="nav-indicator"></div>
+      </a>
+      
+      <a routerLink="/OfferByAdmin" class="nav-link active" routerLinkActive="active">
+        <div class="nav-icon">
+          <i class="fas fa-briefcase"></i>
+        </div>
+        <span class="nav-text">Offres</span>
+        <div class="nav-indicator"></div>
+      </a>
+    </div>
   </nav>
 
-  <div class="sidebar-bottom">
-    <div class="user-profile">
-      <div class="user-info">
+  <div class="sidebar-footer">
+    <div class="user-card">
+      <div class="user-avatar-small">
+        <span>{{ username.charAt(0).toUpperCase() }}</span>
+        <div class="avatar-ring"></div>
+      </div>
+      <div class="user-info-small">
+        <span class="user-name-small">{{ username }}</span>
+        <span class="user-role">Administrateur RH</span>
       </div>
     </div>
-    <small class="version">v1.0 • SIGA</small>
+    
+    <div class="app-version">
+      <i class="fas fa-shield-check"></i>
+      <span>Version 1.0.0</span>
+    </div>
   </div>
 </aside>
 

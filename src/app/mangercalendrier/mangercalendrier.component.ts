@@ -4,8 +4,11 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { EventClickArg } from '@fullcalendar/core';
 import { AuthService } from '../auth/services/auth.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink, RouterModule } from '@angular/router';
 import { interval, Subscription, switchMap } from 'rxjs';
+import { CommonModule, DecimalPipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { FullCalendarModule } from '@fullcalendar/angular';
 
 interface Entretien {
   id: number;
@@ -28,9 +31,10 @@ interface Notification {
 }
 @Component({
   selector: 'app-mangercalendrier',
-  standalone: false,
+  standalone: true,
   templateUrl: './mangercalendrier.component.html',
-  styleUrl: './mangercalendrier.component.css'
+  styleUrls: ['./mangercalendrier.component.scss'],
+  imports: [CommonModule, FullCalendarModule, FormsModule, RouterModule, RouterLink],
 })
 
 export class MangercalendrierComponent implements OnInit, OnDestroy {

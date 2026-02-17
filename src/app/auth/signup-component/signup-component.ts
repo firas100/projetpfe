@@ -62,11 +62,8 @@ export class SignupComponent {
           this.messageType = 'error';
         }
       },
-      error: (error) => {
-        console.error('Erreur d\'inscription :', error);
-        this.message = error.message || 'Échec de l\'inscription.';
-        this.messageType = 'error';
-      }
+      
+      
     });
   }
 

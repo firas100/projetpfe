@@ -19,7 +19,9 @@ import { SuivicandidatureComponent } from './suivicandidature/suivicandidature.c
 import { OffreAdminComponent } from './offre-admin/offre-admin.component';
 import { CandidateHistoryComponent } from './candidate-history/candidate-history.component';
 import { AdminSignupComponent } from './admin-signup/admin-signup.component';
-import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { ForgetPasswordComponent } from './forget-password/forget-password.component';
+import { AllQuestionComponent } from './all-question/all-question.component';
+import { HistoriqueManagerComponent } from './historique-manager/historique-manager.component';
 
 
 
@@ -66,12 +68,17 @@ const routes: Routes = [
     {path: 'OfferByAdmin', component: OffreAdminComponent,canActivate: [RoleGuard],
     data: { role: 'RH'}},
     {path: 'HistoriqueCandidat', component: CandidateHistoryComponent,canActivate: [RoleGuard],
-    data: { role: 'RH'}},
+    data: { roles: ['RH', 'MANAGER']}},
     {path: 'SipnupManger', component: AdminSignupComponent,canActivate: [RoleGuard],
     data: { role: 'RH'}},
-    {path: 'ResetPassword', component: ResetPasswordComponent},
+    {path: 'ForgetPassword', component: ForgetPasswordComponent},  
+        {path: 'getallQuestion', component: AllQuestionComponent}, 
+    {path: 'HistoriqueManger', component: HistoriqueManagerComponent,canActivate: [RoleGuard],
+          data: { role: 'MANAGER'}},
 
+     
 
+  
 ];
 
 @NgModule({

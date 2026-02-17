@@ -2,7 +2,7 @@
 
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink, RouterModule } from '@angular/router';
 import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../auth/services/auth.service';
@@ -10,9 +10,9 @@ import { AuthService } from '../auth/services/auth.service';
 @Component({
   selector: 'app-candidatpage',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule,FormsModule,RouterModule,RouterLink],
   templateUrl: './candidatpage.component.html',
-  styleUrls: ['./candidatpage.component.css']
+  styleUrls: ['./candidatpage.component.scss']
 })
 export class CandidatpageComponent {
   candidatData = {

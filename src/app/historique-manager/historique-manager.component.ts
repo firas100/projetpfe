@@ -1,19 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { Router, RouterLink, RouterModule } from '@angular/router';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from '../auth/services/auth.service';
 import { CandidateHistoryDTO, CandidatService, HistoryDTO } from '../auth/services/candidat.service';
 
 @Component({
-  selector: 'app-candidate-history',
-  standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, RouterLink],
-  templateUrl: './candidate-history.component.html',
-  styleUrls: ['./candidate-history.component.scss']
+  selector: 'app-historique-manager',
+  standalone: false,
+  templateUrl: './historique-manager.component.html',
+styleUrls: ['./historique-manager.component.scss'],
 })
-export class CandidateHistoryComponent implements OnInit {
-  // Data arrays
+export class HistoriqueManagerComponent {
+// Data arrays
   histories: CandidateHistoryDTO[] = [];
   filteredHistories: CandidateHistoryDTO[] = [];
   selectedHistory?: CandidateHistoryDTO;

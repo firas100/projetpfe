@@ -13,18 +13,21 @@ interface Candidate {
   yearsOfExperience: number;
   similarityScore: number;
   cvPath?: string;
-  
+}
+
+interface Offre {
+  idOffre: number;
+  titreOffre: string;
 }
 
 @Component({
   selector: 'app-recommendation',
-  standalone: true,   
+  standalone: true,
   imports: [CommonModule, FormsModule, RouterModule, DecimalPipe],
   templateUrl: './recommendation.component.html',
-  styleUrls: ['./recommendation.component.css']
+  styleUrls: ['./recommendation.component.scss']
 })
 export class RecommendationComponent implements OnInit, OnDestroy {
-  keywords = '';
   experienceMin = 0;
   message = '';
   isLoading = false;
@@ -35,16 +38,23 @@ export class RecommendationComponent implements OnInit, OnDestroy {
   currentPage = 1;
   pageSize = 6;
   sidebarCollapsed = false;
-  sortField = '';
-  selectedOffreId: number = 0;
-  offres: { idOffre: number; titreOffre: string }[] = [];
+  selectedOffreId: number | null = null;
+  offres: Offre[] = [];
+
+  // Enhanced stats
+  totalRecommendations = 0;
+  averageScore = 0;
+  topMatches = 0;
 
   private progressInterval: any;
+totalCandidates: any;
+questionMenuOpen: any;
 
   constructor(
     private http: HttpClient,
     private authService: AuthService,
-    private sanitizer: DomSanitizer, private router: Router
+    private sanitizer: DomSanitizer,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -52,59 +62,77 @@ export class RecommendationComponent implements OnInit, OnDestroy {
     this.loadOffres();
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this.progressInterval) clearInterval(this.progressInterval);
   }
- loadOffres() {
-  this.http.get<{ idOffre: number; titreOffre: string }[]>('http://localhost:8086/Offre/getAlloffre')
-    .subscribe({
-      next: res => {
-        this.offres = res;
-        this.selectedOffreId = 0; 
-      },
-      error: err => console.error('Erreur chargement offres:', err)
-    });
-}
 
-  submitRecommendation() {
-  if (!this.selectedOffreId) {
-    this.message = "Veuillez sélectionner une offre";
-    console.log('Offre sélectionnée:', this.selectedOffreId);
-    return;
+  loadOffres(): void {
+    this.http.get<Offre[]>('http://localhost:8086/Offre/getAlloffre')
+      .subscribe({
+        next: res => {
+          this.offres = res;
+        },
+        error: err => console.error('Erreur chargement offres:', err)
+      });
   }
 
-  this.isLoading = true;
-  this.progressValue = 0;
-  this.message = 'Analyse en cours...';
-  this.candidates = [];
+  submitRecommendation(): void {
+    if (!this.selectedOffreId) {
+      this.message = "Veuillez sélectionner une offre";
+      return;
+    }
 
-  this.progressInterval = setInterval(() => {
-    this.progressValue = Math.min(this.progressValue + 5, 90);
-  }, 200);
+    this.isLoading = true;
+    this.progressValue = 0;
+    this.message = 'Analyse en cours...';
+    this.candidates = [];
 
-  const params = new HttpParams()
-    .set('offreId', this.selectedOffreId.toString())
-    .set('experienceMin', this.experienceMin.toString());
+    this.progressInterval = setInterval(() => {
+      this.progressValue = Math.min(this.progressValue + 5, 90);
+    }, 200);
 
-  this.http.post<Candidate[]>('http://localhost:8086/api/recommendations/generateByOffre', null, { params })
-    .subscribe({
-      next: (res) => {
-        clearInterval(this.progressInterval);
-        this.progressValue = 100;
-        this.isLoading = false;
-        this.candidates = res;
-        this.message = `Recommandation terminée avec succès`;
-      },
-      error: (error) => {
+    const params = new HttpParams()
+      .set('offreId', this.selectedOffreId.toString())
+      .set('experienceMin', this.experienceMin.toString());
+
+    this.http.post<Candidate[]>('http://localhost:8086/api/recommendations/generateByOffre', null, { params })
+      .subscribe({
+        next: (res) => {
+          clearInterval(this.progressInterval);
+          this.progressValue = 100;
+          this.isLoading = false;
+          this.candidates = res;
+          this.calculateStats;
+          this.message = `Recommandation terminée avec succès`;
+          
+          // Clear message after 3 seconds
+          setTimeout(() => {
+            this.message = '';
+          }, 5000);
+          this.router.navigate(['/getall']);
+        },
+        error: (error) => {
         clearInterval(this.progressInterval);
         this.progressValue = 0;
         this.isLoading = false;
         this.message = 'Erreur lors de l\'analyse : ' + error.message;
       }
     });
-}
-  // Filtering
-  filteredCandidates() {
+  }
+     
+ 
+  
+
+  private calculateStats(): void {
+    this.totalRecommendations = this.candidates.length;
+    if (this.candidates.length > 0) {
+      const total = this.candidates.reduce((sum, c) => sum + (c.similarityScore || 0), 0);
+      this.averageScore = total / this.candidates.length;
+      this.topMatches = this.candidates.filter(c => (c.similarityScore || 0) >= 80).length;
+    }
+  }
+
+  filteredCandidates(): Candidate[] {
     return this.candidates.filter(c =>
       c.prenom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
       c.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
@@ -112,28 +140,68 @@ export class RecommendationComponent implements OnInit, OnDestroy {
     );
   }
 
-  listeCandidat() {
-    this.router.navigate(['/recommendation']);
-  }
-  
-
-  toggleSidebar() { this.sidebarCollapsed = !this.sidebarCollapsed; }
-  applyFilter() { this.currentPage = 1; }
-
-  initials(c: Candidate) { return `${c.prenom[0]}${c.nom[0]}`.toUpperCase(); }
-
-  avatarColor(c: Candidate) {
-    const colors = ['#7c9cff', '#ff7c7c', '#7cff9c', '#ffc87c'];
-    const code = (c.prenom.charCodeAt(0) + c.nom.charCodeAt(0)) % colors.length;
-    return colors[code];
+  paginatedCandidates(): Candidate[] {
+    const filtered = this.filteredCandidates();
+    const start = (this.currentPage - 1) * this.pageSize;
+    return filtered.slice(start, start + this.pageSize);
   }
 
-  sanitizeUrl(url: string): SafeUrl { return this.sanitizer.bypassSecurityTrustUrl(url); }
+  totalPages(): number {
+    return Math.ceil(this.filteredCandidates().length / this.pageSize);
+  }
 
-  contactCandidate(c: Candidate) {
+  previousPage(): void {
+    if (this.currentPage > 1) this.currentPage--;
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages()) this.currentPage++;
+  }
+
+  toggleSidebar(): void {
+    this.sidebarCollapsed = !this.sidebarCollapsed;
+  }
+
+  applyFilter(): void {
+    this.currentPage = 1;
+  }
+
+  initials(c: Candidate): string {
+    return `${c.prenom[0]}${c.nom[0]}`.toUpperCase();
+  }
+
+  avatarColor(c: Candidate): string {
+    const str = (c.nom || '') + (c.prenom || '');
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    return `hsl(${hash % 360}, 70%, 65%)`;
+  }
+
+  getScoreClass(score: number): string {
+    if (score >= 80) return 'excellent';
+    if (score >= 60) return 'good';
+    if (score >= 40) return 'average';
+    return 'poor';
+  }
+
+  sanitizeUrl(url?: string): SafeUrl {
+    return this.sanitizer.bypassSecurityTrustUrl(url || '');
+  }
+
+  openCv(candidat: Candidate): void {
+    if (!candidat.cvPath) {
+      alert('Aucun CV disponible pour ce candidat.');
+      return;
+    }
+    const url = `http://localhost:8086/files/cv/${candidat.cvPath}`;
+    window.open(url, '_blank');
+  }
+
+  contactCandidate(c: Candidate): void {
     alert(`Envoyer un mail à ${c.email}`);
   }
-  onLogout() {
+
+  onLogout(): void {
     this.authService.logout();
     this.router.navigate(['/login']);
   }

@@ -1,209 +1,563 @@
-<!-- NAVBAR -->
+<!-- ═══════════════════════════════════════════════════════════════
+     ULTIMATE PREMIUM HR RECRUITMENT DASHBOARD - INTERVIEW LIST MODULE
+     Perfected Design System - Visual Excellence & Harmony
+     ═══════════════════════════════════════════════════════════════ -->
+
+<!-- NAVBAR - Ultimate Premium Design -->
 <nav class="navbar">
-  <div class="navbar-left">
-    <button class="hamburger" (click)="toggleSidebar()" aria-label="Toggle sidebar">
-      <span></span><span></span><span></span>
-    </button>
-    <span class="brand">SIGA <small class="brand-sub">Admin</small></span>
-  </div>
-
-  <form class="search-wrapper" (submit)="$event.preventDefault(); applyFilter()">
-    <div class="search-field">
-      <input
-        class="search"
-        type="search"
-        [(ngModel)]="searchTerm"
-        name="search"
-        placeholder="Recherche: nom, prénom, email..."
-        aria-label="Search candidates"
-      />
-      <button class="btn btn-search" type="button" (click)="applyFilter()" title="Rechercher">
-        <i class="fas fa-search"></i>
+  <div class="navbar-container">
+    <!-- Left Section -->
+    <div class="navbar-left">
+      <button class="hamburger" (click)="toggleSidebar()" aria-label="Toggle sidebar">
+        <span></span>
+        <span></span>
+        <span></span>
       </button>
-    </div>
-  </form>
-
-  <div class="navbar-right">
-    <div class="notif">
-      <button class="icon-btn" title="Notifications">
-        <i class="fas fa-bell"></i>
-      </button>
-    </div>
-
-    <div class="user">
-      <div class="user-info">
-        <div class="user-emoji">👋</div>
-        <div class="user-text">
-          <div class="user-hi">Bienvenue</div>
-          <div class="user-name">{{ username }}</div>
+      
+      <div class="brand-logo">
+        <div class="logo-icon">
+          <i class="fas fa-rocket"></i>
+          <div class="logo-shine"></div>
+        </div>
+        <div class="logo-text">
+          <span class="brand">SIGA</span>
+          <span class="brand-sub">Recruitment Excellence</span>
         </div>
       </div>
-      <button class="btn-logout" title="Déconnexion" (click)="onLogout()">
-        <i class="fas fa-sign-out-alt"></i>
-      </button>
     </div>
-  </div>
-</nav>
 
-<!-- SIDEBAR -->
-<aside class="sidebar" [class.collapsed]="sidebarCollapsed">
-  <div class="sidebar-top">
-    <div class="brand">
-      <i class="fas fa-rocket"></i>
-      <span>SIGA</span>
-    </div>
-    <button class="collapse-btn" (click)="toggleSidebar()" title="Toggle Sidebar">
-      <i class="fas" [ngClass]="sidebarCollapsed ? 'fa-angle-right' : 'fa-angle-left'"></i>
-    </button>
-  </div>
-
-  <nav class="nav-links">
-    <a routerLink="/getall" routerLinkActive="active"><i class="fas fa-tachometer-alt"></i><span class="link-text">Dashboard</span></a>
-    <a routerLink="/recommendation" routerLinkActive="active"><i class="fas fa-file-alt"></i><span class="link-text">Analyse CV</span></a>
-    <a routerLink="/getCandidats" routerLinkActive="active"><i class="fas fa-users"></i><span class="link-text">Candidats</span></a>
-    <a routerLink="/Calendrier" routerLinkActive="active"><i class="fas fa-calendar-alt"></i><span class="link-text">Calendrier</span></a>
-    <a routerLink="/OfferByAdmin" routerLinkActive="active">
-      <i class="fas fa-briefcase"></i><span class="link-text">Gestion Offres</span>
-    </a>
-  </nav>
-
-  <div class="sidebar-bottom">
-    <div class="user-profile">
-      <div class="avatar">👋</div>
-      <div class="user-info">
-        <span class="name">Admin</span>
-        <small class="role">Super Admin</small>
-      </div>
-    </div>
-    <small class="version">v1.0 • SIGA</small>
-  </div>
-</aside>
-
-<!-- MAIN -->
-<main class="main-content" [class.expanded]="sidebarCollapsed">
-  <div class="container">
-    <header class="content-header">
-      <div>
-        <h1>Entretiens Planifiés</h1>
-        <p class="muted">Gérez vos entretiens avec une interface élégante et intuitive.</p>
-      </div>
-      <div class="filter-wrapper">
+    <!-- Center Search -->
+    <form class="search-wrapper" (submit)="$event.preventDefault(); applyFilter()">
+      <div class="search-field">
+        <i class="fas fa-search search-icon"></i>
         <input
-          class="search-input"
+          class="search"
           type="search"
           [(ngModel)]="searchTerm"
-          (input)="applyFilter()"
+          name="search"
           placeholder="Rechercher par nom, email..."
           aria-label="Search interviews"
         />
-        <label class="select-wrap">
-          <select
-            id="statusFilter"
-            class="custom-select"
-            [(ngModel)]="selectedStatus"
-            (change)="filterByStatus()"
-          >
-            <option value="">Tous les statuts</option>
-            <option value="CONFIRME">Confirmé</option>
-            <option value="REFUSE">Refusé</option>
-            <option value="EN_ATTENTE">En attente</option>
-          </select>
-        </label>
+        <kbd class="search-shortcut">⌘K</kbd>
       </div>
-    </header>
+    </form>
 
-    <section class="entretien-grid">
-      <article *ngFor="let entretien of paginatedEntretiens" class="entretien-card"
-        [ngClass]="{
-          'status-confirme': entretien.status === 'CONFIRME',
-          'status-refuse': entretien.status === 'REFUSE',
-          'status-en-attente': entretien.status === 'EN_ATTENTE'
-        }">
-        <div class="card-content">
-          <div class="candidate-info">
-            <div class="avatar" [style.background]="avatarColor(entretien.candidat)">{{ initials(entretien.candidat) }}</div>
-            <div class="meta">
-              <div class="name">{{ entretien.candidat.prenom }} <span class="lastname">{{ entretien.candidat.nom }}</span></div>
-              <div class="sub muted">
-                <i class="fas fa-envelope"></i> {{ entretien.candidat.email }}
-              </div>
-            </div>
+    <!-- Right Section -->
+    <div class="navbar-right">
+      <button class="icon-btn notif-btn" title="Notifications" aria-label="Notifications">
+        <i class="fas fa-bell"></i>
+        <span class="badge-dot"></span>
+        <span class="badge-count">3</span>
+      </button>
+      
+      <div class="divider-vertical"></div>
+      
+      <div class="user-menu">
+        <div class="user-avatar">
+          <div class="avatar-gradient">
+            <span>{{ username.charAt(0).toUpperCase() }}</span>
           </div>
-          <div class="details">
-            <div class="detail-item">
-              <span class="label">Date</span>
-              <span>{{ entretien.dateEntretien | date:'mediumDate' }}</span>
-            </div>
-            <div class="detail-item">
-              <span class="label">Statut</span>
-              <span class="badge"
-                [ngClass]="{
-                  'badge-confirme': entretien.status === 'CONFIRME',
-                  'badge-refuse': entretien.status === 'REFUSE',
-                  'badge-en-attente': entretien.status === 'EN_ATTENTE'
-                }">
-                {{ entretien.status }}
-              </span>
-            </div>
-            <div class="detail-item">
-              <span class="label">Commentaire</span>
-              <span>{{ entretien.commentaire || 'Aucun' }}</span>
-            </div>
-            <div class="detail-item">
-              <span class="label">Manager</span>
-              <span>{{ entretien.managerName }}</span>
+          <div class="status-indicator online"></div>
+        </div>
+        <div class="user-details">
+          <span class="user-greeting">Bonjour,</span>
+          <span class="user-name">{{ username }}</span>
+        </div>
+        <button class="btn-logout" title="Déconnexion" (click)="onLogout()" aria-label="Logout">
+          <i class="fas fa-sign-out-alt"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="navbar-glow"></div>
+</nav>
+
+<!-- SIDEBAR - Ultimate Premium Design -->
+<aside class="sidebar" [class.collapsed]="sidebarCollapsed">
+  <div class="sidebar-header">
+    <div class="sidebar-brand">
+      <div class="brand-icon">
+        <i class="fas fa-users-cog"></i>
+        <div class="icon-pulse"></div>
+      </div>
+      <span class="brand-text">SIGA HR</span>
+    </div>
+    <button class="collapse-toggle" (click)="toggleSidebar()" aria-label="Toggle sidebar">
+      <i class="fas" [ngClass]="sidebarCollapsed ? 'fa-chevron-right' : 'fa-chevron-left'"></i>
+    </button>
+  </div>
+
+  <nav class="sidebar-nav">
+    <!-- Main Menu -->
+    <div class="nav-section">
+      <span class="nav-section-title">Menu Principal</span>
+      
+      <a routerLink="/getall" class="nav-link" routerLinkActive="active">
+        <div class="nav-icon">
+          <i class="fas fa-chart-line"></i>
+        </div>
+        <span class="nav-text">Dashboard</span>
+        <div class="nav-indicator"></div>
+      </a>
+      
+      <a routerLink="/recommendation" class="nav-link" routerLinkActive="active">
+        <div class="nav-icon">
+          <i class="fas fa-brain"></i>
+        </div>
+        <span class="nav-text">Analyse CV</span>
+        <div class="nav-indicator"></div>
+      </a>
+        <a routerLink="/HistoriqueCandidat" routerLinkActive="active" class="nav-link active">
+        <div class="nav-icon">
+          <i class="fas fa-brain"></i>
+        </div>
+        <span class="nav-text"> Historique </span>
+        <div class="nav-indicator"></div>
+      </a>
+      <a routerLink="/getCandidats" class="nav-link" routerLinkActive="active">
+        <div class="nav-icon">
+          <i class="fas fa-user-friends"></i>
+        </div>
+        <span class="nav-text">Candidats</span>
+        <div class="nav-indicator"></div>
+      </a>
+    </div>
+
+    <!-- Management Section -->
+    <div class="nav-section">
+      <span class="nav-section-title">Gestion</span>
+      
+      <a routerLink="/Calendrier" class="nav-link active" routerLinkActive="active">
+        <div class="nav-icon">
+          <i class="fas fa-calendar-check"></i>
+        </div>
+        <span class="nav-text">Calendrier</span>
+        <div class="nav-indicator"></div>
+      </a>
+      
+      <a routerLink="/OfferByAdmin" class="nav-link" routerLinkActive="active">
+        <div class="nav-icon">
+          <i class="fas fa-briefcase"></i>
+        </div>
+        <span class="nav-text">Offres</span>
+        <div class="nav-indicator"></div>
+      </a>
+    </div>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="user-card">
+      <div class="user-avatar-small">
+        <span>{{ username.charAt(0).toUpperCase() }}</span>
+        <div class="avatar-ring"></div>
+      </div>
+      <div class="user-info-small">
+        <span class="user-name-small">{{ username }}</span>
+        <span class="user-role">Administrateur RH</span>
+      </div>
+    </div>
+    
+    <div class="sidebar-stats" *ngIf="entretiens && entretiens.length > 0">
+      <div class="stat-mini">
+        <i class="fas fa-calendar-alt"></i>
+        <span>{{ entretiens.length }}</span>
+      </div>
+      <div class="stat-mini">
+        <i class="fas fa-check-circle"></i>
+        <span>{{ getConfirmedCount() }}</span>
+      </div>
+    </div>
+    
+    <div class="app-version">
+      <i class="fas fa-shield-check"></i>
+      <span>Version 1.0.0</span>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="content" [class.expanded]="sidebarCollapsed">
+  
+  <!-- Stats Cards -->
+  <div class="stats-grid" *ngIf="entretiens && entretiens.length > 0">
+    <div class="stat-card stat-primary">
+      <div class="stat-header">
+        <div class="stat-icon">
+          <i class="fas fa-calendar-alt"></i>
+        </div>
+        <div class="stat-trend positive">
+          <i class="fas fa-arrow-up"></i>
+          <span>12%</span>
+        </div>
+      </div>
+      <div class="stat-content">
+        <span class="stat-label">Total Entretiens</span>
+        <span class="stat-value">{{ entretiens.length }}</span>
+        <span class="stat-description">Entretiens planifiés</span>
+      </div>
+      <div class="stat-sparkle"></div>
+    </div>
+
+    <div class="stat-card stat-success">
+      <div class="stat-header">
+        <div class="stat-icon">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="stat-trend positive">
+          <i class="fas fa-arrow-up"></i>
+          <span>18%</span>
+        </div>
+      </div>
+      <div class="stat-content">
+        <span class="stat-label">Confirmés</span>
+        <span class="stat-value">{{ getConfirmedCount() }}</span>
+        <span class="stat-description">Entretiens validés</span>
+      </div>
+      <div class="stat-sparkle"></div>
+    </div>
+
+    <div class="stat-card stat-warning">
+      <div class="stat-header">
+        <div class="stat-icon">
+          <i class="fas fa-clock"></i>
+        </div>
+        <div class="stat-trend neutral">
+          <i class="fas fa-minus"></i>
+          <span>0%</span>
+        </div>
+      </div>
+      <div class="stat-content">
+        <span class="stat-label">En Attente</span>
+        <span class="stat-value">{{ getPendingCount() }}</span>
+        <span class="stat-description">À confirmer</span>
+      </div>
+      <div class="stat-sparkle"></div>
+    </div>
+
+    <div class="stat-card stat-danger">
+      <div class="stat-header">
+        <div class="stat-icon">
+          <i class="fas fa-times-circle"></i>
+        </div>
+        <div class="stat-trend negative">
+          <i class="fas fa-arrow-down"></i>
+          <span>5%</span>
+        </div>
+      </div>
+      <div class="stat-content">
+        <span class="stat-label">Refusés</span>
+        <span class="stat-value">{{ getRejectedCount() }}</span>
+        <span class="stat-description">Annulations</span>
+      </div>
+      <div class="stat-sparkle"></div>
+    </div>
+  </div>
+
+  <!-- Page Header -->
+  <header class="page-header">
+    <div class="header-content">
+      <div class="header-title">
+        <div class="title-wrapper">
+          <h1>Entretiens Planifiés</h1>
+          <div class="title-decoration"></div>
+        </div>
+        <p class="subtitle">Gérez vos entretiens avec une interface élégante et intuitive</p>
+      </div>
+
+      <div class="header-actions">
+        <button class="btn btn-primary" (click)="scheduleNewInterview()">
+          <i class="fas fa-plus"></i>
+          <span>Nouvel Entretien</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Filters Bar -->
+    <div class="filters-bar">
+      <div class="filters-header">
+        <h3>
+          <i class="fas fa-filter"></i>
+          Filtres & Recherche
+        </h3>
+      </div>
+
+      <div class="filters-grid">
+        <div class="filter-group">
+          <label class="filter-label">
+            <i class="fas fa-search"></i>
+            <span>Rechercher</span>
+          </label>
+          <input 
+            type="search" 
+            class="filter-input" 
+            [(ngModel)]="searchTerm" 
+            (input)="applyFilter()" 
+            placeholder="Nom, prénom, email..."
+          />
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label">
+            <i class="fas fa-tasks"></i>
+            <span>Statut</span>
+          </label>
+          <select class="filter-select" [(ngModel)]="selectedStatus" (change)="filterByStatus()">
+            <option value="">Tous les statuts ({{ entretiens.length }})</option>
+            <option value="CONFIRME">Confirmé</option>
+            <option value="EN_ATTENTE">En attente</option>
+            <option value="REFUSE">Refusé</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label">
+            <i class="fas fa-eye"></i>
+            <span>Affichage</span>
+          </label>
+          <select class="filter-select" [(ngModel)]="pageSize" (change)="updatePagination()">
+            <option [value]="5">5 par page</option>
+            <option [value]="10">10 par page</option>
+            <option [value]="20">20 par page</option>
+            <option [value]="50">50 par page</option>
+          </select>
+        </div>
+
+        <div class="filter-actions">
+          <button class="btn-reset" (click)="resetFilters()" title="Réinitialiser">
+            <i class="fas fa-redo"></i>
+            <span>Réinitialiser</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Results Summary -->
+  <div class="results-summary" *ngIf="filteredEntretiens.length > 0">
+    <div class="summary-content">
+      <i class="fas fa-check-circle"></i>
+      <span><strong>{{ filteredEntretiens.length }}</strong> entretien(s) trouvé(s)</span>
+      <span class="summary-separator">•</span>
+      <span>Page {{ currentPage }} sur {{ totalPages }}</span>
+    </div>
+  </div>
+
+  <!-- Interviews Grid -->
+  <section class="interviews-section">
+    <div class="interviews-grid">
+      <article 
+        *ngFor="let entretien of paginatedEntretiens; let i = index" 
+        class="interview-card"
+        [class]="'status-' + getStatusClass(entretien.status)"
+        [style.animation-delay]="i * 0.08 + 's'"
+      >
+        <div class="status-ribbon" [class]="'ribbon-' + getStatusClass(entretien.status)">
+          <i class="fas" [ngClass]="getStatusIcon(entretien.status)"></i>
+          <span>{{ getStatusLabel(entretien.status) }}</span>
+        </div>
+
+        <div class="card-header">
+          <div class="candidate-avatar" [style.background]="avatarColor(entretien.candidat)">
+            <span class="avatar-initials">{{ initials(entretien.candidat) }}</span>
+            <div class="avatar-ring"></div>
+          </div>
+
+          <div class="candidate-meta">
+            <h3 class="candidate-name">
+              <span class="first-name">{{ entretien.candidat.prenom }}</span>
+              <strong class="last-name">{{ entretien.candidat.nom }}</strong>
+            </h3>
+            <div class="candidate-email">
+              <i class="fas fa-envelope"></i>
+              <span>{{ entretien.candidat.email }}</span>
             </div>
           </div>
         </div>
+
+        <div class="card-body">
+          <div class="details-grid">
+            <div class="detail-item">
+              <div class="detail-icon">
+                <i class="fas fa-calendar"></i>
+              </div>
+              <div class="detail-content">
+                <span class="detail-label">Date d'entretien</span>
+                <span class="detail-value">{{ entretien.dateEntretien | date:'fullDate':'':'fr' }}</span>
+              </div>
+            </div>
+
+            <div class="detail-item">
+              <div class="detail-icon">
+                <i class="fas fa-user-tie"></i>
+              </div>
+              <div class="detail-content">
+                <span class="detail-label">Manager</span>
+                <span class="detail-value">{{ entretien.managerName }}</span>
+              </div>
+            </div>
+
+            <div class="detail-item" *ngIf="entretien.commentaire">
+              <div class="detail-icon">
+                <i class="fas fa-comment"></i>
+              </div>
+              <div class="detail-content">
+                <span class="detail-label">Commentaire</span>
+                <span class="detail-value">{{ entretien.commentaire }}</span>
+              </div>
+            </div>
+
+            <div class="detail-item">
+              <div class="detail-icon">
+                <i class="fas fa-envelope"></i>
+              </div>
+              <div class="detail-content">
+                <span class="detail-label">Email Manager</span>
+                <span class="detail-value">{{ entretien.managerEmail }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <div class="status-badge" [class]="'badge-' + getStatusClass(entretien.status)">
+            <i class="fas" [ngClass]="getStatusIcon(entretien.status)"></i>
+            <span>{{ getStatusLabel(entretien.status) }}</span>
+          </div>
+          <div class="card-id">
+            <i class="fas fa-hashtag"></i>
+            <span>{{ entretien.id }}</span>
+          </div>
+        </div>
       </article>
+    </div>
 
-      <!-- Empty state -->
-      <div *ngIf="paginatedEntretiens.length === 0" class="empty">
-        <div class="empty-ico">🌟</div>
-        <div class="empty-title">Aucun entretien trouvé</div>
-        <div class="empty-text">Ajustez vos filtres ou planifiez de nouveaux entretiens pour découvrir des sessions.</div>
-        <button class="empty-btn" (click)="scheduleNewInterview()">Planifier un entretien</button>
+    <!-- Empty State -->
+    <div *ngIf="paginatedEntretiens.length === 0" class="empty-state">
+      <div class="empty-icon">
+        <i class="fas fa-calendar-times"></i>
+        <div class="icon-ring"></div>
       </div>
-    </section>
+      <h3 class="empty-title">Aucun entretien trouvé</h3>
+      <p class="empty-description">
+        Ajustez vos filtres ou planifiez de nouveaux entretiens pour découvrir des sessions.<br>
+        Vous pouvez également créer un nouvel entretien en cliquant sur le bouton ci-dessous.
+      </p>
+      <button class="btn btn-primary" (click)="scheduleNewInterview()">
+        <i class="fas fa-plus"></i>
+        <span>Planifier un Entretien</span>
+      </button>
+    </div>
+  </section>
 
-    <!-- Pagination -->
-    <nav aria-label="Pagination" class="pagination-wrap">
-      <ul class="pagination justify-content-center pagination-custom">
-        <li class="page-item" [class.disabled]="currentPage === 1">
-          <button class="page-link" (click)="prevPage()" [disabled]="currentPage === 1">
-            <i class="fas fa-chevron-left"></i>
-          </button>
-        </li>
-        <li class="page-item page-info disabled">
-          <span class="page-link">{{ currentPage }} / {{ totalPages }}</span>
-        </li>
-        <li class="page-item" [class.disabled]="currentPage === totalPages">
-          <button class="page-link" (click)="nextPage()" [disabled]="currentPage === totalPages">
-            <i class="fas fa-chevron-right"></i>
-          </button>
-        </li>
-      </ul>
-    </nav>
-  </div>
+  <!-- Pagination -->
+  <nav class="pagination-container" *ngIf="totalPages > 1">
+    <button class="pagination-btn" 
+            (click)="currentPage = 1; updatePagination()" 
+            [disabled]="currentPage === 1"
+            title="Première page">
+      <i class="fas fa-angle-double-left"></i>
+    </button>
+    
+    <button class="pagination-btn" 
+            (click)="prevPage()" 
+            [disabled]="currentPage === 1"
+            title="Page précédente">
+      <i class="fas fa-chevron-left"></i>
+    </button>
+    
+    <div class="pagination-info">
+      <span class="current-page">{{ currentPage }}</span>
+      <span class="page-separator">/</span>
+      <span class="total-pages">{{ totalPages }}</span>
+    </div>
+    
+    <button class="pagination-btn" 
+            (click)="nextPage()" 
+            [disabled]="currentPage === totalPages"
+            title="Page suivante">
+      <i class="fas fa-chevron-right"></i>
+    </button>
+    
+    <button class="pagination-btn" 
+            (click)="currentPage = totalPages; updatePagination()" 
+            [disabled]="currentPage === totalPages"
+            title="Dernière page">
+      <i class="fas fa-angle-double-right"></i>
+    </button>
+  </nav>
 </main>
 
-<!-- FOOTER -->
+<!-- FOOTER - Ultimate Premium Design -->
 <footer class="footer">
-  <div class="footer-left">
-    <div class="brand-info">
-      <strong>SIGA</strong>
-      <span>• 13 Rue Ibn Nafis, Les berges du Lac 3, Tunis</span>
-    </div>
-    <div class="footer-links">
-      <a href="mailto:contact&#64;siga.com.tn"><i class="fas fa-envelope"></i> contact&#64;siga.com.tn</a>
-      <span>•</span>
-      <a href="tel:+21671960281"><i class="fas fa-phone"></i> (+216) 71 960 281</a>
-    </div>
-  </div>
+  <div class="footer-container">
+    <div class="footer-content">
+      <div class="footer-left">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <i class="fas fa-rocket"></i>
+          </div>
+          <div class="footer-brand-text">
+            <strong>SIGA</strong>
+            <span>Recruitment Excellence</span>
+          </div>
+        </div>
+        
+        <p class="footer-address">
+          <i class="fas fa-map-marker-alt"></i>
+          13 Rue Ibn Nafis, Les berges du Lac 3, Tunis
+        </p>
+        
+        <div class="footer-links">
+          <a href="mailto:contactsiga.com.tn">
+            <i class="fas fa-envelope"></i>
+            contactsiga.com.tn
+          </a>
+          <a href="tel:+21671960281">
+            <i class="fas fa-phone"></i>
+            +216 71 960 281
+          </a>
+        </div>
+      </div>
 
-  <div class="footer-right">
-    <span>v1.0</span>
-    <a href="#">Privacy</a>
-    <a href="#">Terms</a>
+      <div class="footer-center">
+        <h4>Navigation</h4>
+        <div class="footer-nav">
+          <a routerLink="/getall">Dashboard</a>
+          <a routerLink="/recommendation">Analyse CV</a>
+          <a routerLink="/getCandidats">Candidats</a>
+          <a routerLink="/Calendrier" class="active">Calendrier</a>
+          <a routerLink="/OfferByAdmin">Offres</a>
+        </div>
+      </div>
+
+      <div class="footer-right">
+        <h4>Support</h4>
+        <div class="footer-nav">
+          <a href="#">Centre d'aide</a>
+          <a href="#">Documentation</a>
+          <a href="#">Confidentialité</a>
+          <a href="#">Conditions d'utilisation</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p class="footer-copyright">
+        <i class="fas fa-copyright"></i>
+        2025 SIGA. Tous droits réservés. Propulsé par l'excellence.
+      </p>
+      <div class="footer-social">
+        <a href="#" title="LinkedIn" aria-label="LinkedIn">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+        <a href="#" title="Twitter" aria-label="Twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+        <a href="#" title="Facebook" aria-label="Facebook">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+      </div>
+    </div>
   </div>
+  <div class="footer-wave"></div>
 </footer>

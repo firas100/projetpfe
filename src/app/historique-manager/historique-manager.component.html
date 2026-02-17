@@ -102,74 +102,24 @@
     <div class="nav-section">
       <span class="nav-section-title">Menu Principal</span>
       
-       <a routerLink="/getall" class="nav-link" routerLinkActive="active">
-      <div class="nav-icon"><i class="fas fa-chart-line"></i></div>
-      <span class="nav-text">Dashboard</span>
-      <div class="nav-indicator"></div>
-    </a>
+   
+   
 
-    <a routerLink="/recommendation" class="nav-link" routerLinkActive="active">
-      <div class="nav-icon"><i class="fas fa-brain"></i></div>
-      <span class="nav-text">Analyse CV</span>
-      <div class="nav-indicator"></div>
-    </a>
-
-    <a routerLink="/HistoriqueCandidat" class="nav-link" routerLinkActive="active">
+    <a routerLink="/HistoriqueManger" class="nav-link" routerLinkActive="active">
       <div class="nav-icon"><i class="fas fa-history"></i></div>
       <span class="nav-text">Historique</span>
       <div class="nav-indicator"></div>
     </a>
 
-    <a routerLink="/getCandidats" class="nav-link" routerLinkActive="active">
-      <div class="nav-icon"><i class="fas fa-user-friends"></i></div>
-      <span class="nav-text">Candidats</span>
-      <span class="nav-badge" *ngIf="totalCandidates > 0">{{ totalCandidates }}</span>
-      <div class="nav-indicator"></div>
-    </a>
+    <a routerLink="/CalendrierManger" routerLinkActive="active"><i class="fas fa-calendar-alt"></i><span class="link-text">Calendrier</span></a>
 
-    <!-- ──────────────── MENU QUESTION AVEC SOUS-MENUS ──────────────── -->
-    <div class="nav-dropdown" [class.open]="questionMenuOpen">
 
-      <div class="nav-link dropdown-toggle" (click)="questionMenuOpen = !questionMenuOpen">
-        <div class="nav-icon"><i class="fas fa-question-circle"></i></div>
-        <span class="nav-text">Question</span>
-        <i class="fas" [ngClass]="questionMenuOpen ? 'fa-chevron-up' : 'fa-chevron-down'" style="margin-left:auto;"></i>
-      </div>
 
-      <div class="dropdown-items" *ngIf="questionMenuOpen">
-        <a routerLink="/ajouterQuestion" class="nav-sublink" routerLinkActive="active">
-          <span>Ajouter Question</span>
-        </a>
-
-        <a routerLink="/getallQuestion" class="nav-sublink" routerLinkActive="active">
-          <span>Liste des Questions</span>
-        </a>
-      </div>
-
-    </div>
+    
 
   </div>
 
-    <!-- Management Section -->
-    <div class="nav-section">
-      <span class="nav-section-title">Gestion</span>
-      
-      <a routerLink="/Calendrier" class="nav-link" routerLinkActive="active">
-        <div class="nav-icon">
-          <i class="fas fa-calendar-check"></i>
-        </div>
-        <span class="nav-text">Calendrier</span>
-        <div class="nav-indicator"></div>
-      </a>
-      
-      <a routerLink="/OfferByAdmin" class="nav-link active" routerLinkActive="active">
-        <div class="nav-icon">
-          <i class="fas fa-briefcase"></i>
-        </div>
-        <span class="nav-text">Offres</span>
-        <div class="nav-indicator"></div>
-      </a>
-    </div>
+    
   </nav>
 
   <div class="sidebar-footer">

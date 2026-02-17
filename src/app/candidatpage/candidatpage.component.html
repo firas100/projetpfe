@@ -1,69 +1,136 @@
-<!-- candidatpage.component.html -->
+<!-- ═══════════════════════════════════════════════════════════════
+     ULTIMATE PREMIUM HR RECRUITMENT DASHBOARD - RECOMMENDATION MODULE
+     Perfected Design System - Visual Excellence & Harmony
+     ═══════════════════════════════════════════════════════════════ -->
 
-<!-- BARRE DE NAVIGATION -->
+<!-- NAVBAR - Ultimate Premium Design -->
 <nav class="navbar">
-  <div class="navbar-left">
-    <button class="hamburger" (click)="toggleSidebar()" aria-label="Basculer le menu latéral">
-      <span></span><span></span><span></span>
-    </button>
-    <span class="brand">SIGA <small class="brand-sub">Admin</small></span>
-  </div>
-  <form class="search-wrapper" (submit)="$event.preventDefault(); applyFilter()">
-    <div class="search-field">
-      <input
-        type="search"
-        class="search"
-        placeholder="Rechercher : nom, prénom, email..."
-        [(ngModel)]="searchTerm"
-        name="search"
-        aria-label="Recherche de candidats"
-      />
-      <button type="button" class="btn btn-search" (click)="applyFilter()" title="Rechercher">
-        <i class="fas fa-search"></i>
+  <div class="navbar-container">
+    <!-- Left Section -->
+    <div class="navbar-left">
+      <button class="hamburger" (click)="toggleSidebar()" aria-label="Toggle sidebar">
+        <span></span>
+        <span></span>
+        <span></span>
       </button>
-    </div>
-  </form>
-  <div class="navbar-right">
-    <div class="user">
-      <div class="user-info">
-        <div class="user-emoji">👋</div>
-        <div class="user-text">
-          <div class="user-hi">Bienvenue</div>
-          <div class="user-name">{{ username }}</div>
+      
+      <div class="brand-logo">
+        <div class="logo-icon">
+          <i class="fas fa-rocket"></i>
+          <div class="logo-shine"></div>
         </div>
-        <button class="btn-logout" title="Déconnexion" (click)="onLogout()">
+        <div class="logo-text">
+          <span class="brand">SIGA</span>
+          <span class="brand-sub">Recruitment Excellence</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Center Search -->
+    <form class="search-wrapper" (submit)="$event.preventDefault(); applyFilter()">
+      <div class="search-field">
+        <i class="fas fa-search search-icon"></i>
+        <input
+          class="search"
+          type="search"
+          [(ngModel)]="searchTerm"
+          name="search"
+          placeholder="Rechercher un candidat par nom, email..."
+          aria-label="Search candidates"
+        />
+        <kbd class="search-shortcut">⌘K</kbd>
+      </div>
+    </form>
+
+    <!-- Right Section -->
+    <div class="navbar-right">
+      <button class="icon-btn notif-btn" title="Notifications" aria-label="Notifications">
+        <i class="fas fa-bell"></i>
+        <span class="badge-dot"></span>
+        <span class="badge-count">3</span>
+      </button>
+      
+      <div class="divider-vertical"></div>
+      
+      <div class="user-menu">
+        <div class="user-avatar">
+          <div class="avatar-gradient">
+            <span>{{ username.charAt(0).toUpperCase() }}</span>
+          </div>
+          <div class="status-indicator online"></div>
+        </div>
+        <div class="user-details">
+          <span class="user-greeting">Bonjour,</span>
+          <span class="user-name">{{ username }}</span>
+        </div>
+        <button class="btn-logout" title="Déconnexion" (click)="onLogout()" aria-label="Logout">
           <i class="fas fa-sign-out-alt"></i>
         </button>
       </div>
     </div>
   </div>
+  <div class="navbar-glow"></div>
 </nav>
-<!-- MENU LATÉRAL -->
+
+<!-- SIDEBAR - Ultimate Premium Design -->
 <aside class="sidebar" [class.collapsed]="sidebarCollapsed">
-  <div class="sidebar-top">
-    <div class="brand">
-      <i class="fas fa-rocket"></i>
-      <span>SIGA</span>
+  <div class="sidebar-header">
+    <div class="sidebar-brand">
+      <div class="brand-icon">
+        <i class="fas fa-users-cog"></i>
+        <div class="icon-pulse"></div>
+      </div>
+      <span class="brand-text">SIGA HR</span>
     </div>
-    <button class="collapse-btn" (click)="toggleSidebar()">
-      <i class="fas" [ngClass]="sidebarCollapsed ? 'fa-angle-right' : 'fa-angle-left'"></i>
+    <button class="collapse-toggle" (click)="toggleSidebar()" aria-label="Toggle sidebar">
+      <i class="fas" [ngClass]="sidebarCollapsed ? 'fa-chevron-right' : 'fa-chevron-left'"></i>
     </button>
   </div>
-  <nav class="nav-links">
-    <a routerLink="/AllOffre" >
-      <i class="fas fa-tachometer-alt"></i>
-      <span class="link-text">Tableau de bord</span>
-    </a>
-    <a routerLink="/candidature">
-      <i class="fas fa-file-alt"></i>
-      <span class="link-text">Ajouter une candidature</span>
-    </a>
-  </nav>
-  <div class="sidebar-bottom">
-    <div class="user-profile">
-      <div class="user-info"></div>
+
+  <nav class="sidebar-nav">
+    <!-- Main Menu -->
+  
+
+    <!-- Management Section -->
+    <div class="nav-section">
+      <span class="nav-section-title">Gestion</span>
+      
+      <a routerLink="/AllOffre" class="nav-link" routerLinkActive="active">
+        <div class="nav-icon">
+          <i class="fas fa-calendar-check"></i>
+        </div>
+        <span class="nav-text">Offres</span>
+        <div class="nav-indicator"></div>
+      </a>
+      
+      <a routerLink="/MesCandidature" class="nav-link" routerLinkActive="active">
+        <div class="nav-icon">
+          <i class="fas fa-briefcase"></i>
+        </div>
+        <span class="nav-text">Mes Candidatures</span>
+        <div class="nav-indicator"></div>
+      </a>
     </div>
-    <small class="version">v1.0 • SIGA</small>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="user-card">
+      <div class="user-avatar-small">
+        <span>{{ username.charAt(0).toUpperCase() }}</span>
+        <div class="avatar-ring"></div>
+      </div>
+      <div class="user-info-small">
+        <span class="user-name-small">{{ username }}</span>
+        <span class="user-role"></span>
+      </div>
+    </div>
+    
+   
+    
+    <div class="app-version">
+      <i class="fas fa-shield-check"></i>
+      <span>Version 1.0.0</span>
+    </div>
   </div>
 </aside>
 <!-- CONTENU PRINCIPAL -->
@@ -275,22 +342,3 @@
     </div>
   </section>
 </main>
-<!-- PIED DE PAGE -->
-<footer class="footer">
-  <div class="footer-left">
-    <div class="brand-info">
-      <strong>SIGA</strong>
-      <span>• 13 Rue Ibn Nafis, Les Berges du Lac 3, Tunis</span>
-    </div>
-    <div class="footer-links">
-      <a href="mailto:contact&#64;siga.com.tn"><i class="fas fa-envelope"></i> contact&#64;siga.com.tn</a>
-      <span>•</span>
-      <a href="tel:+21671960281"><i class="fas fa-phone"></i> (+216) 71 960 281</a>
-    </div>
-  </div>
-  <div class="footer-right">
-    <span>v1.0</span>
-    <a href="#">Confidentialité</a>
-    <a href="#">Conditions</a>
-  </div>
-</footer>

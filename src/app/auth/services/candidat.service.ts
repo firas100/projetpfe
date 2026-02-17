@@ -27,6 +27,9 @@ export interface HistoryDTO {
   interviewStatus?: string;
   commentaire?: string;
   cvPath?:string;
+  videoPath?: string;
+  showVideo?: boolean;
+
 }
 
 export interface CandidateHistoryDTO {

@@ -59,7 +59,7 @@ export class AuthService {
     const body = new URLSearchParams();
     body.set('grant_type', 'password');
     body.set('client_id', 'spring-boot-app');
-    body.set('client_secret', 'hRvXeg8fMNR75u59wRGHsOJ3t4AuN265');
+    body.set('client_secret', 'EN3ixRgYKw08xgaVyHxg7lh9EjJpzQrZ');
     body.set('username', email);
     body.set('password', password);
 

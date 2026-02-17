@@ -1,160 +1,402 @@
-<!-- suivicandidature.component.html -->
+<!-- ═══════════════════════════════════════════════════════════════
+     ULTIMATE PREMIUM HR RECRUITMENT DASHBOARD - RECOMMENDATION MODULE
+     Perfected Design System - Visual Excellence & Harmony
+     ═══════════════════════════════════════════════════════════════ -->
+
+<!-- NAVBAR - Ultimate Premium Design -->
 <nav class="navbar">
-  <div class="navbar-left">
-    <button class="hamburger" (click)="toggleSidebar()" aria-label="Toggle sidebar">
-      <span></span><span></span><span></span>
-    </button>
-    <span class="brand">SIGA <small class="brand-sub">Admin</small></span>
-  </div>
-
-  <form class="search-wrapper" (submit)="$event.preventDefault(); applyFilter()">
-    <div class="search-field">
-      <input
-        type="search"
-        class="search"
-        placeholder="Recherche: nom, prénom, email..."
-        [(ngModel)]="searchTerm"
-        name="search"
-        aria-label="Search candidates"
-      />
-      <button type="button" class="btn btn-search" (click)="applyFilter()" title="Rechercher">
-        <i class="fas fa-search"></i>
+  <div class="navbar-container">
+    <!-- Left Section -->
+    <div class="navbar-left">
+      <button class="hamburger" (click)="toggleSidebar()" aria-label="Toggle sidebar">
+        <span></span>
+        <span></span>
+        <span></span>
       </button>
-    </div>
-  </form>
-
-  <div class="navbar-right">
-    <div class="user">
-      <div class="user-info">
-        <div class="user-emoji">👋</div>
-        <div class="user-text">
-          <div class="user-hi">Bienvenue</div>
-          <div class="user-name">{{ username }}</div>
+      
+      <div class="brand-logo">
+        <div class="logo-icon">
+          <i class="fas fa-rocket"></i>
+          <div class="logo-shine"></div>
+        </div>
+        <div class="logo-text">
+          <span class="brand">SIGA</span>
+          <span class="brand-sub">Recruitment Excellence</span>
         </div>
       </div>
-      <button class="btn-logout" title="Déconnexion" (click)="onLogout()">
-        <i class="fas fa-sign-out-alt"></i>
+    </div>
+
+    <!-- Center Search -->
+    <form class="search-wrapper" (submit)="$event.preventDefault(); applyFilter()">
+      <div class="search-field">
+        <i class="fas fa-search search-icon"></i>
+        <input
+          class="search"
+          type="search"
+          [(ngModel)]="searchTerm"
+          name="search"
+          placeholder="Rechercher un candidat par nom, email..."
+          aria-label="Search candidates"
+        />
+        <kbd class="search-shortcut">⌘K</kbd>
+      </div>
+    </form>
+
+    <!-- Right Section -->
+    <div class="navbar-right">
+      <button class="icon-btn notif-btn" title="Notifications" aria-label="Notifications">
+        <i class="fas fa-bell"></i>
+        <span class="badge-dot"></span>
+        <span class="badge-count">3</span>
       </button>
+      
+      <div class="divider-vertical"></div>
+      
+      <div class="user-menu">
+        <div class="user-avatar">
+          <div class="avatar-gradient">
+            <span>{{ username.charAt(0).toUpperCase() }}</span>
+          </div>
+          <div class="status-indicator online"></div>
+        </div>
+        <div class="user-details">
+          <span class="user-greeting">Bonjour,</span>
+          <span class="user-name">{{ username }}</span>
+        </div>
+        <button class="btn-logout" title="Déconnexion" (click)="onLogout()" aria-label="Logout">
+          <i class="fas fa-sign-out-alt"></i>
+        </button>
+      </div>
     </div>
   </div>
+  <div class="navbar-glow"></div>
 </nav>
 
+<!-- SIDEBAR - Ultimate Premium Design -->
 <aside class="sidebar" [class.collapsed]="sidebarCollapsed">
-  <div class="sidebar-top">
-    <div class="brand">
-      <i class="fas fa-rocket"></i>
-      <span>SIGA</span>
+  <div class="sidebar-header">
+    <div class="sidebar-brand">
+      <div class="brand-icon">
+        <i class="fas fa-users-cog"></i>
+        <div class="icon-pulse"></div>
+      </div>
+      <span class="brand-text">SIGA HR</span>
     </div>
-    <button class="collapse-btn" (click)="toggleSidebar()">
-      <i class="fas" [ngClass]="sidebarCollapsed ? 'fa-angle-right' : 'fa-angle-left'"></i>
+    <button class="collapse-toggle" (click)="toggleSidebar()" aria-label="Toggle sidebar">
+      <i class="fas" [ngClass]="sidebarCollapsed ? 'fa-chevron-right' : 'fa-chevron-left'"></i>
     </button>
   </div>
 
-  <nav class="nav-links">
-    <a routerLink="/AllOffre" routerLinkActive="active">
-      <i class="fas fa-file-alt"></i><span class="link-text">Offres</span>
-    </a>
-    <a routerLink="/MesCandidature" routerLinkActive="active">
-      <i class="fas fa-calendar-alt"></i><span class="link-text">Mes Candidatures</span>
-    </a>
-    <a routerLink="/candidature" routerLinkActive="active">
-      <i class="fas fa-briefcase"></i><span class="link-text">Gestion Offres</span>
-    </a>
+  <nav class="sidebar-nav">
+    <!-- Main Menu -->
+  
+
+    <!-- Management Section -->
+    <div class="nav-section">
+      <span class="nav-section-title">Gestion</span>
+      
+      <a routerLink="/AllOffre" class="nav-link" routerLinkActive="active">
+        <div class="nav-icon">
+          <i class="fas fa-calendar-check"></i>
+        </div>
+        <span class="nav-text">Offres</span>
+        <div class="nav-indicator"></div>
+      </a>
+      
+      <a routerLink="/MesCandidature" class="nav-link" routerLinkActive="active">
+        <div class="nav-icon">
+          <i class="fas fa-briefcase"></i>
+        </div>
+        <span class="nav-text">Mes Candidatures</span>
+        <div class="nav-indicator"></div>
+      </a>
+    </div>
   </nav>
 
-  <div class="sidebar-bottom">
-    <div class="user-profile">
-      <div class="avatar">👋</div>
-      <div class="user-info">
-        <span class="name">Admin</span>
-        <small class="role">Super Admin</small>
+  <div class="sidebar-footer">
+    <div class="user-card">
+      <div class="user-avatar-small">
+        <span>{{ username.charAt(0).toUpperCase() }}</span>
+        <div class="avatar-ring"></div>
+      </div>
+      <div class="user-info-small">
+        <span class="user-name-small">{{ username }}</span>
+        <span class="user-role"></span>
       </div>
     </div>
-    <small class="version">v1.0 • SIGA</small>
+    
+   
+    
+    <div class="app-version">
+      <i class="fas fa-shield-check"></i>
+      <span>Version 1.0.0</span>
+    </div>
   </div>
 </aside>
 
-<div class="container">
+<!-- MAIN CONTENT -->
+<main class="main-content" [class.expanded]="sidebarCollapsed">
+  
+  <!-- PAGE HEADER -->
   <div class="page-header">
-    <h1 class="page-title">Mes Candidatures</h1>
-    <p class="page-subtitle">Suivez l'évolution de vos candidatures en temps réel</p>
+    <div class="page-header-content">
+      <div class="page-title-section">
+        <h1 class="page-title">
+          <i class="fas fa-tasks"></i>
+          Mes Candidatures
+        </h1>
+        <p class="page-subtitle">Suivez l'évolution de vos candidatures en temps réel</p>
+      </div>
+    </div>
   </div>
 
-  <div *ngIf="isLoading" class="loading">Chargement en cours</div>
-  <div *ngIf="errorMessage" class="text-danger">{{ errorMessage }}</div>
+  <!-- STATS SECTION -->
+  <section class="stats-grid" *ngIf="!isLoading && candidatures.length > 0">
+    <div class="stat-card stat-primary">
+      <div class="stat-card-inner">
+        <div class="stat-icon-wrapper">
+          <div class="stat-icon">
+            <i class="fas fa-paper-plane"></i>
+          </div>
+          <div class="stat-icon-bg"></div>
+        </div>
+        <div class="stat-details">
+          <div class="stat-label">Total Candidatures</div>
+          <div class="stat-value">{{ getTotalApplications() }}</div>
+          <div class="stat-meta">
+            <i class="fas fa-briefcase"></i>
+            <span>Candidatures actives</span>
+          </div>
+        </div>
+      </div>
+      <div class="stat-card-glow"></div>
+    </div>
 
-  <div class="table-container" *ngIf="!isLoading && candidatures.length > 0">
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Poste</th>
-          <th>Date de postulation</th>
-        </tr>
-      </thead>
-      <tbody>
-        <ng-container *ngFor="let c of candidatures">
-          <tr (click)="showProgress(c.id)" 
-              [class.selected]="selectedCandidatureId === c.id">
-            <td>{{ c.titreOffre }}</td>
-            <td>{{ c.dateCandidature | date:'dd/MM/yyyy HH:mm' }}</td>
-          </tr>
+    <div class="stat-card stat-success">
+      <div class="stat-card-inner">
+        <div class="stat-icon-wrapper">
+          <div class="stat-icon">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <div class="stat-icon-bg"></div>
+        </div>
+        <div class="stat-details">
+          <div class="stat-label">En Analyse</div>
+          <div class="stat-value">{{ getInProgressApplications() }}</div>
+          <div class="stat-info">
+            <i class="fas fa-clock"></i>
+            <span>En cours de traitement</span>
+          </div>
+        </div>
+      </div>
+      <div class="stat-card-glow"></div>
+    </div>
 
-          <tr *ngIf="selectedCandidatureId === c.id" class="card-row">
-            <td colspan="2" class="card-container">
-              <div class="tracking-card">
-                <div class="card-header">
-                  <h2 class="card-title">
-                    <i class="fas fa-briefcase"></i>
-                    {{ c.titreOffre }}
-                  </h2>
-                </div>
+    <div class="stat-card stat-info">
+      <div class="stat-card-inner">
+        <div class="stat-icon-wrapper">
+          <div class="stat-icon">
+            <i class="fas fa-calendar-check"></i>
+          </div>
+          <div class="stat-icon-bg"></div>
+        </div>
+        <div class="stat-details">
+          <div class="stat-label">Entretiens Planifiés</div>
+          <div class="stat-value">{{ getScheduledInterviews() }}</div>
+          <div class="stat-meta">
+            <i class="fas fa-user-tie"></i>
+            <span>Prochaines étapes</span>
+          </div>
+        </div>
+      </div>
+      <div class="stat-card-glow"></div>
+    </div>
+  </section>
 
-                <div *ngIf="selectedProgress" class="timeline">
-                  <div class="timeline-connector" 
-                       [style.width.%]="getProgressWidth(selectedProgress.currentStep)"></div>
-                  
-                  <div *ngFor="let step of selectedProgress.steps" 
-                       class="timeline-step"
-                       [class.completed]="isStepActive(step.code, selectedProgress.currentStep)">
-                    <div class="timeline-marker" 
-                         [class.completed]="isStepActive(step.code, selectedProgress.currentStep)">
-                      <i class="fas" 
-                         [ngClass]="isStepActive(step.code, selectedProgress.currentStep) ? 'fa-check' : getStepIcon(step.code)"></i>
-                    </div>
-                    <div class="timeline-label">{{ step.label }}</div>
-                  </div>
-                </div>
+  <!-- LOADING STATE -->
+  <div *ngIf="isLoading" class="state-container loading-state">
+    <div class="state-content">
+      <div class="loading-spinner">
+        <div class="spinner-ring"></div>
+        <div class="spinner-ring"></div>
+        <div class="spinner-ring"></div>
+        <i class="fas fa-paper-plane spinner-icon"></i>
+      </div>
+      <h3>Chargement de vos candidatures...</h3>
+      <p>Veuillez patienter un instant</p>
+    </div>
+  </div>
 
-                <div *ngIf="!selectedProgress" class="loading">Chargement du suivi</div>
+  <!-- ERROR STATE -->
+  <div *ngIf="errorMessage && !isLoading" class="state-container error-state">
+    <div class="state-content">
+      <div class="state-icon error-icon">
+        <i class="fas fa-exclamation-triangle"></i>
+      </div>
+      <h3>Une erreur est survenue</h3>
+      <p>{{ errorMessage }}</p>
+      <button class="btn-state-action" (click)="reloadApplications()">
+        <i class="fas fa-redo"></i>
+        Réessayer
+      </button>
+    </div>
+  </div>
+
+  <!-- EMPTY STATE -->
+  <div *ngIf="!isLoading && !errorMessage && candidatures.length === 0" class="state-container empty-state">
+    <div class="state-content">
+      <div class="state-icon empty-icon">
+        <i class="fas fa-inbox"></i>
+      </div>
+      <h3>Aucune candidature trouvée</h3>
+      <p>Vous n'avez pas encore postulé à des offres d'emploi</p>
+      <button class="btn-state-action" routerLink="/OfferByAdmin">
+        <i class="fas fa-search"></i>
+        Découvrir les offres
+      </button>
+    </div>
+  </div>
+
+  <!-- APPLICATIONS GRID -->
+  <div *ngIf="!isLoading && !errorMessage && filteredCandidatures.length > 0" class="applications-grid">
+    
+    <article *ngFor="let candidature of filteredCandidatures" class="application-card">
+      
+      <!-- Card Header -->
+      <div class="application-header" (click)="toggleProgress(candidature.id)">
+        <div class="application-info">
+          <div class="application-icon">
+            <i class="fas fa-briefcase"></i>
+          </div>
+          <div class="application-details">
+            <h3 class="application-title">{{ candidature.titreOffre }}</h3>
+            <div class="application-meta">
+              <span class="meta-item">
+                <i class="fas fa-calendar"></i>
+                {{ formatDate(candidature.dateCandidature) }}
+              </span>
+              
+            </div>
+          </div>
+        </div>
+        
+        <div class="application-actions">
+          <div class="status-badge" [class.status-active]="isApplicationSelected(candidature.id)">
+            <i class="fas" [ngClass]="isApplicationSelected(candidature.id) ? 'fa-eye' : 'fa-eye-slash'"></i>
+            <span>{{ isApplicationSelected(candidature.id) ? 'Masquer' : 'Suivre' }}</span>
+          </div>
+          <button class="btn-expand" [class.expanded]="isApplicationSelected(candidature.id)">
+            <i class="fas fa-chevron-down"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Expandable Progress Section -->
+      <div class="progress-section" *ngIf="isApplicationSelected(candidature.id)" [@slideDown]>
+        
+        <!-- Loading Progress -->
+        <div *ngIf="!selectedProgress" class="progress-loading">
+          <div class="mini-spinner"></div>
+          <span>Chargement du suivi...</span>
+        </div>
+
+        <!-- Progress Timeline -->
+        <div *ngIf="selectedProgress" class="timeline-container">
+          
+          <!-- Timeline Header -->
+          <div class="timeline-header">
+            <h4 class="timeline-title">
+              <i class="fas fa-route"></i>
+              Progression de votre candidature
+            </h4>
+            <div class="progress-percentage">
+              {{ getProgressPercentage(selectedProgress.currentStep) }}%
+            </div>
+          </div>
+
+          <!-- Progress Bar -->
+          <div class="progress-bar-container">
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" 
+                   [style.width.%]="getProgressPercentage(selectedProgress.currentStep)">
+                <div class="progress-bar-shine"></div>
               </div>
-            </td>
-          </tr>
-        </ng-container>
-      </tbody>
-    </table>
+            </div>
+          </div>
+
+          <!-- Timeline Steps -->
+          <div class="timeline">
+            <div *ngFor="let step of selectedProgress.steps; let i = index" 
+                 class="timeline-step"
+                 [class.completed]="isStepCompleted(step.code, selectedProgress.currentStep)"
+                 [class.current]="isStepCurrent(step.code, selectedProgress.currentStep)">
+              
+              <!-- Step Connector Line -->
+              <div class="step-connector" *ngIf="i < selectedProgress.steps.length - 1"
+                   [class.completed]="isStepCompleted(step.code, selectedProgress.currentStep)">
+              </div>
+
+              <!-- Step Marker -->
+              <div class="step-marker">
+                <div class="marker-inner">
+                  <i class="fas" 
+                     [ngClass]="isStepCompleted(step.code, selectedProgress.currentStep) ? 'fa-check' : getStepIcon(step.code)">
+                  </i>
+                </div>
+                <div class="marker-pulse" *ngIf="isStepCurrent(step.code, selectedProgress.currentStep)"></div>
+              </div>
+
+              <!-- Step Content -->
+              <div class="step-content">
+                <div class="step-label">{{ step.label }}</div>
+                <div class="step-status" *ngIf="isStepCompleted(step.code, selectedProgress.currentStep)">
+                  <i class="fas fa-check-circle"></i>
+                  Complété
+                </div>
+                <div class="step-status step-current" *ngIf="isStepCurrent(step.code, selectedProgress.currentStep)">
+                  <i class="fas fa-clock"></i>
+                  En cours
+                </div>
+                <div class="step-status step-pending" *ngIf="!isStepCompleted(step.code, selectedProgress.currentStep) && !isStepCurrent(step.code, selectedProgress.currentStep)">
+                  <i class="fas fa-hourglass-half"></i>
+                  En attente
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Current Step Info -->
+          <div class="current-step-info">
+            <div class="info-icon">
+              <i class="fas fa-info-circle"></i>
+            </div>
+            <div class="info-content">
+              <h5>Étape actuelle</h5>
+              <p>{{ getCurrentStepLabel(selectedProgress.currentStep, selectedProgress.steps) }}</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </article>
+
   </div>
 
-  <div *ngIf="!isLoading && candidatures.length === 0" class="no-data">
-    <i class="fas fa-inbox"></i>
-    <p>Aucune candidature trouvée.</p>
+  <!-- Empty Search Results -->
+  <div *ngIf="!isLoading && !errorMessage && candidatures.length > 0 && filteredCandidatures.length === 0" 
+       class="state-container empty-state">
+    <div class="state-content">
+      <div class="state-icon empty-icon">
+        <i class="fas fa-search"></i>
+      </div>
+      <h3>Aucun résultat trouvé</h3>
+      <p>Aucune candidature ne correspond à <strong>"{{ searchTerm }}"</strong></p>
+      <button class="btn-state-action" (click)="clearSearch()">
+        <i class="fas fa-times"></i>
+        Effacer la recherche
+      </button>
+    </div>
   </div>
-</div>
 
-<footer class="footer">
-  <div class="footer-left">
-    <div class="brand-info">
-      <strong>SIGA</strong>
-      <span>• 13 Rue Ibn Nafis, Les berges du Lac 3, Tunis</span>
-    </div>
-    <div class="footer-links">
-      <a href="mailto:contact&#64;siga.com.tn"><i class="fas fa-envelope"></i> contact&#64;siga.com.tn</a>
-      <span>•</span>
-      <a href="tel:+21671960281"><i class="fas fa-phone"></i> (+216) 71 960 281</a>
-    </div>
-  </div>
-  <div class="footer-right">
-    <span>v1.0</span>
-    <a href="#">Privacy</a>
-    <a href="#">Terms</a>
-  </div>
-</footer>
+</main>

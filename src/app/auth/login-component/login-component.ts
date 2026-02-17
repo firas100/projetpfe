@@ -66,7 +66,7 @@ export class LoginComponent implements OnInit {
             });
           } else if (roles.includes('CANDIDAT')) {
             console.log('Navigating to /candidature for CANDIDAT role');
-            this.router.navigate(['/candidature']).then(success => {
+            this.router.navigate(['/AllOffre']).then(success => {
               console.log('Navigation to /candidature success:', success);
               if (!success) {
                 console.error('Navigation to /candidature failed');

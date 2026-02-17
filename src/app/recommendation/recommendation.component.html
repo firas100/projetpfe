@@ -1,228 +1,667 @@
-  <!-- NAVBAR -->
-  <nav class="navbar">
+<!-- ═══════════════════════════════════════════════════════════════
+     ULTIMATE PREMIUM HR RECRUITMENT DASHBOARD - RECOMMENDATION MODULE
+     Perfected Design System - Visual Excellence & Harmony
+     ═══════════════════════════════════════════════════════════════ -->
+
+<!-- NAVBAR - Ultimate Premium Design -->
+<nav class="navbar">
+  <div class="navbar-container">
+    <!-- Left Section -->
     <div class="navbar-left">
       <button class="hamburger" (click)="toggleSidebar()" aria-label="Toggle sidebar">
-        <span></span><span></span><span></span>
+        <span></span>
+        <span></span>
+        <span></span>
       </button>
-      <span class="brand">SIGA <small class="brand-sub">Admin</small></span>
+      
+      <div class="brand-logo">
+        <div class="logo-icon">
+          <i class="fas fa-rocket"></i>
+          <div class="logo-shine"></div>
+        </div>
+        <div class="logo-text">
+          <span class="brand">SIGA</span>
+          <span class="brand-sub">Recruitment Excellence</span>
+        </div>
+      </div>
     </div>
 
+    <!-- Center Search -->
     <form class="search-wrapper" (submit)="$event.preventDefault(); applyFilter()">
       <div class="search-field">
+        <i class="fas fa-search search-icon"></i>
         <input
-          type="search"
           class="search"
-          placeholder="Recherche: nom, prénom, email..."
+          type="search"
           [(ngModel)]="searchTerm"
           name="search"
+          placeholder="Rechercher un candidat par nom, email..."
           aria-label="Search candidates"
         />
-        <button type="button" class="btn btn-search" (click)="applyFilter()" title="Rechercher">
-          <i class="fas fa-search"></i>
-        </button>
+        <kbd class="search-shortcut">⌘K</kbd>
       </div>
     </form>
 
+    <!-- Right Section -->
     <div class="navbar-right">
-      <div class="user">
-        <div class="user-info">
-          <div class="user-emoji">👋</div>
-          <div class="user-text">
-            <div class="user-hi">Bienvenue</div>
-            <div class="user-name">{{ username }}</div>
+      <button class="icon-btn notif-btn" title="Notifications" aria-label="Notifications">
+        <i class="fas fa-bell"></i>
+        <span class="badge-dot"></span>
+        <span class="badge-count">3</span>
+      </button>
+      
+      <div class="divider-vertical"></div>
+      
+      <div class="user-menu">
+        <div class="user-avatar">
+          <div class="avatar-gradient">
+            <span>{{ username.charAt(0).toUpperCase() }}</span>
           </div>
+          <div class="status-indicator online"></div>
         </div>
-        <button class="btn-logout" title="Déconnexion" (click)="onLogout()">
+        <div class="user-details">
+          <span class="user-greeting">Bonjour,</span>
+          <span class="user-name">{{ username }}</span>
+        </div>
+        <button class="btn-logout" title="Déconnexion" (click)="onLogout()" aria-label="Logout">
           <i class="fas fa-sign-out-alt"></i>
         </button>
       </div>
     </div>
-  </nav>
+  </div>
+  <div class="navbar-glow"></div>
+</nav>
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar" [class.collapsed]="sidebarCollapsed">
-    <div class="sidebar-top">
-      <div class="brand">
-        <i class="fas fa-rocket"></i>
-        <span>SIGA</span>
+<!-- SIDEBAR - Ultimate Premium Design -->
+<aside class="sidebar" [class.collapsed]="sidebarCollapsed">
+  <div class="sidebar-header">
+    <div class="sidebar-brand">
+      <div class="brand-icon">
+        <i class="fas fa-users-cog"></i>
+        <div class="icon-pulse"></div>
       </div>
-      <button class="collapse-btn" (click)="toggleSidebar()">
-        <i class="fas" [ngClass]="sidebarCollapsed ? 'fa-angle-right' : 'fa-angle-left'"></i>
-      </button>
+      <span class="brand-text">SIGA HR</span>
+    </div>
+    <button class="collapse-toggle" (click)="toggleSidebar()" aria-label="Toggle sidebar">
+      <i class="fas" [ngClass]="sidebarCollapsed ? 'fa-chevron-right' : 'fa-chevron-left'"></i>
+    </button>
+  </div>
+
+  <nav class="sidebar-nav">
+    <!-- Main Menu -->
+    <div class="nav-section">
+      <span class="nav-section-title">Menu Principal</span>
+      
+      <a routerLink="/getall" class="nav-link" routerLinkActive="active">
+      <div class="nav-icon"><i class="fas fa-chart-line"></i></div>
+      <span class="nav-text">Dashboard</span>
+      <div class="nav-indicator"></div>
+    </a>
+
+    <a routerLink="/recommendation" class="nav-link" routerLinkActive="active">
+      <div class="nav-icon"><i class="fas fa-brain"></i></div>
+      <span class="nav-text">Analyse CV</span>
+      <div class="nav-indicator"></div>
+    </a>
+
+    <a routerLink="/HistoriqueCandidat" class="nav-link" routerLinkActive="active">
+      <div class="nav-icon"><i class="fas fa-history"></i></div>
+      <span class="nav-text">Historique</span>
+      <div class="nav-indicator"></div>
+    </a>
+
+    <a routerLink="/getCandidats" class="nav-link" routerLinkActive="active">
+      <div class="nav-icon"><i class="fas fa-user-friends"></i></div>
+      <span class="nav-text">Candidats</span>
+      <span class="nav-badge" *ngIf="totalCandidates > 0">{{ totalCandidates }}</span>
+      <div class="nav-indicator"></div>
+    </a>
+
+    <!-- ──────────────── MENU QUESTION AVEC SOUS-MENUS ──────────────── -->
+    <div class="nav-dropdown" [class.open]="questionMenuOpen">
+
+      <div class="nav-link dropdown-toggle" (click)="questionMenuOpen = !questionMenuOpen">
+        <div class="nav-icon"><i class="fas fa-question-circle"></i></div>
+        <span class="nav-text">Question</span>
+        <i class="fas" [ngClass]="questionMenuOpen ? 'fa-chevron-up' : 'fa-chevron-down'" style="margin-left:auto;"></i>
+      </div>
+
+      <div class="dropdown-items" *ngIf="questionMenuOpen">
+        <a routerLink="/ajouterQuestion" class="nav-sublink" routerLinkActive="active">
+          <span>Ajouter Question</span>
+        </a>
+
+        <a routerLink="/getallQuestion" class="nav-sublink" routerLinkActive="active">
+          <span>Liste des Questions</span>
+        </a>
+      </div>
+
     </div>
 
-    <nav class="nav-links">
-      <a routerLink="/getall" routerLinkActive="active">
-        <i class="fas fa-tachometer-alt"></i><span class="link-text">Dashboard</span>
+  </div>
+
+    <!-- Management Section -->
+    <div class="nav-section">
+      <span class="nav-section-title">Gestion</span>
+      
+      <a routerLink="/Calendrier" class="nav-link" routerLinkActive="active">
+        <div class="nav-icon">
+          <i class="fas fa-calendar-check"></i>
+        </div>
+        <span class="nav-text">Calendrier</span>
+        <div class="nav-indicator"></div>
       </a>
       
-      <a routerLink="/recommendation" routerLinkActive="active">
-        <i class="fas fa-file-alt"></i><span class="link-text">Analyse CV</span>
+      <a routerLink="/OfferByAdmin" class="nav-link" routerLinkActive="active">
+        <div class="nav-icon">
+          <i class="fas fa-briefcase"></i>
+        </div>
+        <span class="nav-text">Offres</span>
+        <div class="nav-indicator"></div>
       </a>
-      <a routerLink="/getCandidats" routerLinkActive="active">
-        <i class="fas fa-users"></i><span class="link-text">Candidats</span>
-      </a>
-      <a routerLink="/Calendrier" routerLinkActive="active">
-        <i class="fas fa-calendar-alt"></i><span class="link-text">Calendrier</span>
-      </a>
-      <a routerLink="/OfferByAdmin" routerLinkActive="active">
-      <i class="fas fa-briefcase"></i><span class="link-text">Gestion Offres</span>
-    </a>
-    </nav>
+    </div>
+  </nav>
 
-    <div class="sidebar-bottom">
-      <div class="user-profile">
-        <div class="avatar">👋</div>
-        <div class="user-info">
-          <span class="name">Admin</span>
-          <small class="role">Super Admin</small>
+  <div class="sidebar-footer">
+    <div class="user-card">
+      <div class="user-avatar-small">
+        <span>{{ username.charAt(0).toUpperCase() }}</span>
+        <div class="avatar-ring"></div>
+      </div>
+      <div class="user-info-small">
+        <span class="user-name-small">{{ username }}</span>
+        <span class="user-role">Administrateur RH</span>
+      </div>
+    </div>
+    
+    <div class="sidebar-stats" *ngIf="candidates && candidates.length > 0">
+      <div class="stat-mini">
+        <i class="fas fa-users"></i>
+        <span>{{ totalRecommendations }}</span>
+      </div>
+      <div class="stat-mini">
+        <i class="fas fa-star"></i>
+        <span>{{ topMatches }}</span>
+      </div>
+    </div>
+    
+    <div class="app-version">
+      <i class="fas fa-shield-check"></i>
+      <span>Version 1.0.0</span>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="content" [class.expanded]="sidebarCollapsed">
+  
+  <!-- Stats Cards -->
+  <div class="stats-grid" *ngIf="candidates && candidates.length > 0">
+    <div class="stat-card stat-primary">
+      <div class="stat-header">
+        <div class="stat-icon">
+          <i class="fas fa-user-check"></i>
+        </div>
+        <div class="stat-trend positive">
+          <i class="fas fa-arrow-up"></i>
+          <span>15%</span>
         </div>
       </div>
-      <small class="version">v1.0 • SIGA</small>
-    </div>
-  </aside>
-
-  <!-- MAIN CONTENT -->
-  <main class="content" [class.expanded]="sidebarCollapsed">
-    <header class="content-header">
-      <div>
-        <h1 class="content-title">Recommandations</h1>
-        <p class="muted">Découvrez les candidats les mieux adaptés à vos critères.</p>
+      <div class="stat-content">
+        <span class="stat-label">Recommandations</span>
+        <span class="stat-value">{{ totalRecommendations }}</span>
+        <span class="stat-description">Profils analysés</span>
       </div>
-    </header>
+      <div class="stat-sparkle"></div>
+    </div>
 
-    <!-- CONTROLS SECTION (Updated) -->
-    <div class="controls">
-      <form (ngSubmit)="submitRecommendation()" #form="ngForm" class="input-card">
-        <div class="input-group">
-  <label for="offre" class="floating-label">Sélectionner l'offre</label>
-  <select
-    id="offre"
-    [(ngModel)]="selectedOffreId"
-    name="selectedOffreId"
-    required
-    class="input-field"
-  >
-    <option [ngValue]="null" disabled selected hidden>Sélectionner une offre</option>
-    <option *ngFor="let o of offres" [ngValue]="o.idOffre">{{ o.titreOffre }}</option> 
-  </select>
-</div>
-
-        <div class="input-group">
-          <input
-            id="experienceMin"
-            type="number"
-            [(ngModel)]="experienceMin"
-            name="experienceMin"
-            placeholder=" "
-            required
-            class="input-field"
-            aria-label="Expérience minimale en années"
-          />
-          <label for="experienceMin" class="floating-label">Expérience min. (ans)</label>
+    <div class="stat-card stat-success">
+      <div class="stat-header">
+        <div class="stat-icon">
+          <i class="fas fa-star"></i>
         </div>
-        <button
-          type="submit"
-          class="btn btn-gradient"
-          [disabled]="isLoading"
-          aria-label="Générer les recommandations"
-        >
-          <i *ngIf="isLoading" class="fas fa-spinner btn-spinner"></i>
-          {{ isLoading ? 'Analyse en cours...' : 'Générer Recommandations' }}
-        </button>
-      </form>
-    </div>
-
-    <!-- PROGRESS BAR -->
-    <div *ngIf="isLoading" class="progress-container">
-      <div class="progress-bar">
-        <div class="progress-fill" [style.width.%]="progressValue"></div>
+        <div class="stat-trend positive">
+          <i class="fas fa-arrow-up"></i>
+          <span>22%</span>
+        </div>
       </div>
-      <div class="progress-text">{{ progressValue }}%</div>
+      <div class="stat-content">
+        <span class="stat-label">Meilleurs Matchs</span>
+        <span class="stat-value">{{ topMatches }}</span>
+        <span class="stat-description">Score ≥ 80%</span>
+      </div>
+      <div class="stat-sparkle"></div>
     </div>
 
-    <!-- MESSAGE -->
-    <div
-      class="message"
-      *ngIf="message"
-      [ngClass]="{'success': !message.includes('Erreur'), 'error': message.includes('Erreur')}"
-    >
-      <i class="fas" [ngClass]="message.includes('Erreur') ? 'fa-exclamation-circle' : 'fa-check-circle'"></i>
-      {{ message }}
+    <div class="stat-card stat-info">
+      <div class="stat-header">
+        <div class="stat-icon">
+          <i class="fas fa-chart-bar"></i>
+        </div>
+        <div class="stat-trend positive">
+          <i class="fas fa-arrow-up"></i>
+          <span>8%</span>
+        </div>
+      </div>
+      <div class="stat-content">
+        <span class="stat-label">Score Moyen</span>
+        <span class="stat-value">{{ averageScore | number:'1.0-1' }}%</span>
+        <span class="stat-description">Performance globale</span>
+      </div>
+      <div class="stat-sparkle"></div>
     </div>
 
-    <!-- DISPLAY CANDIDATES -->
-    <section class="cards-grid" *ngIf="candidates && candidates.length > 0">
-      <article *ngFor="let c of filteredCandidates(); let i = index" class="candidate-card" [style.animation-delay]="i * 0.1 + 's'">
-        <div class="card-head">
-          <div class="avatar" [ngStyle]="{'background': avatarColor(c)}">{{ initials(c) }}</div>
-          <div class="meta">
-            <div class="name">{{ c.prenom }} {{ c.nom }}</div>
-            <div class="sub muted">
-              <i class="fas fa-envelope"></i> {{ c.email }}
-              <span class="pipe">|</span>
-              <i class="fas fa-briefcase"></i> {{ c.yearsOfExperience }} ans
+    <div class="stat-card stat-warning">
+      <div class="stat-header">
+        <div class="stat-icon">
+          <i class="fas fa-clipboard-check"></i>
+        </div>
+        <div class="stat-trend neutral">
+          <i class="fas fa-minus"></i>
+          <span>0%</span>
+        </div>
+      </div>
+      <div class="stat-content">
+        <span class="stat-label">Offres Analysées</span>
+        <span class="stat-value">{{ offres.length }}</span>
+        <span class="stat-description">En cours</span>
+      </div>
+      <div class="stat-sparkle"></div>
+    </div>
+  </div>
+
+  <!-- Page Header -->
+  <header class="page-header">
+    <div class="header-content">
+      <div class="header-title">
+        <div class="title-wrapper">
+          <h1>Recommandations Intelligentes</h1>
+          <div class="title-decoration"></div>
+        </div>
+        <p class="subtitle">Analysez et découvrez les candidats les mieux adaptés à vos offres grâce à l'IA</p>
+      </div>
+    </div>
+
+    <!-- Analysis Form -->
+    <form (ngSubmit)="submitRecommendation()" #form="ngForm" class="analysis-form">
+      <div class="form-card">
+        <div class="form-header">
+          <div class="header-icon">
+            <i class="fas fa-magic"></i>
+          </div>
+          <div class="header-text">
+            <h3>Configuration de l'analyse IA</h3>
+            <p>Sélectionnez les paramètres pour lancer l'analyse intelligente</p>
+          </div>
+        </div>
+        
+        <div class="form-body">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="offre" class="form-label">
+                <i class="fas fa-briefcase"></i>
+                <span>Sélectionner l'offre</span>
+                <span class="label-badge" *ngIf="offres.length > 0">{{ offres.length }} disponible(s)</span>
+              </label>
+              <select
+                id="offre"
+                [(ngModel)]="selectedOffreId"
+                name="selectedOffreId"
+                required
+                class="form-select"
+              >
+                <option [ngValue]="null" disabled selected>Choisir une offre d'emploi...</option>
+                <option *ngFor="let o of offres" [ngValue]="o.idOffre">{{ o.titreOffre }}</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="experienceMin" class="form-label">
+                <i class="fas fa-clock"></i>
+                <span>Expérience minimale requise</span>
+              </label>
+              <div class="input-with-suffix">
+                <input
+                  id="experienceMin"
+                  type="number"
+                  [(ngModel)]="experienceMin"
+                  name="experienceMin"
+                  placeholder="Ex: 3"
+                  required
+                  min="0"
+                  max="50"
+                  class="form-input"
+                />
+                <span class="input-suffix">années</span>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button
+                type="submit"
+                class="btn btn-primary btn-analyze"
+                [disabled]="isLoading || !selectedOffreId"
+              >
+                <i class="fas" [ngClass]="isLoading ? 'fa-spinner fa-spin' : 'fa-robot'"></i>
+                <span>{{ isLoading ? 'Analyse en cours...' : 'Lancer l\'Analyse IA' }}</span>
+              </button>
             </div>
           </div>
-          <div class="actions">
-            <a
-              *ngIf="c.cvPath"
-              [href]="sanitizeUrl(c.cvPath)"
-              target="_blank"
-              title="Voir CV"
-              class="action"
-              aria-label="Voir le CV du candidat"
+        </div>
+      </div>
+    </form>
+  </header>
+
+  <!-- Progress Bar -->
+  <div class="progress-container" *ngIf="isLoading">
+    <div class="progress-wrapper">
+      <div class="progress-header">
+        <div class="progress-title">
+          <i class="fas fa-cog fa-spin"></i>
+          <span>Analyse des profils en cours...</span>
+        </div>
+        <span class="progress-percentage">{{ progressValue }}%</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" [style.width.%]="progressValue">
+          <div class="progress-glow"></div>
+        </div>
+      </div>
+      <p class="progress-info">
+        <i class="fas fa-info-circle"></i>
+        Notre IA analyse les CVs, calcule les scores de compatibilité et identifie les meilleurs candidats...
+      </p>
+    </div>
+  </div>
+
+  <!-- Message Alert -->
+  <div class="alert-container" *ngIf="message && !isLoading">
+    <div class="alert" [ngClass]="message.includes('Erreur') ? 'alert-error' : 'alert-success'">
+      <div class="alert-icon">
+        <i class="fas" [ngClass]="message.includes('Erreur') ? 'fa-exclamation-circle' : 'fa-check-circle'"></i>
+      </div>
+      <div class="alert-content">
+        <span class="alert-title">{{ message.includes('Erreur') ? 'Erreur' : 'Succès' }}</span>
+        <span class="alert-message">{{ message }}</span>
+      </div>
+      <button class="alert-close" (click)="message = ''" aria-label="Fermer">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Candidates Results -->
+  <section class="candidates-section" *ngIf="candidates && candidates.length > 0">
+    <div class="section-header">
+      <div class="header-left">
+        <h2>
+          <i class="fas fa-users"></i>
+          Candidats Recommandés
+        </h2>
+        <p class="section-subtitle">Triés par score de compatibilité décroissant</p>
+      </div>
+      <div class="header-right">
+        <span class="results-count">
+          <i class="fas fa-check-circle"></i>
+          {{ filteredCandidates().length }} résultat(s)
+        </span>
+      </div>
+    </div>
+
+    <div class="candidates-grid">
+      <article 
+        *ngFor="let c of paginatedCandidates(); let i = index" 
+        class="candidate-card" 
+        [class]="'score-' + getScoreClass(c.similarityScore || 0)"
+        [style.animation-delay]="i * 0.08 + 's'"
+      >
+        <div class="card-ribbon" [class]="'ribbon-' + getScoreClass(c.similarityScore || 0)">
+          <i class="fas fa-award"></i>
+          <span>{{ c.similarityScore | number:'1.0-0' }}%</span>
+        </div>
+
+        <div class="card-header">
+          <div class="candidate-avatar" [style.background]="avatarColor(c)">
+            <span class="avatar-initials">{{ initials(c) }}</span>
+            <div class="avatar-ring"></div>
+          </div>
+
+          <div class="card-actions">
+            <button 
+              class="action-btn action-cv" 
+              (click)="openCv(c); $event.stopPropagation()" 
+              [disabled]="!c.cvPath" 
+              [title]="c.cvPath ? 'Télécharger le CV' : 'CV non disponible'"
             >
-              <i class="fas fa-file-alt"></i>
-            </a>
-            <button
-              class="action"
-              (click)="contactCandidate(c)"
-              title="Contacter"
-              aria-label="Contacter le candidat"
+              <i class="fas fa-file-pdf"></i>
+            </button>
+            <button 
+              class="action-btn action-mail" 
+              (click)="contactCandidate(c); $event.stopPropagation()" 
+              title="Contacter par email"
             >
-              <i class="fas fa-paper-plane"></i>
+              <i class="fas fa-envelope"></i>
             </button>
           </div>
         </div>
+
         <div class="card-body">
-          <div class="score-row">
-            <div class="score-left">
-              <div class="score-label">Score de correspondance</div>
-              <div class="score-value">{{ c.similarityScore | number:'1.0-0' }}%</div>
+          <h3 class="candidate-name">
+            <span class="first-name">{{ c.prenom }}</span>
+            <strong class="last-name">{{ c.nom }}</strong>
+          </h3>
+          
+          <div class="candidate-info">
+            <div class="info-item">
+              <i class="fas fa-envelope"></i>
+              <span class="info-text">{{ c.email }}</span>
             </div>
-            <div class="score-bar">
-              <div class="bar">
-                <div class="bar-fill" [style.width.%]="c.similarityScore"></div>
+            <div class="info-item">
+              <i class="fas fa-briefcase"></i>
+              <span class="info-text">{{ c.yearsOfExperience }} ans d'expérience</span>
+            </div>
+          </div>
+
+          <div class="score-section">
+            <div class="score-header">
+              <span class="score-title">Compatibilité</span>
+              <span class="score-percentage" [class]="'text-' + getScoreClass(c.similarityScore || 0)">
+                {{ c.similarityScore | number:'1.0-0' }}%
+              </span>
+            </div>
+            <div class="progress-bar">
+              <div 
+                class="progress-fill" 
+                [class]="'progress-' + getScoreClass(c.similarityScore || 0)" 
+                [style.width.%]="c.similarityScore"
+              >
+                <div class="progress-glow"></div>
               </div>
             </div>
           </div>
         </div>
+
+        <div class="card-footer">
+          <div class="score-badge" [class]="'badge-' + getScoreClass(c.similarityScore || 0)">
+            <i class="fas fa-star"></i>
+            <span>{{ getScoreClass(c.similarityScore || 0) === 'excellent' ? 'Excellent Match' : 
+                     getScoreClass(c.similarityScore || 0) === 'good' ? 'Bon Match' : 
+                     getScoreClass(c.similarityScore || 0) === 'average' ? 'Match Moyen' : 'Match Faible' }}</span>
+          </div>
+        </div>
       </article>
+    </div>
 
-      <div *ngIf="filteredCandidates().length === 0" class="empty">
-        <div class="empty-ico">😔</div>
-        <div>Aucun candidat ne correspond à vos critères.</div>
+    <!-- Empty Filtered State -->
+    <div *ngIf="filteredCandidates().length === 0" class="empty-state">
+      <div class="empty-icon">
+        <i class="fas fa-search"></i>
+        <div class="icon-ring"></div>
       </div>
-    </section>
-  </main>
+      <h3 class="empty-title">Aucun candidat trouvé</h3>
+      <p class="empty-description">
+        Aucun résultat ne correspond à votre recherche.<br>
+        Essayez d'ajuster votre terme de recherche.
+      </p>
+      <button class="btn btn-primary" (click)="searchTerm = ''">
+        <i class="fas fa-redo"></i>
+        <span>Réinitialiser la recherche</span>
+      </button>
+    </div>
 
-  <!-- FOOTER -->
-  <footer class="footer">
-    <div class="footer-left">
-      <div class="brand-info">
-        <strong>SIGA</strong>
-        <span>• 13 Rue Ibn Nafis, Les berges du Lac 3, Tunis</span>
+    <!-- Pagination -->
+    <nav class="pagination-container" *ngIf="totalPages() > 1">
+      <button class="pagination-btn" 
+              (click)="currentPage = 1" 
+              [disabled]="currentPage === 1"
+              title="Première page">
+        <i class="fas fa-angle-double-left"></i>
+      </button>
+      
+      <button class="pagination-btn" 
+              (click)="previousPage()" 
+              [disabled]="currentPage === 1"
+              title="Page précédente">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      
+      <div class="pagination-info">
+        <span class="current-page">{{ currentPage }}</span>
+        <span class="page-separator">/</span>
+        <span class="total-pages">{{ totalPages() }}</span>
       </div>
-      <div class="footer-links">
-        <a href="mailto:contact&#64;siga.com.tn"><i class="fas fa-envelope"></i> contact&#64;siga.com.tn</a>
-        <span>•</span>
-        <a href="tel:+21671960281"><i class="fas fa-phone"></i> (+216) 71 960 281</a>
+      
+      <button class="pagination-btn" 
+              (click)="nextPage()" 
+              [disabled]="currentPage === totalPages()"
+              title="Page suivante">
+        <i class="fas fa-chevron-right"></i>
+      </button>
+      
+      <button class="pagination-btn" 
+              (click)="currentPage = totalPages()" 
+              [disabled]="currentPage === totalPages()"
+              title="Dernière page">
+        <i class="fas fa-angle-double-right"></i>
+      </button>
+    </nav>
+  </section>
+
+  <!-- Empty Initial State -->
+  <div class="empty-initial-state" *ngIf="!candidates || candidates.length === 0 && !isLoading">
+    <div class="empty-illustration">
+      <i class="fas fa-robot"></i>
+      <div class="illustration-ring"></div>
+    </div>
+    <h2 class="empty-title">Prêt à découvrir vos talents ?</h2>
+    <p class="empty-description">
+      Sélectionnez une offre d'emploi et laissez notre intelligence artificielle identifier les meilleurs candidats pour vous.
+      <br>
+      Notre algorithme avancé analyse les CVs en profondeur et calcule des scores de compatibilité ultra-précis.
+    </p>
+    <div class="empty-features">
+      <div class="feature-item">
+        <div class="feature-icon">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="feature-text">
+          <strong>Analyse IA avancée</strong>
+          <span>Deep learning & NLP</span>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="feature-text">
+          <strong>Scores de compatibilité</strong>
+          <span>Précision optimale</span>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="feature-text">
+          <strong>Résultats instantanés</strong>
+          <span>Réponse en secondes</span>
+        </div>
       </div>
     </div>
-    <div class="footer-right">
-      <span>v1.0</span>
-      <a href="#">Privacy</a>
-      <a href="#">Terms</a>
+  </div>
+</main>
+
+<!-- FOOTER - Ultimate Premium Design -->
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-content">
+      <div class="footer-left">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <i class="fas fa-rocket"></i>
+          </div>
+          <div class="footer-brand-text">
+            <strong>SIGA</strong>
+            <span>Recruitment Excellence</span>
+          </div>
+        </div>
+        
+        <p class="footer-address">
+          <i class="fas fa-map-marker-alt"></i>
+          13 Rue Ibn Nafis, Les berges du Lac 3, Tunis
+        </p>
+        
+        <div class="footer-links">
+          <a href="mailto:contact&#64;siga.com.tn">
+            <i class="fas fa-envelope"></i>
+            contact&#64;siga.com.tn
+          </a>
+          <a href="tel:+21671960281">
+            <i class="fas fa-phone"></i>
+            +216 71 960 281
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-center">
+        <h4>Navigation</h4>
+        <div class="footer-nav">
+          <a routerLink="/getall">Dashboard</a>
+          <a routerLink="/recommendation" class="active">Analyse CV</a>
+          <a routerLink="/getCandidats">Candidats</a>
+          <a routerLink="/Calendrier">Calendrier</a>
+          <a routerLink="/OfferByAdmin">Offres</a>
+        </div>
+      </div>
+
+      <div class="footer-right">
+        <h4>Support</h4>
+        <div class="footer-nav">
+          <a href="#">Centre d'aide</a>
+          <a href="#">Documentation</a>
+          <a href="#">Confidentialité</a>
+          <a href="#">Conditions d'utilisation</a>
+        </div>
+      </div>
     </div>
-  </footer>
+
+    <div class="footer-bottom">
+      <p class="footer-copyright">
+        <i class="fas fa-copyright"></i>
+        2025 SIGA. Tous droits réservés. Propulsé par l'excellence.
+      </p>
+      <div class="footer-social">
+        <a href="#" title="LinkedIn" aria-label="LinkedIn">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+        <a href="#" title="Twitter" aria-label="Twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+        <a href="#" title="Facebook" aria-label="Facebook">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-wave"></div>
+</footer>

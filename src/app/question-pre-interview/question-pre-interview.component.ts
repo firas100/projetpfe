@@ -4,14 +4,17 @@ import { NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common'; 
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../auth/services/auth.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink, RouterModule } from '@angular/router';
 @Component({
   selector: 'app-question-pre-interview',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterModule, RouterLink],
   templateUrl: './question-pre-interview.component.html',
-  styleUrl: './question-pre-interview.component.css'
+  styleUrl: './question-pre-interview.component.scss'
 })
 export class QuestionPreInterviewComponent {
+ProcessVideos() {
+throw new Error('Method not implemented.');
+}
 questionData: { question: string }[] = [{ question: '' }];
   sidebarCollapsed: boolean = false;
   message: string | null = null;
@@ -19,6 +22,10 @@ questionData: { question: string }[] = [{ question: '' }];
   username: string = '';
   searchTerm: string = '';
   currentPage: number = 1;
+totalCandidates: any;
+questionMenuOpen: any;
+isProcessingVideos: any;
+topPerformers: any;
 
 
   constructor(private http: HttpClient, private authService: AuthService,private router:Router) {}
@@ -36,6 +43,11 @@ questionData: { question: string }[] = [{ question: '' }];
     if (this.questionData.length > 1) {
       this.questionData.splice(index, 1);
     }
+  }
+   applyFilters(): void {
+    console.log('🔍 Applying filters:', {
+      searchTerm: this.searchTerm
+    });
   }
 
   addQuestions(form: NgForm): void {

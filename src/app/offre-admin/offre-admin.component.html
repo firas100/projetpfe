@@ -1,463 +1,799 @@
-<!-- NAVBAR -->
+<!-- ═══════════════════════════════════════════════════════════════
+     ULTIMATE PREMIUM HR RECRUITMENT DASHBOARD - JOB OFFERS MODULE
+     Enhanced Design System - Professional Recruitment Experience
+     ═══════════════════════════════════════════════════════════════ -->
+
+<!-- NAVBAR - Ultimate Premium Design -->
 <nav class="navbar">
-  <div class="navbar-left">
-    <button class="hamburger" (click)="toggleSidebar()" aria-label="Toggle sidebar">
-      <span></span><span></span><span></span>
-    </button>
-    <span class="brand">SIGA <small class="brand-sub">Admin</small></span>
-  </div>
-
-  <form class="search-wrapper" (submit)="$event.preventDefault(); applyFilter()">
-    <div class="search-field">
-      <input
-        class="search"
-        type="search"
-        [(ngModel)]="searchTerm"
-        name="search"
-        placeholder="Recherche: nom, prénom, email..."
-        aria-label="Search candidates"
-      />
-      <button class="btn btn-search" type="button" (click)="applyFilter()" title="Rechercher">
-        <i class="fas fa-search"></i>
+  <div class="navbar-container">
+    <!-- Left Section -->
+    <div class="navbar-left">
+      <button class="hamburger" (click)="toggleSidebar()" aria-label="Toggle sidebar">
+        <span></span>
+        <span></span>
+        <span></span>
       </button>
-    </div>
-  </form>
-
-  <div class="navbar-right">
-    <div class="notif">
-      <button class="icon-btn" title="Notifications"><i class="fas fa-bell"></i></button>
-    </div>
-
-    <div class="user">
-      <div class="user-info">
-        <div class="user-emoji">👋</div>
-        <div class="user-text">
-          <div class="user-hi">Bienvenue</div>
-          <div class="user-name">{{ username }}</div>
+      
+      <div class="brand-logo">
+        <div class="logo-icon">
+          <i class="fas fa-rocket"></i>
+          <div class="logo-shine"></div>
+        </div>
+        <div class="logo-text">
+          <span class="brand">SIGA</span>
+          <span class="brand-sub">Recruitment Excellence</span>
         </div>
       </div>
-      <button class="btn-logout" title="Déconnexion" (click)="onLogout()">
+    </div>
+
+    <!-- Center Search -->
+    <form class="search-wrapper" (submit)="$event.preventDefault(); applyFilter()">
+      <div class="search-field">
+        <i class="fas fa-search search-icon"></i>
+        <input
+          class="search"
+          type="search"
+          [(ngModel)]="searchTerm"
+          name="search"
+          placeholder="Rechercher une offre par titre, compétences..."
+          aria-label="Search offers"
+          (input)="applyFilter()"
+        />
+        <button 
+          *ngIf="searchTerm" 
+          type="button" 
+          class="search-clear"
+          (click)="clearSearch()"
+          aria-label="Clear search"
+        >
+          <i class="fas fa-times"></i>
+        </button>
+        <kbd class="search-shortcut">⌘K</kbd>
+      </div>
+    </form>
+
+    <!-- Right Section -->
+    <div class="navbar-right">
+      <button class="icon-btn notif-btn" title="Notifications" aria-label="Notifications">
+        <i class="fas fa-bell"></i>
+        <span class="badge-dot"></span>
+        <span class="badge-count">3</span>
+      </button>
+      
+      <div class="divider-vertical"></div>
+      
+      <div class="user-menu">
+        <div class="user-avatar">
+          <div class="avatar-gradient">
+            <span>{{ username.charAt(0).toUpperCase() }}</span>
+          </div>
+          <div class="status-indicator online"></div>
+        </div>
+        <div class="user-details">
+          <span class="user-greeting">Bonjour,</span>
+          <span class="user-name">{{ username }}</span>
+        </div>
+        <button class="btn-logout" title="Déconnexion" (click)="onLogout()" aria-label="Logout">
           <i class="fas fa-sign-out-alt"></i>
-      </button>    
+        </button>
+      </div>
     </div>
   </div>
+  <div class="navbar-glow"></div>
 </nav>
 
-<!-- SIDEBAR -->
+<!-- SIDEBAR - Ultimate Premium Design -->
 <aside class="sidebar" [class.collapsed]="sidebarCollapsed">
-  <div class="sidebar-top">
-    <div class="brand">
-      <i class="fas fa-rocket"></i>
-      <span>SIGA</span>
+  <div class="sidebar-header">
+    <div class="sidebar-brand">
+      <div class="brand-icon">
+        <i class="fas fa-users-cog"></i>
+        <div class="icon-pulse"></div>
+      </div>
+      <span class="brand-text">SIGA HR</span>
     </div>
-    <button class="collapse-btn" (click)="toggleSidebar()" title="Toggle Sidebar">
-      <i class="fas" [ngClass]="sidebarCollapsed ? 'fa-angle-right' : 'fa-angle-left'"></i>
+    <button class="collapse-toggle" (click)="toggleSidebar()" aria-label="Toggle sidebar">
+      <i class="fas" [ngClass]="sidebarCollapsed ? 'fa-chevron-right' : 'fa-chevron-left'"></i>
     </button>
   </div>
 
-  <nav class="nav-links">
-    <a routerLink="/getall" routerLinkActive="active"><i class="fas fa-tachometer-alt"></i><span class="link-text">Dashboard</span></a>
-    <a routerLink="/recommendation" routerLinkActive="active"><i class="fas fa-file-alt"></i><span class="link-text">Analyse CV</span></a>
-    <a routerLink="/getCandidats" routerLinkActive="active"><i class="fas fa-users"></i><span class="link-text">Candidats</span></a>
-    <a routerLink="/Calendrier" routerLinkActive="active"><i class="fas fa-calendar-alt"></i><span class="link-text">Calendrier</span></a>
-  <a routerLink="/OfferByAdmin" routerLinkActive="active">
-      <i class="fas fa-briefcase"></i><span class="link-text">Gestion Offres</span>
+  <nav class="sidebar-nav">
+    <!-- Main Menu -->
+    <div class="nav-section">
+      <span class="nav-section-title">Menu Principal</span>
+      
+      <a routerLink="/getall" class="nav-link" routerLinkActive="active">
+      <div class="nav-icon"><i class="fas fa-chart-line"></i></div>
+      <span class="nav-text">Dashboard</span>
+      <div class="nav-indicator"></div>
     </a>
+
+    <a routerLink="/recommendation" class="nav-link" routerLinkActive="active">
+      <div class="nav-icon"><i class="fas fa-brain"></i></div>
+      <span class="nav-text">Analyse CV</span>
+      <div class="nav-indicator"></div>
+    </a>
+
+    <a routerLink="/HistoriqueCandidat" class="nav-link" routerLinkActive="active">
+      <div class="nav-icon"><i class="fas fa-history"></i></div>
+      <span class="nav-text">Historique</span>
+      <div class="nav-indicator"></div>
+    </a>
+
+    <a routerLink="/getCandidats" class="nav-link" routerLinkActive="active">
+      <div class="nav-icon"><i class="fas fa-user-friends"></i></div>
+      <span class="nav-text">Candidats</span>
+      <span class="nav-badge" *ngIf="totalCandidates > 0">{{ totalCandidates }}</span>
+      <div class="nav-indicator"></div>
+    </a>
+
+    <!-- ──────────────── MENU QUESTION AVEC SOUS-MENUS ──────────────── -->
+    <div class="nav-dropdown" [class.open]="questionMenuOpen">
+
+      <div class="nav-link dropdown-toggle" (click)="questionMenuOpen = !questionMenuOpen">
+        <div class="nav-icon"><i class="fas fa-question-circle"></i></div>
+        <span class="nav-text">Question</span>
+        <i class="fas" [ngClass]="questionMenuOpen ? 'fa-chevron-up' : 'fa-chevron-down'" style="margin-left:auto;"></i>
+      </div>
+
+      <div class="dropdown-items" *ngIf="questionMenuOpen">
+        <a routerLink="/ajouterQuestion" class="nav-sublink" routerLinkActive="active">
+          <span>Ajouter Question</span>
+        </a>
+
+        <a routerLink="/getallQuestion" class="nav-sublink" routerLinkActive="active">
+          <span>Liste des Questions</span>
+        </a>
+      </div>
+
+    </div>
+
+  </div>
+
+    <!-- Management Section -->
+    <div class="nav-section">
+      <span class="nav-section-title">Gestion</span>
+      
+      <a routerLink="/Calendrier" class="nav-link" routerLinkActive="active">
+        <div class="nav-icon">
+          <i class="fas fa-calendar-check"></i>
+        </div>
+        <span class="nav-text">Calendrier</span>
+        <div class="nav-indicator"></div>
+      </a>
+      
+      <a routerLink="/OfferByAdmin" class="nav-link active" routerLinkActive="active">
+        <div class="nav-icon">
+          <i class="fas fa-briefcase"></i>
+        </div>
+        <span class="nav-text">Offres</span>
+        <div class="nav-indicator"></div>
+      </a>
+    </div>
   </nav>
 
-  <div class="sidebar-bottom">
-    <div class="user-profile">
-      <div class="avatar">👋</div>
-      <div class="user-info">
-        <span class="name">Admin</span>
-        <small class="role">Super Admin</small>
+  <div class="sidebar-footer">
+    <div class="user-card">
+      <div class="user-avatar-small">
+        <span>{{ username.charAt(0).toUpperCase() }}</span>
+        <div class="avatar-ring"></div>
+      </div>
+      <div class="user-info-small">
+        <span class="user-name-small">{{ username }}</span>
+        <span class="user-role">Administrateur RH</span>
       </div>
     </div>
-    <small class="version">v1.0 • SIGA</small>
+    
+    <div class="app-version">
+      <i class="fas fa-shield-check"></i>
+      <span>Version 1.0.0</span>
+    </div>
   </div>
 </aside>
+
 <!-- MAIN CONTENT -->
 <main class="main-content" [class.expanded]="sidebarCollapsed">
-  <!-- STATS CARDS -->
-  <section class="stats-section">
-    <div class="stat-card stat-card-total">
-      <div class="stat-icon">
-        <i class="fas fa-briefcase"></i>
+  
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div class="page-header-content">
+      <div class="page-title-section">
+        <h1 class="page-title">
+          <i class="fas fa-briefcase"></i>
+          Gestion des Offres d'Emploi
+        </h1>
+        <p class="page-subtitle">Gérez et suivez toutes vos offres de recrutement en un seul endroit</p>
       </div>
-      <div class="stat-content">
-        <div class="stat-value">{{ totalOffres }}</div>
-        <div class="stat-label">Total des Offres</div>
-      </div>
-    </div>
-    <div class="stat-card stat-card-active">
-      <div class="stat-icon">
-        <i class="fas fa-check-circle"></i>
-      </div>
-      <div class="stat-content">
-        <div class="stat-value">{{ activeOffres }}</div>
-        <div class="stat-label">Offres Actives</div>
-      </div>
-    </div>
-    <div class="stat-card stat-card-inactive">
-      <div class="stat-icon">
-        <i class="fas fa-pause-circle"></i>
-      </div>
-      <div class="stat-content">
-        <div class="stat-value">{{ inactiveOffres }}</div>
-        <div class="stat-label">Offres Inactives</div>
-      </div>
-    </div>
-    <div class="stat-card stat-card-action">
-      <button class="btn-add-large" (click)="onAddOffre()">
-        <i class="fas fa-plus-circle"></i>
-        <span>Nouvelle Offre</span>
+      <button class="btn-create-offer" (click)="onAddOffre()">
+        <i class="fas fa-plus"></i>
+        <span>Créer une Offre</span>
+        <div class="btn-shine"></div>
       </button>
+    </div>
+  </div>
+
+  <!-- ENHANCED STATS CARDS -->
+  <section class="stats-grid">
+    <div class="stat-card stat-primary">
+      <div class="stat-card-inner">
+        <div class="stat-icon-wrapper">
+          <div class="stat-icon">
+            <i class="fas fa-briefcase"></i>
+          </div>
+          <div class="stat-icon-bg"></div>
+        </div>
+        <div class="stat-details">
+          <div class="stat-label">Total des Offres</div>
+          <div class="stat-value">{{ totalOffres }}</div>
+          <div class="stat-trend positive">
+            <i class="fas fa-arrow-up"></i>
+            <span>+12% ce mois</span>
+          </div>
+        </div>
+      </div>
+      <div class="stat-card-glow"></div>
+    </div>
+
+    <div class="stat-card stat-success">
+      <div class="stat-card-inner">
+        <div class="stat-icon-wrapper">
+          <div class="stat-icon">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <div class="stat-icon-bg"></div>
+        </div>
+        <div class="stat-details">
+          <div class="stat-label">Offres Actives</div>
+          <div class="stat-value">{{ activeOffres }}</div>
+          <div class="stat-progress">
+            <div class="progress-bar">
+              <div 
+                class="progress-fill" 
+                [style.width.%]="(activeOffres / totalOffres) * 100"
+              ></div>
+            </div>
+            <span class="progress-text">{{ ((activeOffres / totalOffres) * 100) | number:'1.0-0' }}%</span>
+          </div>
+        </div>
+      </div>
+      <div class="stat-card-glow"></div>
+    </div>
+
+    <div class="stat-card stat-warning">
+      <div class="stat-card-inner">
+        <div class="stat-icon-wrapper">
+          <div class="stat-icon">
+            <i class="fas fa-pause-circle"></i>
+          </div>
+          <div class="stat-icon-bg"></div>
+        </div>
+        <div class="stat-details">
+          <div class="stat-label">Offres Inactives</div>
+          <div class="stat-value">{{ inactiveOffres }}</div>
+          <div class="stat-info">
+            <i class="fas fa-info-circle"></i>
+            <span>En attente de publication</span>
+          </div>
+        </div>
+      </div>
+      <div class="stat-card-glow"></div>
+    </div>
+
+    <div class="stat-card stat-info">
+      <div class="stat-card-inner">
+        <div class="stat-icon-wrapper">
+          <div class="stat-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <div class="stat-icon-bg"></div>
+        </div>
+        <div class="stat-details">
+          <div class="stat-label">Postes à Pourvoir</div>
+          <div class="stat-value">{{ getTotalPosts() }}</div>
+          <div class="stat-meta">
+            <i class="fas fa-chart-line"></i>
+            <span>Tous départements</span>
+          </div>
+        </div>
+      </div>
+      <div class="stat-card-glow"></div>
     </div>
   </section>
 
-  <!-- CONTROLS BAR -->
-  <section class="controls-bar">
-    <div class="controls-left">
-      <div class="filter-group">
-        <button 
-          class="filter-btn" 
-          [class.active]="filterStatus === 'all'"
-          (click)="setFilterStatus('all')"
-        >
-          Toutes ({{ totalOffres }})
-        </button>
-        <button 
-          class="filter-btn" 
-          [class.active]="filterStatus === 'active'"
-          (click)="setFilterStatus('active')"
-        >
-          Actives ({{ activeOffres }})
-        </button>
-        <button 
-          class="filter-btn" 
-          [class.active]="filterStatus === 'inactive'"
-          (click)="setFilterStatus('inactive')"
-        >
-          Inactives ({{ inactiveOffres }})
-        </button>
+  <!-- ENHANCED CONTROLS BAR -->
+  <section class="controls-section">
+    <div class="controls-container">
+      
+      <!-- Filters -->
+      <div class="filters-group">
+        <div class="filter-pills">
+          <button 
+            class="filter-pill" 
+            [class.active]="filterStatus === 'all'"
+            (click)="setFilterStatus('all')"
+          >
+            <span class="pill-label">Toutes</span>
+            <span class="pill-count">{{ totalOffres }}</span>
+          </button>
+          <button 
+            class="filter-pill filter-pill-success" 
+            [class.active]="filterStatus === 'active'"
+            (click)="setFilterStatus('active')"
+          >
+            <span class="pill-icon"><i class="fas fa-check"></i></span>
+            <span class="pill-label">Actives</span>
+            <span class="pill-count">{{ activeOffres }}</span>
+          </button>
+          <button 
+            class="filter-pill filter-pill-warning" 
+            [class.active]="filterStatus === 'inactive'"
+            (click)="setFilterStatus('inactive')"
+          >
+            <span class="pill-icon"><i class="fas fa-pause"></i></span>
+            <span class="pill-label">Inactives</span>
+            <span class="pill-count">{{ inactiveOffres }}</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="controls-actions">
+        <div class="sort-control">
+          <label class="control-label">
+            <i class="fas fa-sort"></i>
+            Trier par
+          </label>
+          <select class="select-modern" [(ngModel)]="sortBy" (change)="applyFilter()">
+            <option value="recent">Plus récent</option>
+            <option value="title">Titre (A-Z)</option>
+            <option value="posts">Nombre de postes</option>
+          </select>
+        </div>
+
+        <div class="view-switcher">
+          <button 
+            class="view-btn" 
+            [class.active]="viewMode === 'grid'"
+            (click)="setView('grid')"
+            title="Vue grille"
+          >
+            <i class="fas fa-th-large"></i>
+          </button>
+          <button 
+            class="view-btn" 
+            [class.active]="viewMode === 'list'"
+            (click)="setView('list')"
+            title="Vue liste"
+          >
+            <i class="fas fa-list"></i>
+          </button>
+        </div>
       </div>
     </div>
 
-    <div class="controls-right">
-      <div class="sort-group">
-        <label class="sort-label">Trier par:</label>
-        <select class="sort-select" [(ngModel)]="sortBy" (change)="applyFilter()">
-          <option value="recent">Plus récent</option>
-          <option value="title">Titre (A-Z)</option>
-          <option value="posts">Nombre de postes</option>
-        </select>
-      </div>
-
-      <div class="view-toggle">
-        <button 
-          class="view-btn" 
-          [class.active]="viewMode === 'grid'"
-          (click)="setView('grid')"
-          title="Vue grille"
-          aria-label="Grid view"
-        >
-          <i class="fas fa-th-large"></i>
-        </button>
-        <button 
-          class="view-btn" 
-          [class.active]="viewMode === 'list'"
-          (click)="setView('list')"
-          title="Vue liste"
-          aria-label="List view"
-        >
-          <i class="fas fa-list"></i>
-        </button>
-      </div>
+    <!-- Results Info -->
+    <div class="results-info" *ngIf="filteredOffres.length > 0">
+      <i class="fas fa-check-circle"></i>
+      <span>{{ filteredOffres.length }} offre{{ filteredOffres.length > 1 ? 's' : '' }} trouvée{{ filteredOffres.length > 1 ? 's' : '' }}</span>
     </div>
   </section>
 
   <!-- LOADING STATE -->
-  <div *ngIf="loading" class="loading-state">
-    <div class="spinner"></div>
-    <p>Chargement des offres d'emploi...</p>
+  <div *ngIf="loading" class="state-container loading-state">
+    <div class="state-content">
+      <div class="loading-spinner">
+        <div class="spinner-ring"></div>
+        <div class="spinner-ring"></div>
+        <div class="spinner-ring"></div>
+        <i class="fas fa-briefcase spinner-icon"></i>
+      </div>
+      <h3>Chargement des offres...</h3>
+      <p>Veuillez patienter un instant</p>
+    </div>
   </div>
 
   <!-- ERROR STATE -->
-  <div *ngIf="error && !loading" class="error-state">
-    <i class="fas fa-exclamation-triangle"></i>
-    <h3>Une erreur est survenue</h3>
-    <p>{{ error }}</p>
-    <button class="btn-retry" (click)="loadOffres()">
-      <i class="fas fa-redo"></i> Réessayer
-    </button>
+  <div *ngIf="error && !loading" class="state-container error-state">
+    <div class="state-content">
+      <div class="state-icon error-icon">
+        <i class="fas fa-exclamation-triangle"></i>
+      </div>
+      <h3>Une erreur est survenue</h3>
+      <p>{{ error }}</p>
+      <button class="btn-state-action" (click)="loadOffres()">
+        <i class="fas fa-redo"></i>
+        Réessayer
+      </button>
+    </div>
   </div>
 
   <!-- EMPTY STATE -->
-  <div *ngIf="!loading && !error && filteredOffres.length === 0" class="empty-state">
-    <i class="fas fa-inbox"></i>
-    <h3>Aucune offre trouvée</h3>
-    <p *ngIf="searchTerm">Aucun résultat pour "{{ searchTerm }}"</p>
-    <p *ngIf="!searchTerm">Commencez par créer votre première offre d'emploi</p>
-    <button class="btn-primary" (click)="onAddOffre()">
-      <i class="fas fa-plus"></i> Créer une offre
-    </button>
+  <div *ngIf="!loading && !error && filteredOffres.length === 0" class="state-container empty-state">
+    <div class="state-content">
+      <div class="state-icon empty-icon">
+        <i class="fas fa-inbox"></i>
+      </div>
+      <h3>{{ searchTerm ? 'Aucun résultat trouvé' : 'Aucune offre disponible' }}</h3>
+      <p *ngIf="searchTerm">
+        Aucune offre ne correspond à <strong>"{{ searchTerm }}"</strong>
+      </p>
+      <p *ngIf="!searchTerm">
+        Commencez par créer votre première offre d'emploi
+      </p>
+      <button class="btn-state-action" (click)="searchTerm ? clearSearch() : onAddOffre()">
+        <i class="fas" [ngClass]="searchTerm ? 'fa-times' : 'fa-plus'"></i>
+        {{ searchTerm ? 'Effacer la recherche' : 'Créer une offre' }}
+      </button>
+    </div>
   </div>
 
   <!-- OFFERS GRID VIEW -->
   <div *ngIf="!loading && !error && paginatedOffres.length > 0 && viewMode === 'grid'" class="offers-grid">
-    <article *ngFor="let offre of paginatedOffres" class="offer-card">
-      <div class="offer-header">
-        <div class="offer-status" [class.status-active]="offre.enable" [class.status-inactive]="!offre.enable">
-          <i class="fas" [ngClass]="offre.enable ? 'fa-check-circle' : 'fa-pause-circle'"></i>
-          {{ offre.enable ? 'Active' : 'Inactive' }}
-        </div>
-        <div class="offer-badge">
-          <i class="fas fa-users"></i>
-          {{ offre.nbreDePoste }} poste{{ offre.nbreDePoste > 1 ? 's' : '' }}
-        </div>
-      </div>
-
-      <h3 class="offer-title">{{ offre.titreOffre }}</h3>
+    <article *ngFor="let offre of paginatedOffres" class="offer-card-modern">
       
-      <p class="offer-description">
-        {{ offre.descriptionJob.length > 120 ? (offre.descriptionJob | slice:0:120) + '...' : offre.descriptionJob }}
-      </p>
-
-      <div class="offer-profile">
-        <i class="fas fa-user-tie"></i>
-        <span>{{ offre.profilRecherche }}</span>
+      <!-- Card Header -->
+      <div class="offer-card-header">
+        <div class="offer-status-badge" [class.status-active]="offre.enable">
+          <span class="status-dot"></span>
+          <span class="status-text">{{ offre.enable ? 'Active' : 'Inactive' }}</span>
+        </div>
+        <div class="offer-posts-badge">
+          <i class="fas fa-users"></i>
+          <span>{{ offre.nbreDePoste }}</span>
+        </div>
       </div>
 
-      <div class="offer-skills">
-        <span class="skill-tag" *ngFor="let skill of getSkillsArray(offre.competencesTechniques)">
-          {{ skill }}
-        </span>
+      <!-- Card Body -->
+      <div class="offer-card-body">
+        <h3 class="offer-card-title">{{ offre.titreOffre }}</h3>
+        
+        <p class="offer-card-description">
+          {{ offre.descriptionJob.length > 120 ? (offre.descriptionJob | slice:0:120) + '...' : offre.descriptionJob }}
+        </p>
+
+        <div class="offer-profile-tag">
+          <i class="fas fa-user-tie"></i>
+          <span>{{ offre.profilRecherche }}</span>
+        </div>
+
+        <div class="offer-skills-container">
+          <div class="skills-header">
+            <i class="fas fa-code"></i>
+            <span>Compétences requises</span>
+          </div>
+          <div class="skills-list">
+            <span class="skill-badge" *ngFor="let skill of getSkillsArray(offre.competencesTechniques)">
+              {{ skill }}
+            </span>
+            <span 
+              *ngIf="offre.competencesTechniques.split(',').length > 5" 
+              class="skill-badge skill-more"
+            >
+              +{{ offre.competencesTechniques.split(',').length - 5 }}
+            </span>
+          </div>
+        </div>
       </div>
 
-      <div class="offer-actions">
-        <button 
-          class="action-btn action-toggle" 
-          (click)="onToggleEnable(offre)"
-          [title]="offre.enable ? 'Désactiver' : 'Activer'"
-        >
-          <i class="fas" [ngClass]="offre.enable ? 'fa-pause' : 'fa-play'"></i>
-        </button>
-        <button class="action-btn action-edit" (click)="onEditOffre(offre)" title="Modifier">
-          <i class="fas fa-edit"></i>
-        </button>
-        <button class="action-btn action-view" (click)="onViewOffre(offre)" title="Voir détails">
-          <i class="fas fa-eye"></i>
-        </button>
-        <button class="action-btn action-delete" (click)="onDeleteOffre(offre)" title="Supprimer">
-          <i class="fas fa-trash-alt"></i>
-        </button>
+      <!-- Card Footer -->
+      <div class="offer-card-footer">
+        <div class="card-actions">
+          <button 
+            class="card-action-btn action-view" 
+            (click)="onViewOffre(offre)"
+            title="Voir les détails"
+          >
+            <i class="fas fa-eye"></i>
+            <span>Détails</span>
+          </button>
+          <button 
+            class="card-action-btn action-edit" 
+            (click)="onEditOffre(offre)"
+            title="Modifier"
+          >
+            <i class="fas fa-edit"></i>
+            <span>Modifier</span>
+          </button>
+        </div>
+        <div class="card-actions-secondary">
+          <button 
+            class="icon-action-btn" 
+            [class.active]="offre.enable"
+            (click)="onToggleEnable(offre)"
+            [title]="offre.enable ? 'Désactiver' : 'Activer'"
+          >
+            <i class="fas" [ngClass]="offre.enable ? 'fa-pause' : 'fa-play'"></i>
+          </button>
+          <button 
+            class="icon-action-btn danger" 
+            (click)="onDeleteOffre(offre)"
+            title="Supprimer"
+          >
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </div>
       </div>
+
+      <div class="card-hover-effect"></div>
     </article>
   </div>
 
   <!-- OFFERS LIST VIEW -->
   <div *ngIf="!loading && !error && paginatedOffres.length > 0 && viewMode === 'list'" class="offers-list">
-    <article *ngFor="let offre of paginatedOffres" class="offer-list-item">
-      <div class="list-item-left">
-        <div class="list-item-icon">
+    <article *ngFor="let offre of paginatedOffres" class="offer-list-card">
+      
+      <div class="list-card-main">
+        <div class="list-card-icon">
           <i class="fas fa-briefcase"></i>
+          <div class="icon-badge" [class.badge-active]="offre.enable">
+            <i class="fas" [ngClass]="offre.enable ? 'fa-check' : 'fa-pause'"></i>
+          </div>
         </div>
-        <div class="list-item-content">
-          <div class="list-item-header">
-            <h3 class="list-item-title">{{ offre.titreOffre }}</h3>
-            <div class="list-item-badges">
-              <span class="badge" [class.badge-active]="offre.enable" [class.badge-inactive]="!offre.enable">
-                <i class="fas" [ngClass]="offre.enable ? 'fa-check-circle' : 'fa-pause-circle'"></i>
-                {{ offre.enable ? 'Active' : 'Inactive' }}
-              </span>
-              <span class="badge badge-neutral">
-                <i class="fas fa-users"></i>
-                {{ offre.nbreDePoste }} poste{{ offre.nbreDePoste > 1 ? 's' : '' }}
-              </span>
+
+        <div class="list-card-content">
+          <div class="list-card-header">
+            <div class="list-header-left">
+              <h3 class="list-card-title">{{ offre.titreOffre }}</h3>
+              <div class="list-card-badges">
+                <span class="inline-badge" [class.badge-active]="offre.enable">
+                  {{ offre.enable ? 'Active' : 'Inactive' }}
+                </span>
+                <span class="inline-badge badge-neutral">
+                  <i class="fas fa-users"></i>
+                  {{ offre.nbreDePoste }} poste{{ offre.nbreDePoste > 1 ? 's' : '' }}
+                </span>
+              </div>
             </div>
           </div>
-          <p class="list-item-description">{{ offre.descriptionJob | slice:0:150 }}...</p>
-          <div class="list-item-meta">
-            <span class="meta-item">
+
+          <p class="list-card-description">
+            {{ offre.descriptionJob | slice:0:180 }}{{ offre.descriptionJob.length > 180 ? '...' : '' }}
+          </p>
+
+          <div class="list-card-meta">
+            <div class="meta-item">
               <i class="fas fa-user-tie"></i>
-              {{ offre.profilRecherche }}
-            </span>
-            <span class="meta-separator">•</span>
-            <span class="meta-item">
+              <span>{{ offre.profilRecherche }}</span>
+            </div>
+            <div class="meta-divider"></div>
+            <div class="meta-item">
               <i class="fas fa-code"></i>
-              {{ offre.competencesTechniques.split(',').length }} compétence{{ offre.competencesTechniques.split(',').length > 1 ? 's' : '' }}
+              <span>{{ offre.competencesTechniques.split(',').length }} compétence{{ offre.competencesTechniques.split(',').length > 1 ? 's' : '' }}</span>
+            </div>
+          </div>
+
+          <div class="list-card-skills">
+            <span class="skill-tag-sm" *ngFor="let skill of getSkillsArray(offre.competencesTechniques).slice(0, 4)">
+              {{ skill }}
+            </span>
+            <span 
+              *ngIf="offre.competencesTechniques.split(',').length > 4" 
+              class="skill-tag-sm more"
+            >
+              +{{ offre.competencesTechniques.split(',').length - 4 }}
             </span>
           </div>
         </div>
+
+        <div class="list-card-actions">
+          <button class="list-action-btn btn-primary" (click)="onViewOffre(offre)">
+            <i class="fas fa-eye"></i>
+            <span>Voir</span>
+          </button>
+          <button class="list-action-btn btn-secondary" (click)="onEditOffre(offre)">
+            <i class="fas fa-edit"></i>
+            <span>Modifier</span>
+          </button>
+          <button 
+            class="list-action-btn" 
+            [class.btn-warning]="offre.enable"
+            [class.btn-success]="!offre.enable"
+            (click)="onToggleEnable(offre)"
+          >
+            <i class="fas" [ngClass]="offre.enable ? 'fa-pause' : 'fa-play'"></i>
+            <span>{{ offre.enable ? 'Pause' : 'Activer' }}</span>
+          </button>
+          <button class="list-action-btn btn-danger" (click)="onDeleteOffre(offre)">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </div>
       </div>
-      <div class="list-item-actions">
-        <button class="btn-list-action btn-toggle" (click)="onToggleEnable(offre)">
-          <i class="fas" [ngClass]="offre.enable ? 'fa-pause' : 'fa-play'"></i>
-          {{ offre.enable ? 'Désactiver' : 'Activer' }}
-        </button>
-        <button class="btn-list-action btn-edit" (click)="onEditOffre(offre)">
-          <i class="fas fa-edit"></i>
-          Modifier
-        </button>
-        <button class="btn-list-action btn-view" (click)="onViewOffre(offre)">
-          <i class="fas fa-eye"></i>
-          Détails
-        </button>
-        <button class="btn-list-action btn-delete" (click)="onDeleteOffre(offre)">
-          <i class="fas fa-trash-alt"></i>
-        </button>
-      </div>
+
+      <div class="list-card-glow"></div>
     </article>
   </div>
 
-  <!-- PAGINATION -->
-  <nav *ngIf="!loading && !error && filteredOffres.length > 0" class="pagination" aria-label="Pagination">
-    <button 
-      class="page-btn page-prev" 
-      (click)="prevPage()" 
-      [disabled]="currentPage === 1"
-      aria-label="Previous page"
-    >
-      <i class="fas fa-chevron-left"></i>
-      Précédent
-    </button>
-
-    <div class="page-numbers">
-      <ng-container *ngFor="let page of pageNumbers">
-        <button 
-          *ngIf="page > 0"
-          class="page-number" 
-          [class.active]="page === currentPage"
-          (click)="goToPage(page)"
-          [attr.aria-label]="'Page ' + page"
-          [attr.aria-current]="page === currentPage ? 'page' : null"
-        >
-          {{ page }}
-        </button>
-        <span *ngIf="page === -1" class="page-ellipsis">...</span>
-      </ng-container>
+  <!-- ENHANCED PAGINATION -->
+  <nav *ngIf="!loading && !error && filteredOffres.length > 0" class="pagination-modern" aria-label="Pagination">
+    <div class="pagination-info">
+      <span class="page-info-text">
+        Affichage de 
+        <strong>{{ (currentPage - 1) * pageSize + 1 }}</strong> à 
+        <strong>{{ Math.min(currentPage * pageSize, filteredOffres.length) }}</strong> 
+        sur <strong>{{ filteredOffres.length }}</strong> offres
+      </span>
     </div>
 
-    <button 
-      class="page-btn page-next" 
-      (click)="nextPage()" 
-      [disabled]="currentPage === totalPages"
-      aria-label="Next page"
-    >
-      Suivant
-      <i class="fas fa-chevron-right"></i>
-    </button>
+    <div class="pagination-controls">
+      <button 
+        class="page-control-btn" 
+        (click)="prevPage()" 
+        [disabled]="currentPage === 1"
+      >
+        <i class="fas fa-chevron-left"></i>
+        <span>Précédent</span>
+      </button>
+
+      <div class="page-numbers-list">
+        <ng-container *ngFor="let page of pageNumbers">
+          <button 
+            *ngIf="page > 0"
+            class="page-number-btn" 
+            [class.active]="page === currentPage"
+            (click)="goToPage(page)"
+          >
+            {{ page }}
+          </button>
+          <span *ngIf="page === -1" class="page-ellipsis">•••</span>
+        </ng-container>
+      </div>
+
+      <button 
+        class="page-control-btn" 
+        (click)="nextPage()" 
+        [disabled]="currentPage === totalPages"
+      >
+        <span>Suivant</span>
+        <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
   </nav>
 
-  <!-- EDIT MODAL -->
-  <div *ngIf="editingOffre" class="modal-overlay" (click)="cancelEdit()">
-    <div class="modal-content" (click)="$event.stopPropagation()">
-      <div class="modal-header">
-        <h2>Modifier l'Offre</h2>
-        <button class="modal-close" (click)="cancelEdit()" aria-label="Close modal">
+  <!-- ENHANCED EDIT MODAL -->
+  <div *ngIf="editingOffre" class="modal-backdrop" (click)="cancelEdit()">
+    <div class="modal-container" (click)="$event.stopPropagation()">
+      
+      <!-- Modal Header -->
+      <div class="modal-header-modern">
+        <div class="modal-title-section">
+          <div class="modal-icon">
+            <i class="fas fa-edit"></i>
+          </div>
+          <div class="modal-title-content">
+            <h2>Modifier l'Offre</h2>
+            <p>Mettez à jour les informations de l'offre d'emploi</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" (click)="cancelEdit()">
           <i class="fas fa-times"></i>
         </button>
       </div>
 
-      <form class="modal-form" (ngSubmit)="saveEdit()">
-        <div class="form-group">
-          <label for="edit-titre">Titre de l'offre *</label>
-          <input 
-            id="edit-titre"
-            type="text" 
-            [(ngModel)]="editingOffre.titreOffre" 
-            name="titre" 
-            placeholder="Ex: Développeur Full Stack"
-            required 
-          />
-        </div>
+      <!-- Modal Body -->
+      <form class="modal-body-modern" (ngSubmit)="saveEdit()">
+        
+        <div class="form-section">
+          <div class="section-header">
+            <i class="fas fa-info-circle"></i>
+            <h3>Informations générales</h3>
+          </div>
 
-        <div class="form-group">
-          <label for="edit-description">Description du poste *</label>
-          <textarea 
-            id="edit-description"
-            [(ngModel)]="editingOffre.descriptionJob" 
-            name="description" 
-            rows="5" 
-            placeholder="Décrivez les responsabilités et missions..."
-            required
-          ></textarea>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group">
-            <label for="edit-profil">Profil recherché *</label>
+          <div class="form-field">
+            <label for="edit-titre" class="field-label">
+              Titre de l'offre <span class="required">*</span>
+            </label>
             <input 
-              id="edit-profil"
+              id="edit-titre"
               type="text" 
-              [(ngModel)]="editingOffre.profilRecherche" 
-              name="profil" 
-              placeholder="Ex: Junior, Senior..."
+              class="field-input"
+              [(ngModel)]="editingOffre.titreOffre" 
+              name="titre" 
+              placeholder="Ex: Développeur Full Stack Senior"
               required 
             />
           </div>
 
-          <div class="form-group">
-            <label for="edit-postes">Nombre de postes *</label>
+          <div class="form-field">
+            <label for="edit-description" class="field-label">
+              Description du poste <span class="required">*</span>
+            </label>
+            <textarea 
+              id="edit-description"
+              class="field-textarea"
+              [(ngModel)]="editingOffre.descriptionJob" 
+              name="description" 
+              rows="4" 
+              placeholder="Décrivez les responsabilités, missions et objectifs du poste..."
+              required
+            ></textarea>
+            <div class="field-hint">
+              <i class="fas fa-lightbulb"></i>
+              Soyez précis et détaillé pour attirer les meilleurs candidats
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="section-header">
+            <i class="fas fa-user-tie"></i>
+            <h3>Profil recherché</h3>
+          </div>
+
+          <div class="form-row">
+            <div class="form-field">
+              <label for="edit-profil" class="field-label">
+                Niveau d'expérience <span class="required">*</span>
+              </label>
+              <input 
+                id="edit-profil"
+                type="text" 
+                class="field-input"
+                [(ngModel)]="editingOffre.profilRecherche" 
+                name="profil" 
+                placeholder="Ex: Junior, Confirmé, Senior..."
+                required 
+              />
+            </div>
+
+            <div class="form-field">
+              <label for="edit-postes" class="field-label">
+                Nombre de postes <span class="required">*</span>
+              </label>
+              <input 
+                id="edit-postes"
+                type="number" 
+                class="field-input"
+                [(ngModel)]="editingOffre.nbreDePoste" 
+                name="nbreDePoste" 
+                min="1"
+                placeholder="1"
+                required 
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="section-header">
+            <i class="fas fa-code"></i>
+            <h3>Compétences techniques</h3>
+          </div>
+
+          <div class="form-field">
+            <label for="edit-competences" class="field-label">
+              Compétences requises <span class="required">*</span>
+            </label>
             <input 
-              id="edit-postes"
-              type="number" 
-              [(ngModel)]="editingOffre.nbreDePoste" 
-              name="nbreDePoste" 
-              min="1"
-              placeholder="1"
+              id="edit-competences"
+              type="text" 
+              class="field-input"
+              [(ngModel)]="editingOffre.competencesTechniques" 
+              name="competences" 
+              placeholder="Ex: Angular, TypeScript, Node.js, MongoDB (séparées par des virgules)"
               required 
             />
+            <div class="field-hint">
+              <i class="fas fa-info-circle"></i>
+              Séparez chaque compétence par une virgule
+            </div>
           </div>
         </div>
 
-        <div class="form-group">
-          <label for="edit-competences">Compétences techniques *</label>
-          <input 
-            id="edit-competences"
-            type="text" 
-            [(ngModel)]="editingOffre.competencesTechniques" 
-            name="competences" 
-            placeholder="Ex: Angular, TypeScript, Node.js (séparées par des virgules)"
-            required 
-          />
-        </div>
-
-        <div class="modal-actions">
-          <button type="button" class="btn-cancel" (click)="cancelEdit()">
+        <!-- Modal Footer -->
+        <div class="modal-footer-modern">
+          <button type="button" class="modal-btn btn-cancel" (click)="cancelEdit()">
             <i class="fas fa-times"></i>
-            Annuler
+            <span>Annuler</span>
           </button>
-          <button type="submit" class="btn-save">
+          <button type="submit" class="modal-btn btn-save">
             <i class="fas fa-check"></i>
-            Sauvegarder
+            <span>Sauvegarder les modifications</span>
+            <div class="btn-ripple"></div>
           </button>
         </div>
       </form>
-    </div>
-  </div>
-</main>
 
-<!-- FOOTER -->
-<footer class="footer" [class.expanded]="sidebarCollapsed">
-  <div class="footer-left">
-    <div class="footer-brand">
-      <strong>SIGA Platform</strong>
-      <span class="footer-divider">•</span>
-      <span>13 Rue Ibn Nafis, Les Berges du Lac 3, Tunis</span>
-    </div>
-    <div class="footer-contact">
-      <a href="mailto:contact&#64;siga.com.tn"><i class="fas fa-envelope"></i> contact&#64;siga.com.tn</a>
-        <i class="fas fa-envelope"></i> contact&#64;siga.com.tn
-      <span class="footer-divider">•</span>
-      <a href="tel:+21671960281">
-        <i class="fas fa-phone"></i> (+216) 71 960 281
-      </a>
     </div>
   </div>
-  <div class="footer-right">
-    <span class="footer-version">v1.0.2</span>
-    <a href="#" class="footer-link">Confidentialité</a>
-    <a href="#" class="footer-link">Conditions</a>
-  </div>
-</footer>
+
+</main>

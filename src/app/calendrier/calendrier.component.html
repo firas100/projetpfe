@@ -1,163 +1,629 @@
-<!-- NAVBAR -->
+<!-- ═══════════════════════════════════════════════════════════════
+     ULTIMATE PREMIUM HR RECRUITMENT DASHBOARD - RECOMMENDATION MODULE
+     Perfected Design System - Visual Excellence & Harmony
+     ═══════════════════════════════════════════════════════════════ -->
+
+<!-- NAVBAR - Ultimate Premium Design -->
 <nav class="navbar">
-  <div class="navbar-left">
-    <button class="hamburger" (click)="toggleSidebar()" aria-label="Toggle sidebar">
-      <span></span><span></span><span></span>
-    </button>
-    <span class="brand">SIGA <small class="brand-sub">Admin</small></span>
-  </div>
-
-  <form class="search-wrapper" (submit)="$event.preventDefault()">
-    <div class="search-field">
-      <input
-        class="search"
-        type="search"
-        [(ngModel)]="searchTerm"
-        name="search"
-        placeholder="Recherche: nom, prénom, email..."
-      />
-      <button class="btn btn-search" type="button" (click)="applyFilter()">
-        <i class="fas fa-search"></i>
+  <div class="navbar-container">
+    <!-- Left Section -->
+    <div class="navbar-left">
+      <button class="hamburger" (click)="toggleSidebar()" aria-label="Toggle sidebar">
+        <span></span>
+        <span></span>
+        <span></span>
       </button>
-    </div>
-  </form>
-
-  <div class="navbar-right">
-    <div class="notif">
-      <button class="icon-btn" title="Notifications"><i class="fas fa-bell"></i></button>
-    </div>
-
-    <div class="user">
-      <div class="user-info">
-        <div class="user-emoji">👋</div>
-        <div class="user-text">
-          <div class="user-hi">Bienvenue</div>
-          <div class="user-name">{{ username }}</div>
+      
+      <div class="brand-logo">
+        <div class="logo-icon">
+          <i class="fas fa-rocket"></i>
+          <div class="logo-shine"></div>
+        </div>
+        <div class="logo-text">
+          <span class="brand">SIGA</span>
+          <span class="brand-sub">Recruitment Excellence</span>
         </div>
       </div>
-      <button class="btn-logout" title="Déconnexion" (click)="onLogout()">
+    </div>
+
+    <!-- Center Search -->
+    <form class="search-wrapper" (submit)="$event.preventDefault(); applyFilter()">
+      <div class="search-field">
+        <i class="fas fa-search search-icon"></i>
+        <input
+          class="search"
+          type="search"
+          [(ngModel)]="searchTerm"
+          name="search"
+          placeholder="Rechercher un candidat par nom, email..."
+          aria-label="Search candidates"
+        />
+        <kbd class="search-shortcut">⌘K</kbd>
+      </div>
+    </form>
+
+    <!-- Right Section -->
+    <div class="navbar-right">
+      <button class="icon-btn notif-btn" title="Notifications" aria-label="Notifications">
+        <i class="fas fa-bell"></i>
+        <span class="badge-dot"></span>
+        <span class="badge-count">3</span>
+      </button>
+      
+      <div class="divider-vertical"></div>
+      
+      <div class="user-menu">
+        <div class="user-avatar">
+          <div class="avatar-gradient">
+            <span>{{ username.charAt(0).toUpperCase() }}</span>
+          </div>
+          <div class="status-indicator online"></div>
+        </div>
+        <div class="user-details">
+          <span class="user-greeting">Bonjour,</span>
+          <span class="user-name">{{ username }}</span>
+        </div>
+        <button class="btn-logout" title="Déconnexion" (click)="onLogout()" aria-label="Logout">
           <i class="fas fa-sign-out-alt"></i>
         </button>
+      </div>
     </div>
   </div>
+  <div class="navbar-glow"></div>
 </nav>
 
-<!-- SIDEBAR -->
+<!-- SIDEBAR - Ultimate Premium Design -->
 <aside class="sidebar" [class.collapsed]="sidebarCollapsed">
-  <div class="sidebar-top">
-    <div class="brand">
-      <i class="fas fa-rocket"></i>
-      <span>SIGA</span>
+  <div class="sidebar-header">
+    <div class="sidebar-brand">
+      <div class="brand-icon">
+        <i class="fas fa-users-cog"></i>
+        <div class="icon-pulse"></div>
+      </div>
+      <span class="brand-text">SIGA HR</span>
     </div>
-    <button class="collapse-btn" (click)="toggleSidebar()">
-      <i class="fas" [ngClass]="sidebarCollapsed ? 'fa-angle-right' : 'fa-angle-left'"></i>
+    <button class="collapse-toggle" (click)="toggleSidebar()" aria-label="Toggle sidebar">
+      <i class="fas" [ngClass]="sidebarCollapsed ? 'fa-chevron-right' : 'fa-chevron-left'"></i>
     </button>
   </div>
 
-   <nav class="nav-links">
-    <a routerLink="/getall" routerLinkActive="active"><i class="fas fa-tachometer-alt"></i><span class="link-text">Dashboard</span></a>
-    <a routerLink="/recommendation" routerLinkActive="active"><i class="fas fa-file-alt"></i><span class="link-text">Analyse CV</span></a>
-    <a routerLink="/getCandidats" routerLinkActive="active"><i class="fas fa-users"></i><span class="link-text">Candidats</span></a>
-    <a routerLink="/Calendrier" routerLinkActive="active"><i class="fas fa-calendar-alt"></i><span class="link-text">Calendrier</span></a>
-    <a routerLink="/OfferByAdmin" routerLinkActive="active">
-      <i class="fas fa-briefcase"></i><span class="link-text">Gestion Offres</span>
+  <nav class="sidebar-nav">
+    <!-- Main Menu -->
+    <div class="nav-section">
+      <span class="nav-section-title">Menu Principal</span>
+      
+     
+       <a routerLink="/getall" class="nav-link" routerLinkActive="active">
+      <div class="nav-icon"><i class="fas fa-chart-line"></i></div>
+      <span class="nav-text">Dashboard</span>
+      <div class="nav-indicator"></div>
     </a>
+
+    <a routerLink="/recommendation" class="nav-link" routerLinkActive="active">
+      <div class="nav-icon"><i class="fas fa-brain"></i></div>
+      <span class="nav-text">Analyse CV</span>
+      <div class="nav-indicator"></div>
+    </a>
+
+    <a routerLink="/HistoriqueCandidat" class="nav-link" routerLinkActive="active">
+      <div class="nav-icon"><i class="fas fa-history"></i></div>
+      <span class="nav-text">Historique</span>
+      <div class="nav-indicator"></div>
+    </a>
+
+    <a routerLink="/getCandidats" class="nav-link" routerLinkActive="active">
+      <div class="nav-icon"><i class="fas fa-user-friends"></i></div>
+      <span class="nav-text">Candidats</span>
+      <span class="nav-badge" *ngIf="totalCandidates > 0">{{ totalCandidates }}</span>
+      <div class="nav-indicator"></div>
+    </a>
+
+    <!-- ──────────────── MENU QUESTION AVEC SOUS-MENUS ──────────────── -->
+    <div class="nav-dropdown" [class.open]="questionMenuOpen">
+
+      <div class="nav-link dropdown-toggle" (click)="questionMenuOpen = !questionMenuOpen">
+        <div class="nav-icon"><i class="fas fa-question-circle"></i></div>
+        <span class="nav-text">Question</span>
+        <i class="fas" [ngClass]="questionMenuOpen ? 'fa-chevron-up' : 'fa-chevron-down'" style="margin-left:auto;"></i>
+      </div>
+
+      <div class="dropdown-items" *ngIf="questionMenuOpen">
+        <a routerLink="/ajouterQuestion" class="nav-sublink" routerLinkActive="active">
+          <span>Ajouter Question</span>
+        </a>
+
+        <a routerLink="/getallQuestion" class="nav-sublink" routerLinkActive="active">
+          <span>Liste des Questions</span>
+        </a>
+      </div>
+
+    </div>
+
+  </div>
+
+    
+
+    <!-- Management Section -->
+    <div class="nav-section">
+      <span class="nav-section-title">Gestion</span>
+      
+      <a routerLink="/Calendrier" class="nav-link" routerLinkActive="active">
+        <div class="nav-icon">
+          <i class="fas fa-calendar-check"></i>
+        </div>
+        <span class="nav-text">Calendrier</span>
+        <div class="nav-indicator"></div>
+      </a>
+      
+      <a routerLink="/OfferByAdmin" class="nav-link" routerLinkActive="active">
+        <div class="nav-icon">
+          <i class="fas fa-briefcase"></i>
+        </div>
+        <span class="nav-text">Offres</span>
+        <div class="nav-indicator"></div>
+      </a>
+    </div>
   </nav>
 
-  <div class="sidebar-bottom">
-    <div class="user-profile">
-      <div class="avatar">👋</div>
-      <div class="user-info">
-        <span class="name">Admin</span>
-        <small class="role">Super Admin</small>
+  <div class="sidebar-footer">
+    <div class="user-card">
+      <div class="user-avatar-small">
+        <span>{{ username.charAt(0).toUpperCase() }}</span>
+        <div class="avatar-ring"></div>
+      </div>
+      <div class="user-info-small">
+        <span class="user-name-small">{{ username }}</span>
+        <span class="user-role">Administrateur RH</span>
       </div>
     </div>
-    <small class="version">v1.0 • SIGA</small>
+    
+   
+    
+    <div class="app-version">
+      <i class="fas fa-shield-check"></i>
+      <span>Version 1.0.0</span>
+    </div>
   </div>
 </aside>
 
 <!-- MAIN CONTENT -->
-<div class="content">
-  <div class="container mt-4">
-    <h2>Calendrier des entretiens</h2>
-    <button class="btn btn-primary mb-3 ms-2" (click)="openBatchModal()">Planifier par offre</button>
+<main class="content" [class.expanded]="sidebarCollapsed">
+  
+  <!-- Stats Cards -->
+  <div class="stats-grid">
+    <div class="stat-card stat-primary">
+      <div class="stat-header">
+        <div class="stat-icon">
+          <i class="fas fa-calendar-alt"></i>
+        </div>
+        <div class="stat-trend positive">
+          <i class="fas fa-arrow-up"></i>
+          <span>15%</span>
+        </div>
+      </div>
+      <div class="stat-content">
+        <span class="stat-label">Total Entretiens</span>
+        <span class="stat-value">{{ getTotalEvents() }}</span>
+        <span class="stat-description">Planifiés ce mois</span>
+      </div>
+      <div class="stat-sparkle"></div>
+    </div>
 
-    <!-- Modal Batch par Offre -->
-    <div class="modal" tabindex="-1" [ngClass]="{'show d-block': showBatchModal}">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content p-3">
-          <div class="modal-header">
-            <h5 class="modal-title">Planifier entretiens par offre</h5>
-            <button type="button" class="btn-close" (click)="closeBatchModal()"></button>
+    <div class="stat-card stat-success">
+      <div class="stat-header">
+        <div class="stat-icon">
+          <i class="fas fa-users"></i>
+        </div>
+        <div class="stat-trend positive">
+          <i class="fas fa-arrow-up"></i>
+          <span>22%</span>
+        </div>
+      </div>
+      <div class="stat-content">
+        <span class="stat-label">Candidats</span>
+        <span class="stat-value">{{ candidats.length }}</span>
+        <span class="stat-description">Profils disponibles</span>
+      </div>
+      <div class="stat-sparkle"></div>
+    </div>
+
+    <div class="stat-card stat-info">
+      <div class="stat-header">
+        <div class="stat-icon">
+          <i class="fas fa-user-tie"></i>
+        </div>
+        <div class="stat-trend neutral">
+          <i class="fas fa-minus"></i>
+          <span>0%</span>
+        </div>
+      </div>
+      <div class="stat-content">
+        <span class="stat-label">Managers</span>
+        <span class="stat-value">{{ managers.length }}</span>
+        <span class="stat-description">Recruteurs actifs</span>
+      </div>
+      <div class="stat-sparkle"></div>
+    </div>
+
+    <div class="stat-card stat-warning">
+      <div class="stat-header">
+        <div class="stat-icon">
+          <i class="fas fa-briefcase"></i>
+        </div>
+        <div class="stat-trend positive">
+          <i class="fas fa-arrow-up"></i>
+          <span>8%</span>
+        </div>
+      </div>
+      <div class="stat-content">
+        <span class="stat-label">Offres Actives</span>
+        <span class="stat-value">{{ offres.length }}</span>
+        <span class="stat-description">Postes ouverts</span>
+      </div>
+      <div class="stat-sparkle"></div>
+    </div>
+  </div>
+
+  <!-- Page Header -->
+  <header class="page-header">
+    <div class="header-content">
+      <div class="header-title">
+        <div class="title-wrapper">
+          <h1>Calendrier des Entretiens</h1>
+          <div class="title-decoration"></div>
+        </div>
+        <p class="subtitle">Planifiez et gérez vos entretiens avec une interface intuitive</p>
+      </div>
+
+      <div class="header-actions">
+        <button class="btn btn-secondary" (click)="refreshCalendar()">
+          <i class="fas fa-sync-alt"></i>
+          <span>Actualiser</span>
+        </button>
+        <button class="btn btn-primary" (click)="openBatchModal()">
+          <i class="fas fa-calendar-plus"></i>
+          <span>Planifier par Offre</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Calendar Section -->
+  <section class="calendar-section">
+    <div class="calendar-card">
+      <div class="calendar-header">
+        <div class="calendar-title">
+          <i class="fas fa-calendar-alt"></i>
+          <h3>Vue Mensuelle</h3>
+        </div>
+        <div class="calendar-legend">
+          <div class="legend-item">
+            <span class="legend-dot confirmed"></span>
+            <span>Confirmé</span>
           </div>
-          <div class="modal-body">
-            <form (ngSubmit)="planifierParOffre()" #batchForm="ngForm">
-              <div class="mb-2">
-                 <label>Offre</label>
-  <select class="form-control"
-          [(ngModel)]="selectedOffreId"
-          name="offre"
-          required
-          (change)="loadHighScoringCandidates()">
-            <option [ngValue]="null">-- Sélectionnez --</option>
-             <option *ngFor="let o of offres" [value]="o.idOffre">{{ o.titreOffre }}</option>
+          <div class="legend-item">
+            <span class="legend-dot pending"></span>
+            <span>En attente</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-dot cancelled"></span>
+            <span>Annulé</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="calendar-body">
+        <full-calendar [options]="calendarOptions"></full-calendar>
+      </div>
+    </div>
+  </section>
+
+  <!-- Batch Modal -->
+  <div class="modal-overlay" [class.show]="showBatchModal" (click)="closeBatchModal()">
+    <div class="modal-container" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <div class="modal-title">
+          <div class="modal-icon">
+            <i class="fas fa-calendar-plus"></i>
+          </div>
+          <div class="modal-title-text">
+            <h3>Planifier des Entretiens par Offre</h3>
+            <p>Sélectionnez une offre et planifiez des entretiens pour les meilleurs candidats</p>
+          </div>
+        </div>
+        <button class="modal-close" (click)="closeBatchModal()" aria-label="Close">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <form (ngSubmit)="planifierParOffre()" #batchForm="ngForm">
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label">
+                <i class="fas fa-briefcase"></i>
+                <span>Offre d'emploi</span>
+                <span class="required">*</span>
+              </label>
+              <select 
+                class="form-select" 
+                [(ngModel)]="selectedOffreId" 
+                name="offre" 
+                required
+                (change)="loadHighScoringCandidates()"
+              >
+                <option [ngValue]="null" disabled selected>Sélectionnez une offre...</option>
+                <option *ngFor="let o of offres" [value]="o.idOffre">{{ o.titreOffre }}</option>
               </select>
-              </div>
-              <div class="mb-2">
-  <label>Candidat</label>
-  <select class="form-control" [(ngModel)]="selectedCandidatId" name="candidat">
-    <option [ngValue]="null">-- Sélectionnez --</option>
-    <option *ngFor="let c of candidats" [value]="c.id_candidature">
-      {{ c.nom }} {{ c.prenom }}
-    </option>
-  </select>
-</div>
-              <div class="mb-2">
-                <label>Manager</label>
-                <select class="form-control" [(ngModel)]="selectedManagerId" name="manager" required>
-                  <option [ngValue]="null">-- Sélectionnez --</option>
-                  <option *ngFor="let m of managers" [ngValue]="m.id">{{ m.firstName }} {{ m.lastName }}</option>
-                </select>
-              </div>
+            </div>
 
-              <div class="mb-2">
-                <label>Date et heure</label>
-                <input type="datetime-local" class="form-control" [(ngModel)]="selectedDate" name="date" required>
-              </div>
+            <div class="form-group">
+              <label class="form-label">
+                <i class="fas fa-user"></i>
+                <span>Candidat (optionnel)</span>
+              </label>
+              <select class="form-select" [(ngModel)]="selectedCandidatId" name="candidat">
+                <option [ngValue]="null" selected>Tous les candidats éligibles</option>
+                <option *ngFor="let c of highScoringCandidates" [value]="c.id_candidature">
+                  {{ c.prenom }} {{ c.nom }} (Score: {{ c.finalScore | number:'1.0-1' }}%)
+                </option>
+              </select>
+              <small class="form-hint" *ngIf="highScoringCandidates.length > 0">
+                <i class="fas fa-info-circle"></i>
+                {{ highScoringCandidates.length }} candidat(s) éligible(s) avec score ≥ {{ minScore }}%
+              </small>
+            </div>
 
-              <div class="mb-2">
-                <label>Score minimum</label>
-                <input type="number" class="form-control" [(ngModel)]="minScore" name="minScore" min="0" max="100" (ngModelChange)="loadHighScoringCandidates()" required>
-              </div>
+            <div class="form-group">
+              <label class="form-label">
+                <i class="fas fa-user-tie"></i>
+                <span>Manager</span>
+                <span class="required">*</span>
+              </label>
+              <select class="form-select" [(ngModel)]="selectedManagerId" name="manager" required>
+                <option [ngValue]="null" disabled selected>Sélectionnez un manager...</option>
+                <option *ngFor="let m of managers" [ngValue]="m.id">
+                  {{ m.firstName }} {{ m.lastName }}
+                </option>
+              </select>
+            </div>
 
-              <div class="mb-2">
-                <label>Commentaire</label>
-                <textarea class="form-control" [(ngModel)]="commentaire" name="commentaire"></textarea>
-              </div>
+            <div class="form-group">
+              <label class="form-label">
+                <i class="fas fa-clock"></i>
+                <span>Date et heure</span>
+                <span class="required">*</span>
+              </label>
+              <input 
+                type="datetime-local" 
+                class="form-input" 
+                [(ngModel)]="selectedDate" 
+                name="date" 
+                required
+                [min]="getMinDateTime()"
+              />
+            </div>
 
-          
-              <div class="d-flex justify-content-end mt-3">
-                <button type="submit" class="btn btn-success me-2" [disabled]="highScoringCandidates.length === 0">Planifier</button>
-                <button type="button" class="btn btn-secondary" (click)="closeBatchModal()">Annuler</button>
+            <div class="form-group">
+              <label class="form-label">
+                <i class="fas fa-star"></i>
+                <span>Score minimum</span>
+              </label>
+              <div class="input-with-slider">
+                <input 
+                  type="range" 
+                  class="form-range" 
+                  [(ngModel)]="minScore" 
+                  name="minScore"
+                  min="0" 
+                  max="100" 
+                  step="5"
+                />
+                <div class="range-value">{{ minScore }}%</div>
               </div>
-            </form>
+            </div>
+
+            <div class="form-group full-width">
+              <label class="form-label">
+                <i class="fas fa-comment"></i>
+                <span>Commentaire</span>
+              </label>
+              <textarea 
+                class="form-textarea" 
+                [(ngModel)]="commentaire" 
+                name="commentaire"
+                rows="4"
+                placeholder="Ajoutez des notes ou instructions pour l'entretien..."
+              ></textarea>
+            </div>
           </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="closeBatchModal()">
+              <i class="fas fa-times"></i>
+              <span>Annuler</span>
+            </button>
+            <button 
+              type="submit" 
+              class="btn btn-primary" 
+              [disabled]="!batchForm.valid || highScoringCandidates.length === 0"
+            >
+              <i class="fas fa-calendar-check"></i>
+              <span>Planifier {{ highScoringCandidates.length }} Entretien(s)</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Single Interview Modal -->
+  <div class="modal-overlay" [class.show]="showModal" (click)="closeModal()">
+    <div class="modal-container modal-sm" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <div class="modal-title">
+          <div class="modal-icon">
+            <i class="fas fa-calendar-day"></i>
+          </div>
+          <div class="modal-title-text">
+            <h3>Planifier un Entretien</h3>
+            <p>Date sélectionnée: {{ selectedDate | date:'fullDate':'':'fr' }}</p>
+          </div>
+        </div>
+        <button class="modal-close" (click)="closeModal()" aria-label="Close">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <form (ngSubmit)="planifierEntretien()" #singleForm="ngForm">
+          <div class="form-grid">
+            <div class="form-group full-width">
+              <label class="form-label">
+                <i class="fas fa-user"></i>
+                <span>Candidat</span>
+                <span class="required">*</span>
+              </label>
+              <select class="form-select" [(ngModel)]="selectedCandidatId" name="candidat" required>
+                <option [ngValue]="null" disabled selected>Sélectionnez un candidat...</option>
+                <option *ngFor="let c of candidats" [value]="c.id_candidature">
+                  {{ c.prenom }} {{ c.nom }} - {{ c.email }}
+                </option>
+              </select>
+            </div>
+
+            <div class="form-group full-width">
+              <label class="form-label">
+                <i class="fas fa-user-tie"></i>
+                <span>Manager</span>
+                <span class="required">*</span>
+              </label>
+              <select class="form-select" [(ngModel)]="selectedManagerId" name="manager" required>
+                <option [ngValue]="null" disabled selected>Sélectionnez un manager...</option>
+                <option *ngFor="let m of managers" [ngValue]="m.id">
+                  {{ m.firstName }} {{ m.lastName }}
+                </option>
+              </select>
+            </div>
+
+            <div class="form-group full-width">
+              <label class="form-label">
+                <i class="fas fa-clock"></i>
+                <span>Date et heure</span>
+                <span class="required">*</span>
+              </label>
+              <input 
+                type="datetime-local" 
+                class="form-input" 
+                [(ngModel)]="selectedDate" 
+                name="date" 
+                required
+                [min]="getMinDateTime()"
+              />
+            </div>
+
+            <div class="form-group full-width">
+              <label class="form-label">
+                <i class="fas fa-comment"></i>
+                <span>Commentaire</span>
+              </label>
+              <textarea 
+                class="form-textarea" 
+                [(ngModel)]="selectedCommentaire" 
+                name="commentaire"
+                rows="3"
+                placeholder="Ajoutez des notes pour cet entretien..."
+              ></textarea>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="closeModal()">
+              <i class="fas fa-times"></i>
+              <span>Annuler</span>
+            </button>
+            <button type="submit" class="btn btn-primary" [disabled]="!singleForm.valid">
+              <i class="fas fa-calendar-check"></i>
+              <span>Planifier l'Entretien</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- FOOTER - Ultimate Premium Design -->
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-content">
+      <div class="footer-left">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <i class="fas fa-rocket"></i>
+          </div>
+          <div class="footer-brand-text">
+            <strong>SIGA</strong>
+            <span>Recruitment Excellence</span>
+          </div>
+        </div>
+        
+        <p class="footer-address">
+          <i class="fas fa-map-marker-alt"></i>
+          13 Rue Ibn Nafis, Les berges du Lac 3, Tunis
+        </p>
+        
+        <div class="footer-links">
+          <a href="mailto:contactsiga.com.tn">
+            <i class="fas fa-envelope"></i>
+            contactsiga.com.tn
+          </a>
+          <a href="tel:+21671960281">
+            <i class="fas fa-phone"></i>
+            +216 71 960 281
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-center">
+        <h4>Navigation</h4>
+        <div class="footer-nav">
+          <a routerLink="/getall">Dashboard</a>
+          <a routerLink="/recommendation">Analyse CV</a>
+          <a routerLink="/getCandidats">Candidats</a>
+          <a routerLink="/Calendrier" class="active">Calendrier</a>
+          <a routerLink="/OfferByAdmin">Offres</a>
+        </div>
+      </div>
+
+      <div class="footer-right">
+        <h4>Support</h4>
+        <div class="footer-nav">
+          <a href="#">Centre d'aide</a>
+          <a href="#">Documentation</a>
+          <a href="#">Confidentialité</a>
+          <a href="#">Conditions d'utilisation</a>
         </div>
       </div>
     </div>
 
-    <!-- FullCalendar -->
-    <full-calendar class="fc" [options]="calendarOptions"></full-calendar>
+    <div class="footer-bottom">
+      <p class="footer-copyright">
+        <i class="fas fa-copyright"></i>
+        2025 SIGA. Tous droits réservés. Propulsé par l'excellence.
+      </p>
+      <div class="footer-social">
+        <a href="#" title="LinkedIn" aria-label="LinkedIn">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+        <a href="#" title="Twitter" aria-label="Twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+        <a href="#" title="Facebook" aria-label="Facebook">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+      </div>
+    </div>
   </div>
-</div>
-
-<!-- FOOTER -->
-<footer class="footer"> <div class="footer-left">
-   <div class="brand-info"> <strong>SIGA</strong> 
-    <span>• 13 Rue Ibn Nafis, Les berges du Lac 3, Tunis</span>
-   </div> <div class="footer-links"> <a href="mailto:contact&#64;siga.com.tn" title="Contact via email">
-     <i class="fas fa-envelope"></i> contact&#64;siga.com.tn </a> 
-     <span>•</span> <a href="tel:+21671960281" title="Call"><i class="fas fa-phone"></i> (+216) 71 960 281</a> </div> 
-    </div> <div class="footer-right"> <span>v1.0</span> <a href="#" title="Privacy Policy">Privacy</a>
-       <a href="#" title="Terms of Service">Terms</a> </div> 
-      </footer>
+  <div class="footer-wave"></div>
+</footer>

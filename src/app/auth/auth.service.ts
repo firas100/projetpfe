@@ -23,7 +23,7 @@ export class AuthService {
   const body = new URLSearchParams();
   body.set('grant_type', 'password');
   body.set('client_id', 'spring-boot-app');
-  body.set('client_secret', 'hRvXeg8fMNR75u59wRGHsOJ3t4AuN265');
+  body.set('client_secret', 'azj0tReMlu71BajK0ZkZmDKpqFE2U0Gg');
   body.set('username', email);
   body.set('password', password);
 
@@ -135,7 +135,7 @@ export class AuthService {
     const body = new URLSearchParams();
     body.set('grant_type', 'refresh_token');
     body.set('client_id', 'spring-boot-app');
-    body.set('client_secret', 'hRvXeg8fMNR75u59wRGHsOJ3t4AuN265');
+    body.set('client_secret', 'azj0tReMlu71BajK0ZkZmDKpqFE2U0Gg');
     body.set('refresh_token', refreshToken);
 
     return this.http.post(this.keycloakUrl, body.toString(), { headers }).pipe(

@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { KeycloakAngularModule } from 'keycloak-angular';
+import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 
 import { AppComponent } from './app.component';
 import { CandidatpageComponent } from './candidatpage/candidatpage.component';
@@ -22,19 +22,51 @@ import { OffreAdminComponent } from './offre-admin/offre-admin.component';
 import { SuivicandidatureComponent } from './suivicandidature/suivicandidature.component';
 import { CandidateHistoryComponent } from './candidate-history/candidate-history.component';
 import { AdminSignupComponent } from './admin-signup/admin-signup.component';
-import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { Router } from '@angular/router';
+import { keycloakConfig } from './keycloakConfig';
+import { ForgetPasswordComponent } from './forget-password/forget-password.component';
+import { AllQuestionComponent } from './all-question/all-question.component';
+import { HistoriqueManagerComponent } from './historique-manager/historique-manager.component';
 
-
+export function initializeKeycloak(keycloak: KeycloakService, router: Router) {
+  return () => {
+    // Init standard, avec check pour reset
+    return keycloak.init({
+      config: keycloakConfig,
+      initOptions: {
+        onLoad: router.url.startsWith('/reset-password') ? undefined : 'check-sso',  
+        silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html',
+        redirectUri: router.url.startsWith('/reset-password') ? window.location.origin + '/reset-password' : window.location.origin + '/login',
+        checkLoginIframe: router.url.startsWith('/reset-password') ? false : true,  
+        enableLogging: true
+      },
+      enableBearerInterceptor: !router.url.startsWith('/reset-password'),  
+      bearerExcludedUrls: ['/assets']
+    }).then((authenticated) => {
+      console.log('Keycloak init OK:', authenticated);
+      if (authenticated && router.url.startsWith('/reset-password')) {
+        // Auto-navigate si action requise (optionnel, après validation token dans composant)
+        keycloak.getKeycloakInstance().updateToken(30).then(() => {
+          const requiredActions = keycloak.getKeycloakInstance().tokenParsed?.['requiredActions'] || [];
+          if (!requiredActions.includes('UPDATE_PASSWORD')) {
+            router.navigate(['/login']);
+          }
+        }).catch(() => {});  // Ignore si pas de token (normal pour reset)
+      }
+    }).catch(err => console.error('Keycloak init error:', err));
+  };
+}
 
 @NgModule({
   declarations: [
-    AppComponent,UserInfoComponent,MangercalendrierComponent,OffreComponent,HomeOffreComponent,OffreAdminComponent,SuivicandidatureComponent,CandidateHistoryComponent,AdminSignupComponent,ResetPasswordComponent
-
+    AppComponent,UserInfoComponent,OffreComponent,HomeOffreComponent,OffreAdminComponent,SuivicandidatureComponent,AdminSignupComponent
+    ,ForgetPasswordComponent,AllQuestionComponent,HistoriqueManagerComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     ListCandidatapresentretienComponent,
+    CandidateHistoryComponent,
     FormsModule,
     CommonModule,
     CandidatpageComponent,

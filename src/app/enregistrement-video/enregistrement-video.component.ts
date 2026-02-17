@@ -116,9 +116,9 @@
         };
 
         this.mediaRecorder.onstop = () => {
-          const videoBlob = new Blob(this.chunks, { type: 'video/webm' });
+          const videoBlob = new Blob(this.chunks, { type: 'video/mp4' });
           const formData = new FormData();
-          const fileName = `${this.prenom}_${this.nom}_preinterview.webm`;
+          const fileName = `${this.prenom}_${this.nom}_preinterview.mp4`;
           formData.append('file', videoBlob, fileName);
           formData.append('nom', this.nom);
           formData.append('prenom', this.prenom);
